@@ -1,0 +1,214 @@
+\documentclass[]{scrartcl}
+
+
+
+\usepackage[english]{babel}
+\usepackage{euscript}
+\usepackage[utf8]{inputenc}
+
+%spaziatura linee (opzionale)
+%\linespread{1.2}
+
+
+%%pacchetto per l'inclusione di figure postscript
+\usepackage{graphics}
+%%pacchetto per l'inclusione di figure eps
+\usepackage[dvips]{graphicx}
+
+%%comando per l'inserimento dell'intestazione
+\pagestyle{headings} \makeatletter
+
+%%pacchetto per l'inserimento di pezzi di codice
+\usepackage{verbatim}
+
+
+%%pacchetto per l'intestazione carina (riga sotto l'intestazione)
+%\usepackage{fancyhdr}
+%%\input{fancyhdr.sty}
+%\pagestyle{fancy}
+%\renewcommand{\chaptermark}[1]{\markboth{\thechapter.#1}{}}
+%\renewcommand{\sectionmark}[1]{\markright{}}
+%\lhead{} \rhead{} \chead{\emph{\leftmark}}
+
+%%% per i diagrammi commutativi: 
+\usepackage{pictexwd,dcpic}
+
+
+%Ridefinizione per il quoziente!
+\def\quotient#1#2{%
+    \raise1ex\hbox{$#1$}\Big/\lower1ex\hbox{$#2$}%
+}
+
+%per modifica dei margini
+%\addtolength{\textwidth}{1cm}
+%\addtolength{\marginparsep}{2cm}
+
+\usepackage{makeidx}
+\usepackage{eurosym}
+\usepackage{amsfonts}
+\usepackage{latexsym}
+\usepackage{makeidx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amscd}
+\usepackage{comment}
+\usepackage{enumerate}
+\usepackage{mathrsfs}
+\usepackage[all]{xy}
+
+\usepackage{url}
+\usepackage[colorlinks=true, a4paper=true, pdfstartview=FitV,
+linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+
+
+%opening
+\title{Bourbaki vs Pragmatism \\ A methodological comparison through the multi-armed bandits problem}
+\author{Sebastiano Ferraris\footnote{sebastiano.ferraris@gmail.com}}
+
+\begin{document}
+
+\maketitle
+
+% ------------------------------------------------- %
+\begin{abstract}
+In these pages we compare two different mathematical methodologies in approaching the well known multi-armed bandits problem: the Bourbakist and the pragmatic. The Bourbakist way is concerned with the mathematical foundation upon which a formal solution is derived in the shape of an axiomatic structure. In contrast, the pragmatist approach aims at finding the shortest path towards a solution, reducing the mathematical formalisms to the bare minimum.
+The article introduces the problem, shows the two approaches and ends with a critical comparison. \\
+
+\noindent
+If you came across this article when searching for an introduction to the multi-armed bandit problem, and not a methodological comparison, you may still find what you are looking for in section~\ref{se:intro},~\ref{se:pragmatic_perspective} and in the bibliography. The code to create the figures and run a range of algorithms to solve the problem is implemented (in the pragmatic way) in \href{url}{text}. 
+\end{abstract}
+
+
+% ------------------------------------------------- %
+\section{Multi armed bandits problem}
+\label{se:intro}
+Consider of being in the situation of having to repeatedly choose between $K$ different options, each having a cost and a possible cash reward. For each option the cost is fixed and the reward is drawn from an \emph{unknown} probability distribution, constant across time.
+
+The problem of finding a strategy to maximise the reward is named multi armed bandits (MAB) after the situation of playing at a row of $K$ slot machines (or single armed bandit). Given an initial amount of money of $\$1000$ and a costs of $\$1$ for each draw, the player must balance an exploration phase when estimating the unknown distributions of each arm, with an exploitation phase, when the acquired knowledge is used for a gain\footnote{See Thompson~\cite{thompson1933likelihood} for an early approach where the two arms are two medical treatments, Bellman~\cite{bellman1956problem} where the problem is formulated in a Bayesian perspective for two arms, and the more recent Sutton~\cite{sutton2018reinforcement}, chapter~1, for a reinforcement learning perspective of MAB.}.
+
+The problem can be generalised to clinical or pre-clinical trials, control engineering, mechanical and software testing, stock market investments, behavioural modelling, dynamic pricing, and many more\footnote{See Bouneffouf~\cite{bf2019survey} for a survey with a list of applications of the main algorithms solving the MAB problem.}.
+
+% ------------------------------------------------- %
+\section{The Bourbakist perspective}
+\label{se:bourbaki_perspective}
+Let $(\Omega, \mathcal{A})$ be a $\sigma$-algebra defined as a couple of a non-empty set $\Omega$ paired with a subset of its power set, containing the empty set and closed under numerable union and complement set. Let the latter be called \emph{action space}. Let $\mathcal{I}_{K} = \{1,2, \dots , K\} \subset \mathbb{N}$ be a set of indexes whose generic element $k$ is called \emph{arm} by convention. Let $\mathcal{I}_{T} = \{1,2, \dots , T\} \subset \mathbb{N}$ be another set whose elements are called conventionally \emph{time}. Let $\mathbb{R}_{+}$ the positive real axis including the zero. The relationship between the above defined elements are given by a function $A$ defined as:
+\begin{align*}
+    A : \mathcal{I}_T \times \mathcal{A} &\longrightarrow \mathcal{I}_K \\
+        (t, \omega) &\longmapsto A(t, \omega) = A_t(\omega)
+\end{align*}
+and by a function $R$, defined as:
+\begin{align*}
+    R : \mathcal{I}_T \times \mathcal{I}_K &\longrightarrow \mathbb{R}_{+} \\
+        (t, \omega) &\longmapsto R(t, k) = R_t(k)
+\end{align*}
+Let the former be called \emph{action} and the latter be called \emph{reward}. Let 
+\begin{align*}
+    \mathcal{R} : \mathcal{I}_T \times \mathcal{A} &\longrightarrow \mathbb{R}_{+} \\
+        (t, \omega) &\longmapsto R(t, \omega) = \mathcal{R}_t(\omega)
+\end{align*}
+another function, defined as the only possible function making the diagram below commutative.
+
+\[
+\begindc{\commdiag}[20]
+
+% --- nodes:
+
+% below
+\obj(0,30)[R]{$ \mathbb{R}_{+} $}
+
+% above
+\obj(0,60)[Ik]{$ \mathcal{I}_K $}
+\obj(-40,60)[A]{$ \mathcal{A} $}
+
+% --- arrrows
+
+% ortho
+\mor{Ik}{R}{$R_{t}$}
+\mor{A}{Ik}{$A_t$}
+
+%  oblique
+\mor{A}{R}{$\mathcal{R}_t$}
+
+\enddc
+\]
+%
+for each $t \in \mathcal{I}$. Let $\mathcal{R}_t$ be called, again by convention, \emph{reward map at the time t}.\\
+We observe that $\mathcal{R}$ maps the events of the $\sigma$-algebra, while $R$ maps the corresponding indexes. This is an analogous of the definition of probability respect to the one of random variable and probability density function, for when the real axis image is normalised.
+
+Now consider
+\begin{align*}
+    Q : \mathcal{I}_T \times \mathcal{I}_K &\longrightarrow \mathbb{R}_{+} \\
+        (t, \omega) &\longmapsto \mathcal{Q}(t, k) = \mathcal{Q}_t(k)
+\end{align*}
+the \emph{estimated reward of the action $\omega$ up to time $t$}, for $\omega = A_t^{-1}(k)$ for a fixed $k\in \mathcal{I}_K$, with the corresponding function $\mathcal{Q}: \mathcal{I}_T \times \mathcal{A} \rightarrow \mathbb{R}$. It follows that $Q$ is therefore defined application of the mean value in a Lebesgue space\footnote{
+    For a foundational perspective, see Bourbaki~\cite{bourbaki2004integration}.
+} as:
+\begin{align}\label{def:Qt}
+Q_t(k) = \mathbb{E} \left[ \mathcal{R}_{\tau}(\omega)\mid A_{\tau}^{-1}(k) = \omega, \tau \in \mathcal{I}_T, t \leq t \right]
+\qquad
+t \in \mathcal{I}_T
+\qquad
+k \in \mathcal{I}_k
+\end{align}
+and therefore
+\begin{align}\label{def:mathcalQt}
+\mathcal{Q}_t(\omega) = \mathbb{E} \left[ R_{\tau}(k)\mid A_{\tau}(\omega) = k, \tau \leq t \right]
+\qquad 
+\omega \in \mathcal{A}
+\qquad
+t \in \mathcal{I}_T
+\end{align}
+As $\mathcal{R}$ and $R$, also $\mathcal{Q}$ and $Q$ satisfies the commutativity of an analogous of the diagram shown above. The notation can be simplified for brevity to:
+\begin{align}\label{def:mathcalQt_simple}
+\mathcal{Q}_t(\omega) = \mathbb{E} \left[ R_{t}(k) \mid A_{t} = k \right]
+\end{align}
+where the mean value is for all the time indexes up to $t$ and where the domain values of $A_t$ is clear from the context. \\
+
+We now define the \emph{total reward} $Q_{\infty}: \mathcal{I}_K \rightarrow \mathbb{R}$ as
+\begin{align}\label{def:mathcalQinf}
+Q_{\infty}(k) = \mathbb{E} \left[ \mathcal{Q}_{t}(\omega) \mid A^{-1}_{t}(k) = \omega, t \in \mathcal{I}_T \right]
+\qquad
+k \in \mathcal{I}_K 
+\end{align}
+or with the simplified notation as\footnote{
+    The simplified notation is often the only notation appearing in engineering textbooks (e.g. Sutton~\cite{sutton2018reinforcement}), although this would not allow the reader to understand the subtle formalisation of assigning to an event $\omega$ its index $k$. More tragically the simplified notation makes most of the concepts introduced so far pedantic and irrelevant.
+}:
+\begin{align}\label{def:mathcalQinf_simple}
+Q_{\infty}(k) = \mathbb{E} \left[ R_{t}(k) \mid A_{t} = k \right]
+\end{align}
+
+So far we have been considering the reward and the total reward for a fixed choice of $k$. We can vary $k\in \mathcal{I}_K$ in function of the time index. So let $\mathbf{k}$ an element of
+\begin{align*}
+\mathcal{I}_K^T = \underbrace{\mathcal{I}_K\times \mathcal{I}_K \times \dots \times \mathcal{I}_K}_{T\text{-times}}
+\end{align*}
+or equivalently a function of $\mathcal{I}_T$ to $\mathcal{I}_K$. 
+Definitions \ref{def:mathcalQt} and \ref{def:mathcalQt_simple} are so generalised to $Q_t:\mathcal{I}_K^T \rightarrow \mathbb{R}$ for $t\in\mathcal{I}_{\leq T}$, having defined $\mathcal{I}_{\leq T}$ any interval of positive integers between $1$ and $T$, and
+\begin{align*}
+Q_t(\mathbf{k}) = \mathbb{E} \left[ \mathcal{R}_{\tau}(\omega)
+\mid
+A^{-1}_{\tau}(\mathbf{k}_{\tau}) = \omega, \tau \leq t \right]
+\qquad 
+\omega \in \mathcal{A}
+\qquad
+t \in \mathcal{I}_T
+\end{align*}
+
+
+
+
+% ------------------------------------------------- %
+\section{The pragmatic perspective}
+\label{se:pragmatic_perspective}
+
+
+% ------------------------------------------------- %
+\section{Conclusions}
+\label{se:outro}
+
+
+
+\bibliography{biblio} 
+\bibliographystyle{alpha}
+
+
+\end{document}
