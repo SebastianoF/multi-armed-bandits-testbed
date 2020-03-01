@@ -75,7 +75,7 @@ In these pages we compare two different mathematical methodologies in approachin
 The article introduces the problem, shows the two approaches and ends with a critical comparison. \\
 
 \noindent
-If you came across this article when searching for an introduction to the multi-armed bandit problem, and not a methodological comparison, you may still find what you are looking for in section~\ref{se:intro},~\ref{se:pragmatic_perspective} and in the bibliography. The code to create the figures and run a range of algorithms to solve the problem is implemented (in the pragmatic way) in \href{url}{text}. 
+If you came across this article when searching for an introduction to the multi-armed bandit problem, and not a methodological comparison, you may still find what you are looking for in section~\ref{se:intro},~\ref{se:pragmatic_perspective} and in the bibliography (please do ignore completely section~\ref{se:bourbaki_perspective}). The code to create the figures and run a range of algorithms to solve the problem is implemented in \href{url}{text}. 
 \end{abstract}
 
 
@@ -140,7 +140,7 @@ Now consider
     Q : \mathcal{I}_T \times \mathcal{I}_K &\longrightarrow \mathbb{R}_{+} \\
         (t, \omega) &\longmapsto \mathcal{Q}(t, k) = \mathcal{Q}_t(k)
 \end{align*}
-the \emph{estimated reward of the action $\omega$ up to time $t$}, for $\omega = A_t^{-1}(k)$ for a fixed $k\in \mathcal{I}_K$, with the corresponding function $\mathcal{Q}: \mathcal{I}_T \times \mathcal{A} \rightarrow \mathbb{R}$. It follows that $Q$ is therefore defined application of the mean value in a Lebesgue space\footnote{
+the \emph{estimated reward of the action $\omega$ up to time $t$}, for $\omega = A_t^{-1}(k)$ for a fixed $k\in \mathcal{I}_K$, with the corresponding function $\mathcal{Q}: \mathcal{I}_T \times \mathcal{A} \rightarrow \mathbb{R}$. It follows that $Q$ is therefore defined application of the mean value in a Lebesgue space over $(\Omega, \mathcal{A})$, that is now a Borel $\sigma$-algebra\footnote{
     For a foundational perspective, see Bourbaki~\cite{bourbaki2004integration}.
 } as:
 \begin{align}\label{def:Qt}
@@ -188,13 +188,19 @@ Q_t(\mathbf{k}) = \mathbb{E} \left[ \mathcal{R}_{\tau}(\omega)
 \mid
 A^{-1}_{\tau}(\mathbf{k}_{\tau}) = \omega, \tau \leq t \right]
 \qquad 
-\omega \in \mathcal{A}
+\mathbf{k} \in \mathcal{I}_K^T
 \qquad
 t \in \mathcal{I}_T
 \end{align*}
-
-
-
+and therefore 
+\begin{align*}
+Q_{\infty}(\mathbf{k}) = \mathbb{E} \left[ \mathcal{R}_{t}(\omega)
+\mid
+A^{-1}_{t}(\mathbf{k}_{t}) = \omega, t \in T \right]
+\qquad 
+\mathbf{k} \in \mathcal{I}_K^T
+\end{align*}
+The mean value computed with a Lebesgue measure, over the Borel space generated as the sets of images $R$ of \footnote{We consider the definition under the accordance with the axiom of choice as in the ZFC axiomatic set theory, in order to avoid "virages dangereux". See also Bourbaki~\cite{bourbaki2004theory} and \cite{takeuti1982classes}.}
 
 % ------------------------------------------------- %
 \section{The pragmatic perspective}
