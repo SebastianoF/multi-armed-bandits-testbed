@@ -283,35 +283,46 @@ Despite many, and all of them more experienced than the author, have express the
 }, this approach is still widespread if not predominant across the mathematical community. 
 
 There are in fact numerous examples of practical problems, whose pragmatic approach had been ruined by an overformalisation\footnote{
-    Or assiomattisation, as Bruno de Finetti~\cite{de2008bruno} would have said playing on the Italian word \emph{matti}, meaning crazy.
+    Or \emph{assiomattisation}, as Bruno de Finetti~\cite{de2008bruno} would have said playing on the Italian word \emph{matti}, meaning crazy.
 } similar to the short one here proposed. They are useful examples, in particular to anyone who may believe, reading this article, that the author had been overzealous in writing section~\ref{se:bourbaki_perspective}, to give on purpose a negative light upon this the methodology.
 
 The most notable one is the optimal transport (OT) theory. From being a pragmatic methodology of solving a class of optimisation problem, it had become a 500 pages book underpinned by a great amount of measure theory and Lebesgue spaces, perfectly irrelevant to solve any instance of an optimal transport problem. Comparing one of the original optimal transport theory presentation by Hitchcock~\cite{hitchcock1941distribution} and the formalised one by Villani~\cite{villani2003topics} is possible to see the extent of the damage. The first one is easy to read, understand, implement and possibly extend in several directions by anyone having an highschool mathematical education. The second one is a seemingly uncreated maze of unassailable interlinked concepts, requiring few years of academic studies only to grasp the first few pages, with no advantages in facing the problem. %It is almost impossible to be extended in any direction that a slightly different initial problem arising from practical need may pose, and it leaves no clarification whatsoever about why this perspective should be preferred upon the one proposed 60 years before. %Not surprisingly, a recent evolution of the OT by Patel~\cite{patelalternate} is rooted in the pragmatic approach, and does not even cite the Villani formalisation.
 
 A second notable example of the Bourbaki effect, is in the domain of medical image registration. Here the aim is to solve the problem of finding the non-rigid deformation or metamorphosis between anatomies. The problem originates from the anatomical studies of shapes growth by D'Arcy Thompson~\cite{d1942growth} and pragmatically extended amongst others in Modersitzki~\cite{modersitzki2004numerical}. The Bourbaki over-formalized branch can be found in works like~\cite{younes2010shapes}, where we have to wait for 12 chapters before seeing what had motivated the formal mathematical theory developed until there. 
-In this case too, there is no explanation of what are the advantages of the axiomatic approach respect to the pragmatic one, that have been published before.
+In this case too, there is no explanation of what are the advantages of the axiomatic approach respect to the pragmatic one, appeared half a century earlier.
 
 The reader may say, for this specific case, that the pragmatic approach \cite{modersitzki2004numerical} does not use neither diffeomorphisms nor reproducing Kernel Hilbert spaces. And this is true, although it is not proved that these two mathematical devices can provide more accurate results than their pragmatic counterparts when implemented in practice. Instead it is true that they are computationally slower.
 
-There are other branches of mathematics, such as algebraic topology, fuzzy logic and topological data analysis, whose detachment from the practical set of problems that had them originated, had turned them into axiomatic buildings, used by students to unlearn how to solve problems without overthinking and how to refrain from getting lost in useless details.
+
+\subsection*{The Bourbaki pattern}
+
+Other than the branches of mathematics mentioned above, there are others that have been touched by Bourbachism, such as algebraic topology, fuzzy logic and topological data analysis. Their detachment from the practical set of problems that had them originated, had turned them into axiomatic buildings.
+
+There is in fact a pattern in the Bourbaki method: a problem that had been solved by 50 years or more, often in a very elegant way, is transformed into a list of axioms and theorems where no echo of the original problem that motivates the theory has to be found. Examples and counterexamples are removed, every reference to the history of the theory's development is eradicated too.
+
+Remarkably, also Einstein had noted that \emph{Since the mathematicians have invaded the theory of relativity, I do not understand it myself any more} \cite{schilpp1951albert}. And it is difficult to find what are the new results that the Bourbaki formalisation have added to the theory of relativity.
+
+In fact, part of the Bourbaki pattern is that there is no added value in the formalised version of the proposed theory. As it is also true that no new results used in practice can be found in the work by Bourbaki and followers.
+
+There is only one notable exception to this rule that we could find. The work Mochizuki~\cite{mochizuki2012inter} is claimed to have solved the \emph{abc conjecture}. Worth of a pantomime, according to the mathematicians\footnote{Nature paper Castelvecchi~\cite{castelvecchi2015biggest}.} who had tried to follow the passages, \lq\lq the proof is too impenetrable to be understood\rq\rq.
 
 \subsection*{Why is Bourbaki still around?}
 
 What the examples proposed in these pages intend to show, from a qualitative and empirical evaluation, is that the over-axiomatic version of a theory has several negative aspects respect to its counterpart.
 
-These negative aspects can be: Bourbaki formalisation is not meant to implement in modern programming language. Its exhaustive cognitive load increases the difficulties of a generalisation for simple changes in the initial problem setting. Bourbaki does not provide any additional insight and intuition over the problem that originated the theory. The reader get used to work on useless details and pedantic discussions about notations, rather than solving the problem.
+These are: Bourbaki formalisation has an exhaustive cognitive load,increases the difficulties that a generalisation of a simple change in the initial problem setting may require. It is by no mean close to the formalisation that is required to be implemented in modern programming language. Bourbaki does not provide any additional insight and intuition over the problem that originated the theory. The reader get used to work on useless details and pedantic discussions about notations, rather than solving the problem.
 
-If all so negative, then why the Bourbaki approach is still around? The truth is, the Bourbaki approach is highly valued, prized, and appreciated\footnote{
-    To this regard, the readers are welcome to copy-paste section~\ref{se:bourbaki_perspective} and to extend it, in the Bourbakist style, into an article whose title could be something like \emph{The multi-armed bandits for the working mathematician}. With this in hand the reader would experiment the level of appraisal such a work would receive.
+Nonetheless, these pages are not written to accuse Bourbaki. In fact, if all so negative, then the Bourbaki approach would not be still around any more. In reality, this approach is not only predominant in the universities. It is also greatly valued, prized, and appreciated by academics\footnote{
+    To this regard, the active reader is welcome to copy-paste section~\ref{se:bourbaki_perspective} and to extend it, in the Bourbakist style, into an article whose title could be something like \emph{The multi-armed bandits for the working mathematician}, to see how this would be appreciated by the mathematical community.
 }.
 
-The work of the above mentioned Villani is highly cited and highly considered in the mathematical community. 
-This shows that the over-axiomatization of a theory developed outside academia by mathematicians and scientist chasing practical problems is worth the Fields Medal.
-Other highly cited uber-bourbachists works are for example Grotedniek~\cite{grothendieck2011some} and the four volumes of Mochizuki~\cite{mochizuki2012inter}\footnote{
+It seems that the over-axiomatization of a theory developed outside academia by mathematicians and scientist chasing practical problems is worth, every recognitions, including the greatest of all, the Fields Medal.
+Highly valued and cited uber-bourbachists works are for example Grotedniek~\cite{grothendieck2011some} and the four volumes of Mochizuki~\cite{mochizuki2012inter}\footnote{
     It may be interesting to notice the similarity between this work and the outcome of the randomized generator of maths paper at \href{https://thatsmathematics.com/mathgen/}{thatsmathematics.com/mathgen/}.
-}. This last in particular had reach notoriety due to the claim of having solved the abc conjecture. The claim that the Bourbaki approach had provided a practical results, as in a pantomime, could not be verified\footnote{Nature paper Castelvecchi~\cite{castelvecchi2015biggest}.}. According to the mathematicians who had tried to verify it, \lq\lq the proof is too impenetrable to be understood\rq\rq.
+}. 
 
-\emph{J'accuse Bourbaki.} Nonetheless, there are several advantages of the Bourbachism that can be found, and that would justify the fact that this approach is still considered.
+
+We have at this point to admit that there are several advantages of the Bourbachism that can be found, and that would justify the fact that this approach is still considered.
 
 \emph{The outcome of the Bourbaki approach is inaccessible to neophytes}\footnote{
     An attempt of turning an over-formalised Bourbakist theory into something accessible for the layman, can be found in Villani~\cite{villani2003livingtheorem}. Interestingly enough, it seems that the only way the author could popularize his theory was by omitting the definitions and proofs while leaving only the main mathematical formulas alongside some autobiographical events. The result is even less accessible than the original work, proving that mathematicians can also be successful surrealist artists.
@@ -340,15 +351,14 @@ Interestingly enough the conditions for the counterexample to happen are never m
 % ------------------------------------------------- %
 \section{Conclusion}
 
-The comparison proposed in this paper aims at showing how important is the mathematical approach in achieving a possible solution of a problem and how the academic over-formalised method can lead the mathematician into a maze without the centre, through a theory whose value can not be established by any objective criteria.
+The comparison proposed in this paper aims at showing how important is the mathematical approach in achieving a possible solution of a problem. It starts showing an academic over-formalised method, that, even if brief compared to what the Bourbaki approach usually generates, it leads the reader into a maze without the centre, or a formal theory whose value can not be established in term of how it solves a problem, and therefore by any objective criteria.
 
-With the pragmatic way applied to the multi-armed bandits, an algorithm had been quickly implemented and tested without calling into play Borel or Lebesgue.
+With the pragmatic way applied to the multi-armed bandits, an algorithmic solution had been proposed, implemented and tested. All this without calling into play Borel or Lebesgue.
 
-We also challenged the usefulness of the Bourbaki approach outside academia, and we suggest that it may be potentially harmful, as leading mathematics towards something useless for anyone besides who has to justify his position in academia. The Bourbaki proposes a generalisation that are not useful and counterexamples that do not arise in practice, and the mindset of the Bourbaki educated student can even obstaculate the pathway leading to a solution of a practical problem.
+In the discussion we challenged the usefulness of the Bourbaki approach outside its circle, and we suggest that it may be potentially harmful, as leading mathematics towards something useless for anyone besides who has to justify his academic role. The Bourbaki generalisations are not practical and the counterexamples that hey wish to avoid do not arise in practice. The mindset of the Bourbaki educated student can even obstaculate the pathway leading to a solution of a practical problem.
 
-Despite we are still sure that students of the generations to come will be oblige to learn the Bourbaki sophistications to get a degree and to unlearn it as quick as possible to be of any use to society, this paper hopes to show that the Bourbaki method is around for academic reasons, and it is not what mathematical practice is about.
+Despite we are convinced that students of the generations to come will be oblige to learn the Bourbaki sophistications to get a degree, and to unlearn them as quickly as possible to be of any use to society, this paper hopes to show that the Bourbaki method is around for academic reasons, and it is not what mathematical practice is about or should be, which is the application of the scientific method to understand the reality and is to find the algorithm that better solves a given problem..
 
-In conclusion, showing the comparison between the mathematical practice, and the one ruined by overthinking mathematicians, we want to show that mathematics is the application of the scientific method to understand the reality and is to find the algorithm that better solves a given problem. 
 
 \bibliography{biblio} 
 \bibliographystyle{alpha}
