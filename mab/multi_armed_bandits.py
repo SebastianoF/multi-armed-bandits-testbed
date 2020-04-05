@@ -1,6 +1,6 @@
 import numpy as np
 
-from mab.utils import violin_plot
+from mab.plot_utils import violin_plot
 
 
 class MultiArmedBandit:
@@ -22,7 +22,7 @@ class MultiArmedBandit:
     def sample_all_arms(self, num_samples=100):
         return [sorted(np.random.normal(m, s, num_samples)) for m, s in zip(self.means, self.stds)]
 
-    def show_distributions(self, num_samples=100):
+    def get_plt_distribution(self, num_samples=100):
         return violin_plot(self.sample_all_arms(num_samples=num_samples))
 
     def draw_from_arm(self, k):
@@ -35,9 +35,3 @@ class MultiArmedBandit:
             sign = np.random.choice({1, -1}, 2)
             self.means[k] += sign[0] * epsilon_mean
             self.stds[k] += sign[1] * epsilon_std
-
-
-if __name__ == "__main__":
-    mab = MultiArmedBandit(seed=10)
-    p = mab.show_distributions()
-    p.show()
