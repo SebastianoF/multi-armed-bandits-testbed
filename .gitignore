@@ -1,3 +1,63 @@
+# --- IDE ---
+
+.idea
+.vscode
+
+# ---- PYTHON ----
+
+# Virtualenvs
+venv
+env
+
+# Jupyter notebooks
+.ipynb_checkpoints
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Emacs
+**/*~
+
+# C extensions
+*.so
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# documentation
+*.ttf
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+CPython-35-30/
+.ipynb_checkpoints/
+
+# --- LATEX ---
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
@@ -216,7 +276,7 @@ pythontex-files-*/
 *.hst
 *.ver
 
-# easy-todo
+# easy
 *.lod
 
 # xcolor
@@ -274,14 +334,3 @@ TSWLatexianTemp*
 
 # Makeindex log files
 *.lpz
-
-# Virtualenvs
-venv
-env
-
-# IDE
-.idea
-.vscode
-
-# Jupyter notebooks
-.ipynb_checkpoints
