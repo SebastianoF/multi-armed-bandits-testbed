@@ -20,6 +20,9 @@ def violin_plot(ax, data, y_axis_limit=None, timepoint=None):
         if y_axis_limit:
             ax.set_ylim(*y_axis_limit)
         ax.set_xlabel('Sample name')
+        ax.set_axisbelow(True)
+        ax.grid(True, lw=0.5)
+
     if timepoint is not None:
         ax.set_title(f'Probability distribution per arm, timepoint {timepoint}')
     else:
@@ -53,5 +56,4 @@ def violin_plot(ax, data, y_axis_limit=None, timepoint=None):
 
     set_axis_style()
 
-    ax.grid(True)
     return ax

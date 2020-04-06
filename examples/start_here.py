@@ -6,13 +6,16 @@ from matplotlib import pyplot as plt
 from mab.multi_armed_bandits import MultiArmedBandit
 
 
-def see_a_static_mab():
+def stationary_benchmark(save_result=False):
     mab = MultiArmedBandit(seed=10)
     mab.get_plt_distribution()
-    plt.show()
+    if save_result:
+        plt.savefig("initial_distributions.pdf")
+    else:
+        plt.show()
 
 
-def get_a_slideshow_of_changing_mab(timepoints=10, output_folder="tmp_data"):
+def non_stationary_benchmark_slideshow(timepoints=10, output_folder="tmp_data"):
 
     if os.path.exists(output_folder):
         shutil.rmtree(output_folder, ignore_errors=True)
@@ -41,5 +44,5 @@ def get_a_slideshow_of_changing_mab(timepoints=10, output_folder="tmp_data"):
 
 
 if __name__ == "__main__":
-    see_a_static_mab()
-    get_a_slideshow_of_changing_mab()
+    stationary_benchmark()
+    non_stationary_benchmark_slideshow()
