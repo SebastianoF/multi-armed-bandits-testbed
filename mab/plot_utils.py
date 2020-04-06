@@ -1,9 +1,8 @@
 import numpy as np
-from matplotlib import pyplot as plt
 
 
-def violin_plot(data):
-    # https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.violinplot.html
+def violin_plot(ax, data, y_axis_limit=None, timepoint=None):
+
     def adjacent_values(vals, q1, q3):
         upper_adjacent_value = q3 + (q3 - q1) * 1.5
         upper_adjacent_value = np.clip(upper_adjacent_value, q3, vals[-1])
@@ -18,10 +17,14 @@ def violin_plot(data):
         ax.set_xticks(np.arange(1, len(labels) + 1))
         ax.set_xticklabels(labels)
         ax.set_xlim(0.25, len(labels) + 0.75)
+        if y_axis_limit:
+            ax.set_ylim(*y_axis_limit)
         ax.set_xlabel('Sample name')
+    if timepoint is not None:
+        ax.set_title(f'Probability distribution per arm, timepoint {timepoint}')
+    else:
+        ax.set_title('Probability distribution per arm')
 
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(9, 4))
-    ax.set_title('Probability distribution per arm')
     parts = ax.violinplot(
         data,
         showmeans=False,
@@ -50,6 +53,5 @@ def violin_plot(data):
 
     set_axis_style()
 
-    fig.subplots_adjust(bottom=0.15, wspace=0.05)
     ax.grid(True)
-    return plt
+    return ax
