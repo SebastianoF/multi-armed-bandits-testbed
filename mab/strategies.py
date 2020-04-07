@@ -13,7 +13,7 @@ def epsilon_greedy(
         if exploration_strategy == "random":
             return np.random.choice(list(set(range(player.mab.K)) - {k}))
         elif exploration_strategy == "best_reward":  # also Scrooge greedy
-            weights =  reward_per_arm
+            weights = reward_per_arm
             weights[k] = 0
             return np.random.choice(np.arange(player.mab.K), weights)
         elif exploration_strategy == "least explored":  # also optimistic
@@ -22,6 +22,14 @@ def epsilon_greedy(
             return np.random.choice(np.arange(player.mab.K), weights)
         elif exploration_strategy == "upper_confidence_bound":  # further exploration selection
             return np.argmax(mus_hat + [0.3 * np.ln(t) / (n + 1) for n in pulls_per_arm])
+        elif exploration_strategy == "gradient":
+            weights = np.exp(H[t, :]) / np.sum(np.exp(H[t, :]))
+            # update matrxi H for the next step.
+            avg_reward_per_arm = np.array([r / p if p else 0 for r, p in zip(reward_per_arm, pulls_per_arm)])
+            H[t + 1, :] = H[t + 1, :] - 0.3 * (reward_per_arm - avg_reward_per_arm) * weights
+            H[t + 1, k] = H[t + 1, k] + 0.3 * (reward_per_arm[k] - avg_reward_per_arm[k]) * (1 - weights[k])
+            return np.random.choice(np.arange(player.mab.K), weights)
+
         else:
             raise ValueError(f"Exploration strategy '{exploration_strategy}' not allowed.")
 
@@ -38,6 +46,9 @@ def epsilon_greedy(
     stds_hat = np.zeros(player.mab.K, dtype=np.float)
     pulls_per_arm = np.zeros(player.mab.K, dtype=np.int)  # N
     reward_per_arm = np.zeros(player.mab.K, dtype=np.int)  # R
+
+    if exploration_strategy == "gradient":
+        H = np.zeros([player.T, player.mab.K + 1], dtype=np.float)
 
     for t in range(player.T):
         q = player.mab.draw_from_arm(k)
@@ -66,8 +77,3 @@ def epsilon_greedy(
     player.total_reward = np.sum(reward_per_arm)
 
     return mus_hat, stds_hat, reward_per_arm, pulls_per_arm
-
-
-def bayesian(player):
-    """A modern Bayesian look at the multi-armed bandit. S Scott 2010"""
-    raise NotImplementedError()
