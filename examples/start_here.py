@@ -8,7 +8,7 @@ from mab.multi_armed_bandits import MultiArmedBandit
 
 def stationary_benchmark(save_result=False):
     mab = MultiArmedBandit(seed=10)
-    mab.get_plt_distribution()
+    mab.get_plot_distributions()
     if save_result:
         plt.savefig("initial_distributions.pdf")
     else:
@@ -26,7 +26,7 @@ def non_stationary_benchmark_slideshow(timepoints=10, output_folder="tmp_data"):
     frames_list = []
 
     for t in range(timepoints):
-        mab.get_plt_distribution(y_axis_limit=(-20, 20), timepoint=t)
+        mab.get_plot_distributions(y_axis_limit=(-20, 20), timepoint=t)
         plt.ioff()
         pfi_frame = os.path.abspath(os.path.join(output_folder, 'step_{}.jpg'.format(t)))
         plt.savefig(pfi_frame)
