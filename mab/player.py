@@ -17,6 +17,6 @@ class Player:
 
     def get_plot_q(self, t, t_on_x_axis=20, left_margin=3):
         """Returns the fig (matplotlib instance) of a representation of the q matrix"""
-        raise NotImplementedError
+        raise NotImplementedError()
 
 
