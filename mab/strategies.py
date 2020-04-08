@@ -9,30 +9,36 @@ def epsilon_greedy(
     Epsilon greedy algorithm and variant with multiple strategies. Prototype not optimized for speed.
     Source: Reinforcement Learning, an introduction. Sutton 2018
     """
+    def normalize(v):
+        if np.sum(v) > 0:
+            return v / np.sum(v)
+        else:
+            return np.zeros_like(v) + 1 / len(v)
+
     def get_another_k_random():
         return np.random.choice(list(set(range(player.mab.K)) - {k}))
 
     def get_another_k_best_reward():
         # also Scrooge greedy
-        weights = rewards_per_arm
+        weights = np.copy(rewards_per_arm)
         weights[k] = 0
-        return np.random.choice(np.arange(player.mab.K), weights)
+        return np.random.choice(np.arange(player.mab.K), p=normalize(weights))
 
     def get_another_k_least_explored():
-        weights = pulls_per_arm - np.max(pulls_per_arm)
+        weights = np.max(pulls_per_arm) - pulls_per_arm
         weights[k] = 0
-        return np.random.choice(np.arange(player.mab.K), weights)
+        return np.random.choice(np.arange(player.mab.K), p=normalize(weights))
 
     def get_another_k_upper_confidence_bound():
-        return np.argmax(means_hat + [0.3 * np.ln(t) / (n + 1) for n in pulls_per_arm])
+        return np.argmax(means_hat + [0.3 * np.log(t) / (n + 1) for n in pulls_per_arm])
 
     def get_another_k_gradient():
         weights = np.exp(H[t, :]) / np.sum(np.exp(H[t, :]))
         # update matrxi H for the next step.
         avg_reward_per_arm = np.array([r / p if p else 0 for r, p in zip(rewards_per_arm, pulls_per_arm)])
-        H[t + 1, :] = H[t + 1, :] - 0.3 * (rewards_per_arm - avg_reward_per_arm) * weights
-        H[t + 1, k] = H[t + 1, k] + 0.3 * (rewards_per_arm[k] - avg_reward_per_arm[k]) * (1 - weights[k])
-        return np.random.choice(np.arange(player.mab.K), weights)
+        H[t + 1, :] = H[t, :] - 0.3 * (rewards_per_arm - avg_reward_per_arm) * weights
+        H[t + 1, k] = H[t, k] + 0.3 * (rewards_per_arm[k] - avg_reward_per_arm[k]) * (1 - weights[k])
+        return np.random.choice(np.arange(player.mab.K), p=normalize(weights))
 
     get_another_k_map = {
         "random": get_another_k_random,
@@ -63,7 +69,7 @@ def epsilon_greedy(
     rewards_per_arm = np.zeros(player.mab.K, dtype=np.float)  # R
 
     if exploration_strategy == "gradient":
-        H = np.zeros([player.T, player.mab.K + 1], dtype=np.float)
+        H = np.zeros([player.T + 1, player.mab.K], dtype=np.float)
 
     for t in range(player.T):
         q = player.mab.draw_from_arm(k)

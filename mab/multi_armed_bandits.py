@@ -13,6 +13,8 @@ class MultiArmedBandit:
         if self.means is None and self.stds is None:
             self._init_random_distributions()
 
+        assert len(self.means) == len(self.stds) == self.K
+
     def _init_random_distributions(self):
         """Set up initial mus and stds"""
         self.means = list(np.random.uniform(-3, 3, size=self.K))
@@ -36,14 +38,13 @@ class MultiArmedBandit:
     def draw_from_arm(self, k):
         """A random sample from the given arm k. t specified for non-stationary cases."""
         if k not in range(self.K):
-            raise ValueError(f"The arm k={k} must be between 1 and {self.K + 1}.")
+            raise ValueError(f"The arm k={k} must be between 0 and {self.K - 1}.")
         return np.random.normal(self.means[k], self.stds[k])
 
     def compute_optimal_k(self):
         """Get the arm with the best reward - based on empirical sampling"""
-        arms_samples = self.sample_all_arms()
-        arms_samples = [np.where(np.array(ars) < 0, 0, ars) for ars in arms_samples]
-        return np.argmax(np.sum(arms_samples))
+        sampled_reward_per_arm = [np.sum(np.where(np.array(ars) < 0, 0, ars)) for ars in self.sample_all_arms()]
+        return np.argmax(sampled_reward_per_arm)
 
 
 class NonStationaryMultiArmedBandit(MultiArmedBandit):

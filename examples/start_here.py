@@ -53,27 +53,13 @@ def non_stationary_benchmark_slideshow(timepoints=10, output_folder="tmp_data"):
 def play_a_thousand_dollars_stationary_game():
     np.random.seed(46)
     mab = MultiArmedBandit()
-    mab.get_plot_distributions(y_axis_limit=(-20, 20))
-    plt.show(block=False)
-    means_before = mab.means
 
     player = Player(T=1000, mab=mab)
-    means_hat, stds_hat, reward_per_arm, pulls_per_arm = epsilon_greedy(player, initial_t_explorations=100)
-    print("Comparing means, found vs ground truth")
-    print(means_hat)
-    print(mab.means)
-    print("Comparing standard deviations, found vs ground truth")
-    print(stds_hat)
-    print(mab.stds)
-    print("rewards per arm, pulls per arm and ground truth best arm")
-    print(reward_per_arm)
-    print(pulls_per_arm)
-    print(mab.compute_optimal_k())
+    means_hat, stds_hat, reward_per_arm, pulls_per_arm = epsilon_greedy(
+        player, initial_t_explorations=100, exploration_strategy="random"
+    )
     mab.get_plot_distributions(y_axis_limit=(-20, 20), arms_annotations=pulls_per_arm)
     plt.show()
-    means_after = mab.means
-
-    np.testing.assert_array_equal(means_before, means_after)
 
 
 def play_a_thousand_dollars_non_stationary_game():

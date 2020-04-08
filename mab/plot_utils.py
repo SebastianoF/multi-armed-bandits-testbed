@@ -56,11 +56,12 @@ def violin_plot(ax, data, y_axis_limit=None, timepoint=None, arms_annotations=No
 
     if arms_annotations is not None:
         y_lims = ax.get_ylim()
+        y_level_annotations = y_lims[1] - 0.1 * (y_lims[1] - y_lims[0])  # 10% below line
         for aa_index, aa in enumerate(arms_annotations):
             ax.annotate("{}".format(aa),
-                        xy=(aa_index + 1, y_lims[1]),
-                        xytext=(0, - 0.4 * (y_lims[1] - y_lims[0])),  # below lim
+                        xy=(aa_index + 1, y_level_annotations),
+                        xytext=(0, 0),
                         textcoords="offset points",
-                        ha='center', va='bottom')
+                        ha='center', va='center')
 
     return ax
