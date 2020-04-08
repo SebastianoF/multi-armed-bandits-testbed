@@ -9,29 +9,46 @@ def epsilon_greedy(
     Epsilon greedy algorithm and variant with multiple strategies. Prototype not optimized for speed.
     Source: Reinforcement Learning, an introduction. Sutton 2018
     """
-    def get_another_k():
-        if exploration_strategy == "random":
-            return np.random.choice(list(set(range(player.mab.K)) - {k}))
-        elif exploration_strategy == "best_reward":  # also Scrooge greedy
-            weights = reward_per_arm
-            weights[k] = 0
-            return np.random.choice(np.arange(player.mab.K), weights)
-        elif exploration_strategy == "least explored":  # also optimistic
-            weights = pulls_per_arm - np.max(pulls_per_arm)
-            weights[k] = 0
-            return np.random.choice(np.arange(player.mab.K), weights)
-        elif exploration_strategy == "upper_confidence_bound":  # further exploration selection
-            return np.argmax(mus_hat + [0.3 * np.ln(t) / (n + 1) for n in pulls_per_arm])
-        elif exploration_strategy == "gradient":
-            weights = np.exp(H[t, :]) / np.sum(np.exp(H[t, :]))
-            # update matrxi H for the next step.
-            avg_reward_per_arm = np.array([r / p if p else 0 for r, p in zip(reward_per_arm, pulls_per_arm)])
-            H[t + 1, :] = H[t + 1, :] - 0.3 * (reward_per_arm - avg_reward_per_arm) * weights
-            H[t + 1, k] = H[t + 1, k] + 0.3 * (reward_per_arm[k] - avg_reward_per_arm[k]) * (1 - weights[k])
-            return np.random.choice(np.arange(player.mab.K), weights)
+    def get_another_k_random():
+        return np.random.choice(list(set(range(player.mab.K)) - {k}))
 
-        else:
-            raise ValueError(f"Exploration strategy '{exploration_strategy}' not allowed.")
+    def get_another_k_best_reward():
+        # also Scrooge greedy
+        weights = reward_per_arm
+        weights[k] = 0
+        return np.random.choice(np.arange(player.mab.K), weights)
+
+    def get_another_k_least_explored():
+        weights = pulls_per_arm - np.max(pulls_per_arm)
+        weights[k] = 0
+        return np.random.choice(np.arange(player.mab.K), weights)
+
+    def get_another_k_upper_confidence_bound():
+        return np.argmax(mus_hat + [0.3 * np.ln(t) / (n + 1) for n in pulls_per_arm])
+
+    def get_another_k_gradient():
+        weights = np.exp(H[t, :]) / np.sum(np.exp(H[t, :]))
+        # update matrxi H for the next step.
+        avg_reward_per_arm = np.array([r / p if p else 0 for r, p in zip(reward_per_arm, pulls_per_arm)])
+        H[t + 1, :] = H[t + 1, :] - 0.3 * (reward_per_arm - avg_reward_per_arm) * weights
+        H[t + 1, k] = H[t + 1, k] + 0.3 * (reward_per_arm[k] - avg_reward_per_arm[k]) * (1 - weights[k])
+        return np.random.choice(np.arange(player.mab.K), weights)
+
+    get_another_k_map = {
+        "random": get_another_k_random,
+        "best reward": get_another_k_best_reward,
+        "least explored": get_another_k_least_explored,
+        "upper confidence": get_another_k_upper_confidence_bound,
+        "gradient": get_another_k_gradient
+    }
+
+    try:
+        get_another_k = get_another_k_map[exploration_strategy]
+    except ValueError:
+        raise ValueError(
+            f"input 'exploration strategy must be in {get_another_k_map.keys()}'. "
+            f"Got {exploration_strategy}."
+        )
 
     player.reset_parameters()
 
