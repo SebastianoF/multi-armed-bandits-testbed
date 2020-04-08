@@ -66,7 +66,7 @@ class NonStationaryMultiArmedBandit(MultiArmedBandit):
 
     def _init_update_intervals(self):
         """Set up default interval updates: one update every 100 draws for 1000 draws expected"""
-        self.updates_interval = [100 * (t + 1) for t in range(9)]
+        self.updates_interval = [100 * (t + 1) for t in range(10)]
 
     def update_parameters_random(self, epsilon_mean=0.1, epsilon_std=0.1, sign_means=None, sign_stds=None):
         """Update step for non stationary mab, variations trend can be given or random."""
@@ -84,7 +84,7 @@ class NonStationaryMultiArmedBandit(MultiArmedBandit):
 
     def draw_from_arm(self, k):
         """A random sample from the given arm k. t specified for non-stationary cases."""
-        if k not in range(1, self.K + 1):
+        if k not in range(self.K):
             raise ValueError(f"The arm k={k} must be between 1 and {self.K + 1}.")
         if self.timepoint in self.updates_interval:
             self.update_parameters_random()

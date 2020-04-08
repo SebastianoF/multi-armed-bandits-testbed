@@ -51,9 +51,7 @@ def non_stationary_benchmark_slideshow(timepoints=10, output_folder="tmp_data"):
 
 
 def play_a_thousand_dollars_stationary_game():
-    np.random.seed(46)
     mab = MultiArmedBandit()
-
     player = Player(T=1000, mab=mab)
     means_hat, stds_hat, reward_per_arm, pulls_per_arm = epsilon_greedy(
         player, initial_t_explorations=100, exploration_strategy="random"
@@ -63,9 +61,7 @@ def play_a_thousand_dollars_stationary_game():
 
 
 def play_a_thousand_dollars_non_stationary_game():
-    np.random.seed(46)
     mab = NonStationaryMultiArmedBandit()
-
     player = Player(T=1000, mab=mab)
     means_hat, stds_hat, reward_per_arm, pulls_per_arm = epsilon_greedy(
         player, initial_t_explorations=100, exploration_strategy="random"
@@ -75,8 +71,8 @@ def play_a_thousand_dollars_non_stationary_game():
 
 
 if __name__ == "__main__":
-    stationary_mab_distribution()
-    non_stationary_benchmark_slideshow()
+    # stationary_mab_distribution()
+    # non_stationary_benchmark_slideshow()
     play_a_thousand_dollars_stationary_game()
     # play_a_thousand_dollars_non_stationary_game()
 

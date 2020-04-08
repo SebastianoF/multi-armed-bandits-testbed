@@ -16,8 +16,9 @@ def test_compute_optimal_k():
 
     k_best = 7
     mab = get_mab_one_winning_arm(k_best)
+
     # store initial values:
-    K, means, stds  = mab.K, mab.means, mab.stds
+    K, means, stds = mab.K, mab.means, mab.stds
 
     # Check the internal method works:
     k_hat = mab.compute_optimal_k()
@@ -30,10 +31,6 @@ def test_compute_optimal_k():
 
 
 def test_one_winning_arm_random_strategy():
-    """
-    Integration testing where one arm is clearly the winner.
-    In this situation all the algorithms must get it.
-    """
     k_best = 7
     mab = get_mab_one_winning_arm(k_best)
     player = Player(T=1000, mab=mab)
