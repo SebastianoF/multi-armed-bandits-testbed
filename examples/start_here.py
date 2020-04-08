@@ -63,10 +63,20 @@ def play_a_thousand_dollars_stationary_game():
 
 
 def play_a_thousand_dollars_non_stationary_game():
-    pass
+    np.random.seed(46)
+    mab = NonStationaryMultiArmedBandit()
+
+    player = Player(T=1000, mab=mab)
+    means_hat, stds_hat, reward_per_arm, pulls_per_arm = epsilon_greedy(
+        player, initial_t_explorations=100, exploration_strategy="random"
+    )
+    mab.get_plot_distributions(y_axis_limit=(-20, 20), arms_annotations=pulls_per_arm)
+    plt.show()
 
 
 if __name__ == "__main__":
-    # stationary_mab_distribution()
-    # non_stationary_benchmark_slideshow()
+    stationary_mab_distribution()
+    non_stationary_benchmark_slideshow()
     play_a_thousand_dollars_stationary_game()
+    # play_a_thousand_dollars_non_stationary_game()
+

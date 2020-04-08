@@ -42,12 +42,12 @@ def test_one_winning_arm_random_strategy():
     K, means, stds = mab.K, mab.means, mab.stds
 
     # Check random strategy works:
-    means_hat, _, reward_per_arm, pulls_per_arm = epsilon_greedy(
+    means_hat, _, rewards_per_arm, pulls_per_arm = epsilon_greedy(
         player, initial_t_explorations=100, exploration_strategy="random"
     )
 
-    np.testing.assert_equal(np.argmax(means_hat), k_best)
-    np.testing.assert_equal(np.argmax(reward_per_arm), k_best)
+    np.testing.assert_equal(np.argmax(np.clip(means_hat, 0, np.inf)), k_best)
+    np.testing.assert_equal(np.argmax(rewards_per_arm), k_best)
     np.testing.assert_equal(np.argmax(pulls_per_arm), k_best)
 
     # check no input have changed during manipulations:
@@ -59,21 +59,20 @@ def test_one_winning_arm_random_strategy():
 def test_one_winning_arm_best_reward_strategy():
     k_best = 7
     mab = get_mab_one_winning_arm(k_best)
-    # from matplotlib import pyplot as plt
-    # p = mab.get_plot_distributions()
-    # plt.show()
     player = Player(T=1000, mab=mab)
 
     # store initial values:
     K, means, stds = mab.K, mab.means, mab.stds
 
+    np.random.seed(25)
+
     # Check random strategy works:
-    means_hat, _, reward_per_arm, pulls_per_arm = epsilon_greedy(
+    means_hat, _, rewards_per_arm, pulls_per_arm = epsilon_greedy(
         player, initial_t_explorations=100, exploration_strategy="best reward"
     )
 
     np.testing.assert_equal(np.argmax(means_hat), k_best)
-    np.testing.assert_equal(np.argmax(reward_per_arm), k_best)
+    np.testing.assert_equal(np.argmax(rewards_per_arm), k_best)
     np.testing.assert_equal(np.argmax(pulls_per_arm), k_best)
 
     # check no input have changed during manipulations:
@@ -85,21 +84,18 @@ def test_one_winning_arm_best_reward_strategy():
 def test_one_winning_arm_least_explored_strategy():
     k_best = 7
     mab = get_mab_one_winning_arm(k_best)
-    # from matplotlib import pyplot as plt
-    # p = mab.get_plot_distributions()
-    # plt.show()
     player = Player(T=1000, mab=mab)
 
     # store initial values:
     K, means, stds = mab.K, mab.means, mab.stds
 
     # Check random strategy works:
-    means_hat, _, reward_per_arm, pulls_per_arm = epsilon_greedy(
+    means_hat, _, rewards_per_arm, pulls_per_arm = epsilon_greedy(
         player, initial_t_explorations=100, exploration_strategy="least explored"
     )
 
     np.testing.assert_equal(np.argmax(means_hat), k_best)
-    np.testing.assert_equal(np.argmax(reward_per_arm), k_best)
+    np.testing.assert_equal(np.argmax(rewards_per_arm), k_best)
     np.testing.assert_equal(np.argmax(pulls_per_arm), k_best)
 
     # check no input have changed during manipulations:
@@ -111,21 +107,18 @@ def test_one_winning_arm_least_explored_strategy():
 def test_one_winning_arm_upper_confidence_strategy():
     k_best = 7
     mab = get_mab_one_winning_arm(k_best)
-    # from matplotlib import pyplot as plt
-    # p = mab.get_plot_distributions()
-    # plt.show()
     player = Player(T=1000, mab=mab)
 
     # store initial values:
     K, means, stds = mab.K, mab.means, mab.stds
 
     # Check random strategy works:
-    means_hat, _, reward_per_arm, pulls_per_arm = epsilon_greedy(
+    means_hat, _, rewards_per_arm, pulls_per_arm = epsilon_greedy(
         player, initial_t_explorations=100, exploration_strategy="upper confidence"
     )
 
     np.testing.assert_equal(np.argmax(means_hat), k_best)
-    np.testing.assert_equal(np.argmax(reward_per_arm), k_best)
+    np.testing.assert_equal(np.argmax(rewards_per_arm), k_best)
     np.testing.assert_equal(np.argmax(pulls_per_arm), k_best)
 
     # check no input have changed during manipulations:
@@ -137,21 +130,18 @@ def test_one_winning_arm_upper_confidence_strategy():
 def test_one_winning_arm_gradient_strategy():
     k_best = 7
     mab = get_mab_one_winning_arm(k_best)
-    # from matplotlib import pyplot as plt
-    # p = mab.get_plot_distributions()
-    # plt.show()
     player = Player(T=1000, mab=mab)
 
     # store initial values:
     K, means, stds = mab.K, mab.means, mab.stds
 
     # Check random strategy works:
-    means_hat, _, reward_per_arm, pulls_per_arm = epsilon_greedy(
+    means_hat, _, rewards_per_arm, pulls_per_arm = epsilon_greedy(
         player, initial_t_explorations=100, exploration_strategy="gradient"
     )
 
     np.testing.assert_equal(np.argmax(means_hat), k_best)
-    np.testing.assert_equal(np.argmax(reward_per_arm), k_best)
+    np.testing.assert_equal(np.argmax(rewards_per_arm), k_best)
     np.testing.assert_equal(np.argmax(pulls_per_arm), k_best)
 
     # check no input have changed during manipulations:
