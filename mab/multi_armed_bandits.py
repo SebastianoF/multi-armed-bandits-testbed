@@ -21,7 +21,7 @@ class MultiArmedBandit:
         """Set up seeds and initial mus and stds"""
 
         self.means = list(np.random.uniform(-3, 3, size=self.K))
-        self.stds = list(np.abs(np.random.normal(2, 4, size=self.K)))
+        self.stds = list(np.abs(np.random.normal(3, 1, size=self.K)))
 
     def sample_all_arms(self, num_samples=100):
         """Return num_samples for each arm in a list of lists."""
@@ -71,12 +71,15 @@ class NonStationaryMultiArmedBandit(MultiArmedBandit):
         """Set up default interval updates: one update every 100 draws for 1000 draws expected"""
         self.updates_interval = [100 * (t + 1) for t in range(9)]
 
-    def update_parameters_random(self, epsilon_mean=0.1, epsilon_std=0.1):
-        """Update step for non stationary mab"""
-        for k in range(self.K):
-            sign = np.random.choice([1, -1], 2)
-            self.means[k] = sign[0] * epsilon_mean + self.means[k]
-            self.stds[k] = sign[1] * epsilon_std + self.stds[k]
+    def update_parameters_random(self, epsilon_mean=0.1, epsilon_std=0.1, sign_means=None, sign_stds=None):
+        """Update step for non stationary mab, variations trend can be given or random."""
+        if sign_means is None:
+            sign_means = np.random.choice([1, -1], self.K)
+        if sign_stds is None:
+            sign_stds = np.random.choice([1, -1], self.K)
+
+        self.means = sign_means * epsilon_mean + self.means
+        self.stds = sign_stds * epsilon_std + self.stds
 
         self.update_num += 1
         self.historical_means[self.update_num, :] = self.means
@@ -90,4 +93,3 @@ class NonStationaryMultiArmedBandit(MultiArmedBandit):
             self.update_parameters_random()
         self.timepoint += 1
         return np.random.normal(self.means[k], self.stds[k])
-
