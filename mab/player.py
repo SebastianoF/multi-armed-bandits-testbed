@@ -4,12 +4,11 @@ from mab.multi_armed_bandits import MultiArmedBandit
 
 
 class Player:
-    def __init__(self, T: int , mab: MultiArmedBandit, seed: int):
+    def __init__(self, T: int , mab: MultiArmedBandit):
         self.T = T
         self.mab = mab
         self.q = np.ones((self.mab.K, self.T)) * np.nan
         self.total_reward = 0
-        self.seed = seed
 
     def reset_parameters(self):
         self.q = np.ones((self.mab.K, self.T)) * np.nan

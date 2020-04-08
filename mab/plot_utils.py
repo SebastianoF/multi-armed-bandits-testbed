@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def violin_plot(ax, data, y_axis_limit=None, timepoint=None):
+def violin_plot(ax, data, y_axis_limit=None, timepoint=None, arms_annotations=None):
 
     def adjacent_values(vals, q1, q3):
         upper_adjacent_value = q3 + (q3 - q1) * 1.5
@@ -12,6 +12,7 @@ def violin_plot(ax, data, y_axis_limit=None, timepoint=None):
         return lower_adjacent_value, upper_adjacent_value
 
     def set_axis_style():
+        labels = [r'$K_{%d}$' % j for j in range(len(data))]
         ax.get_xaxis().set_tick_params(direction='out')
         ax.xaxis.set_ticks_position('bottom')
         ax.set_xticks(np.arange(1, len(labels) + 1))
@@ -51,9 +52,15 @@ def violin_plot(ax, data, y_axis_limit=None, timepoint=None):
     ax.scatter(inds, medians, marker='o', color='white', s=30, zorder=3)
     ax.vlines(inds, quartile1, quartile3, color='k', linestyle='-', lw=5)
     ax.vlines(inds, whiskers_min, whiskers_max, color='k', linestyle='-', lw=1)
-
-    labels = [r'$K_{%d}$' % j for j in range(1, len(data) + 1)]
-
     set_axis_style()
+
+    if arms_annotations is not None:
+        y_lims = ax.get_ylim()
+        for aa_index, aa in enumerate(arms_annotations):
+            ax.annotate("{}".format(aa),
+                        xy=(aa_index + 1, y_lims[1]),
+                        xytext=(0, - 0.4 * (y_lims[1] - y_lims[0])),  # below lim
+                        textcoords="offset points",
+                        ha='center', va='bottom')
 
     return ax

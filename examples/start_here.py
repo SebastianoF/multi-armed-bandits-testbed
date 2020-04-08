@@ -1,13 +1,17 @@
 import os
 import shutil
 
+import numpy as np
 from matplotlib import pyplot as plt
 
 from mab.multi_armed_bandits import MultiArmedBandit, NonStationaryMultiArmedBandit
+from mab.player import Player
+from mab.strategies import epsilon_greedy
 
 
-def stationary_benchmark(save_result=False):
-    mab = MultiArmedBandit(seed=42)
+def stationary_mab_distribution(save_result=False):
+    np.random.seed(42)
+    mab = MultiArmedBandit()
     mab.get_plot_distributions()
     if save_result:
         plt.savefig("initial_distributions.pdf")
@@ -22,7 +26,8 @@ def non_stationary_benchmark_slideshow(timepoints=10, output_folder="tmp_data"):
     os.mkdir(output_folder)
 
     # For this example we update the values for each timepoint, as there are no extractions.
-    mab = NonStationaryMultiArmedBandit(seed=10, updates_intervals=range(timepoints))
+    np.random.seed(42)
+    mab = NonStationaryMultiArmedBandit(updates_intervals=range(timepoints))
 
     frames_list = []
 
@@ -44,13 +49,38 @@ def non_stationary_benchmark_slideshow(timepoints=10, output_folder="tmp_data"):
     os.system(f"ffmpeg -r 3 -f concat -safe 0 -i {pfi_frames_list} -y {pfi_output_gif}")
     print(f"gif created and stored in {pfi_output_gif}")
 
-    print("historical means")
-    print(mab.historical_means)
 
-    print("historical stds")
-    print(mab.historical_stds)
+def play_a_thousand_dollars_stationary_game():
+    np.random.seed(46)
+    mab = MultiArmedBandit()
+    mab.get_plot_distributions(y_axis_limit=(-20, 20))
+    plt.show(block=False)
+    means_before = mab.means
+
+    player = Player(T=1000, mab=mab)
+    means_hat, stds_hat, reward_per_arm, pulls_per_arm = epsilon_greedy(player, initial_t_explorations=100)
+    print("Comparing means, found vs ground truth")
+    print(means_hat)
+    print(mab.means)
+    print("Comparing standard deviations, found vs ground truth")
+    print(stds_hat)
+    print(mab.stds)
+    print("rewards per arm, pulls per arm and ground truth best arm")
+    print(reward_per_arm)
+    print(pulls_per_arm)
+    print(mab.compute_optimal_k())
+    mab.get_plot_distributions(y_axis_limit=(-20, 20), arms_annotations=pulls_per_arm)
+    plt.show()
+    means_after = mab.means
+
+    np.testing.assert_array_equal(means_before, means_after)
+
+
+def play_a_thousand_dollars_non_stationary_game():
+    pass
 
 
 if __name__ == "__main__":
-    # stationary_benchmark()
-    non_stationary_benchmark_slideshow()
+    # stationary_mab_distribution()
+    # non_stationary_benchmark_slideshow()
+    play_a_thousand_dollars_stationary_game()
