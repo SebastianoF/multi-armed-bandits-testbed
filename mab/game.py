@@ -22,7 +22,7 @@ class Game:
         self.K = self.means.shape[1]
         self.T = num_draws
         self.tp = 0
-        self.q = np.zeros([num_draws, self.K], dtype=np.float)
+        self.q = np.nan * np.ones([num_draws, self.K], dtype=np.float)
 
     @staticmethod
     def _generate_parameters(params_generators):
@@ -48,7 +48,7 @@ class Game:
 
     def reset(self):
         self.tp = 0
-        self.q = np.zeros([self.T, self.K], dtype=np.float)
+        self.q = np.nan * np.ones([self.T, self.K], dtype=np.float)
 
     def select_arm(self, k):
         """A random sample from the given arm k. t specified for non-stationary cases."""
@@ -68,8 +68,9 @@ class Game:
         """Return num_samples for each arm in a list of lists."""
         if time_point is None:
             time_point = self.tp
+        row = self.tp % self.means.shape[0]
         return [sorted(np.random.normal(m, s, num_samples))
-                for m, s in zip(self.means[time_point, :], self.stds[time_point, :])]
+                for m, s in zip(self.means[row, :], self.stds[row, :])]
 
     def compute_optimal_k(self, time_point=None):
         if time_point is None:

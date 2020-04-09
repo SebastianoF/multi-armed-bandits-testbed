@@ -4,27 +4,25 @@ import shutil
 import numpy as np
 from matplotlib import pyplot as plt
 
-from mab.multi_armed_bandit import MultiArmedBandit
-from mab.player import Player
-from mab.strategies import epsilon_greedy
+from mab.algorithms import epsilon_greedy
+from mab.game import Game
+from mab import visualize
 
 
-def stationary_mab_distribution(save_result=False):
+def stationary_mab_distribution(save_plot=False):
     # Sampling mean and standard deviation for a stationary MAB with 10 arms
     np.random.seed(42)
     means = np.random.uniform(-3, 3, size=10)
-    stds = np.abs(np.random.normal(3, 1, size=10))
+    stds = np.random.uniform(1, 2, size=10)
     # instantiate the MAB
-    mab = MultiArmedBandit(means, stds)
+    game = Game(10, means, stds)
     # Plot the distribution
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(9, 4))
-    mab.get_violin_plot_distributions(ax)
-    fig.subplots_adjust(bottom=0.15, wspace=0.05)
+    game.play(5)
 
-    if save_result:
-        plt.savefig("initial_distributions.pdf")
+    if save_plot:
+        visualize.violin_plot(game, save_path="initial_distributions.pdf")
     else:
-        plt.show()
+        visualize.violin_plot(game, show=True)
 
 
 def non_stationary_benchmark_slideshow(K=8, timepoints=15, output_folder="tmp_data_1"):
@@ -33,7 +31,6 @@ def non_stationary_benchmark_slideshow(K=8, timepoints=15, output_folder="tmp_da
         shutil.rmtree(output_folder, ignore_errors=True)
     os.mkdir(output_folder)
 
-    # to generate a non-stationary bandit, add a dimension to the means and standard deviation
     np.random.seed(42)
 
     means = np.zeros([timepoints, K], dtype=np.float)
@@ -46,31 +43,9 @@ def non_stationary_benchmark_slideshow(K=8, timepoints=15, output_folder="tmp_da
         means[row, :] = means[row - 1, :] + 0.1 * np.random.choice([-1, 1], size=[1, K])
         stds[row, :] = stds[row - 1, :] + 0.1 * np.random.choice([-1, 1], size=[1, K], p=(.2, .8))
 
-    mab = MultiArmedBandit(means, stds)
+    game = Game(timepoints, means, stds)
 
-    frames_list = []
-
-    for t in range(timepoints):
-        fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(9, 4))
-        mab.get_violin_plot_distributions(ax, y_axis_limit=(-20, 20))
-        plt.ioff()
-        pfi_frame = os.path.abspath(os.path.join(output_folder, 'step_{}.jpg'.format(t)))
-        fig.subplots_adjust(bottom=0.15, wspace=0.05)
-
-        plt.savefig(pfi_frame)
-        frames_list.append("file '" + pfi_frame + "'")
-        if t != timepoints - 1:
-            # each draw will update the mean and std to the next row of the input matrix
-            mab.draw_from_arm(np.random.choice(range(K)))
-
-    pfi_frames_list = os.path.abspath(os.path.join(output_folder, 'frames_list.txt'))
-
-    with open(pfi_frames_list, "w+") as outfile:
-        outfile.write("\n".join(frames_list))
-
-    pfi_output_gif = os.path.abspath(os.path.join(output_folder, 'sequence.gif'))
-    os.system(f"ffmpeg -r 3 -f concat -safe 0 -i {pfi_frames_list} -y {pfi_output_gif}")
-    print(f"gif created and stored in {pfi_output_gif}")
+    visualize.slideshow_violin_distributions(game, output_folder="tmp_data_1", y_axis_limit=(-15, 15), time_point_annotation=True)
 
 
 def play_a_thousand_dollars_stationary_game():
@@ -79,122 +54,108 @@ def play_a_thousand_dollars_stationary_game():
     means = np.random.uniform(-3, 3, size=10)
     stds = np.abs(np.random.normal(3, 1, size=10))
     # initialising mab
-    mab = MultiArmedBandit(means, stds)
-    player = Player(T=1000, mab=mab)
-    means_hat, stds_hat, reward_per_arm, pulls_per_arm = epsilon_greedy(
-        player, initial_t_explorations=100, exploration_strategy="random"
+    game = Game(1000, means, stds)
+
+    means_hat, stds_hat, reward_per_arm, pulls_per_arm = game.play(
+        initial_t_explorations=100, exploration_strategy="random"
     )
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(9, 4))
-    mab.get_violin_plot_distributions(ax, y_axis_limit=(-20, 20), arms_annotations=pulls_per_arm)
-    fig.subplots_adjust(bottom=0.15, wspace=0.05)
-    plt.show()
+    visualize.violin_plot(game, arms_annotations=pulls_per_arm,  y_axis_limit=(-20, 20), show=True)
 
 
 def play_a_thousand_dollars_non_stationary_game():
-    mab = MultiArmedBandit()
-    player = Player(T=1000, mab=mab)
-    means_hat, stds_hat, reward_per_arm, pulls_per_arm = epsilon_greedy(
-        player, initial_t_explorations=100, exploration_strategy="random"
+    game = Game(1000)
+
+    means_hat, stds_hat, reward_per_arm, pulls_per_arm = game.play(
+        initial_t_explorations=100, exploration_strategy="random"
     )
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(9, 4))
-    mab.get_violin_plot_distributions(ax, y_axis_limit=(-20, 20), arms_annotations=pulls_per_arm)
-    fig.subplots_adjust(bottom=0.15, wspace=0.05)
-    plt.show()
+    visualize.violin_plot(game, arms_annotations=pulls_per_arm, y_axis_limit=(-20, 20), show=True)
 
 
 def visualize_q_matrix(K=10):
-    # to generate a non-stationary bandit, add a dimension to the means and standard deviation
     np.random.seed(42)
 
     means = np.random.uniform(-3, 3, size=K)
     stds = np.random.uniform(1, 3, size=K)
 
-    mab = MultiArmedBandit(means, stds)
-    player = Player(T=200, mab=mab)
+    game = Game(200, means, stds)
 
-    for t in range(200):
+    for t in range(game.T):
         k = np.random.choice(range(K))
-        player.select_arm(k)
+        game.select_arm(k)
 
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(9, 4))
-
-    player.get_evolving_grid_plot(
-        ax,
+    visualize.get_evolving_grid(
+        game,
         show_data_at_tp=54,
         offset_before=12,
         offset_after=5,
-        last_tp_off_grid=True
+        last_tp_off_grid=False,
+        show=True
     )
 
-    fig.subplots_adjust(bottom=0.15, wspace=0.05)
-    plt.show()
 
-
-
-
-def visualize_q_matrix_slideshow(K=10, timepoints=100, output_folder="tmp_data_2"):
-    if os.path.exists(output_folder):
-        shutil.rmtree(output_folder, ignore_errors=True)
-    os.mkdir(output_folder)
-
-    # to generate a non-stationary bandit, add a dimension to the means and standard deviation
-    np.random.seed(42)
-
-    means = np.zeros([timepoints, K], dtype=np.float)
-    stds = np.zeros([timepoints, K], dtype=np.float)
-
-    means[0, :] = np.random.uniform(-3, 3, size=K)
-    stds[0, :] = np.random.uniform(1, 3, size=K)
-
-    for row in range(1, timepoints):
-        means[row, :] = means[row - 1, :] + 0.1 * np.random.choice([-1, 1], size=[1, K])
-        stds[row, :] = stds[row - 1, :] + 0.1 * np.random.choice([-1, 1], size=[1, K], p=(.2, .8))
-
-    mab = MultiArmedBandit(means, stds)
-
-    player = Player(T=200, mab=mab)
-
-    frames_list = []
-    offset_before = 12
-    offset_after = 5
-    total_offset = offset_before + offset_after
-
-    for t in range(30):  # timepoints
-
-        if t != timepoints - 1:
-            # each draw will update the mean and std to the next row of the input matrix
-            k = np.random.choice(range(K))
-            player.select_arm(k)
-
-        fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(9, 4))
-
-        ax[0], im = player.get_evolving_grid_plot(
-            ax[0],
-            show_data_at_tp=player.mab.tp,
-            offset_before=np.min([offset_before, player.mab.tp]),
-            offset_after=np.max([offset_after, total_offset - player.mab.tp]),
-            last_tp_off_grid=True
-        )
-
-        ax[1] = player.mab.get_violin_plot_distributions(ax[1], y_axis_limit=(-20, 20), vertical=True)
-        plt.ioff()
-
-        fig.subplots_adjust(bottom=0.15, wspace=0.05)
-        plt.show()
-
-        pfi_frame = os.path.abspath(os.path.join(output_folder, 'step_{}.jpg'.format(t)))
-        plt.savefig(pfi_frame)
-        frames_list.append("file '" + pfi_frame + "'")
-
-
-    pfi_frames_list = os.path.abspath(os.path.join(output_folder, 'frames_list.txt'))
-
-    with open(pfi_frames_list, "w+") as outfile:
-        outfile.write("\n".join(frames_list))
-
-    pfi_output_gif = os.path.abspath(os.path.join(output_folder, 'sequence.gif'))
-    os.system(f"ffmpeg -r 3 -f concat -safe 0 -i {pfi_frames_list} -y {pfi_output_gif}")
-    print(f"gif created and stored in {pfi_output_gif}")
+# def visualize_q_matrix_slideshow(K=10, timepoints=100, output_folder="tmp_data_2"):
+#     if os.path.exists(output_folder):
+#         shutil.rmtree(output_folder, ignore_errors=True)
+#     os.mkdir(output_folder)
+#
+#     # to generate a non-stationary bandit, add a dimension to the means and standard deviation
+#     np.random.seed(42)
+#
+#     means = np.zeros([timepoints, K], dtype=np.float)
+#     stds = np.zeros([timepoints, K], dtype=np.float)
+#
+#     means[0, :] = np.random.uniform(-3, 3, size=K)
+#     stds[0, :] = np.random.uniform(1, 3, size=K)
+#
+#     for row in range(1, timepoints):
+#         means[row, :] = means[row - 1, :] + 0.1 * np.random.choice([-1, 1], size=[1, K])
+#         stds[row, :] = stds[row - 1, :] + 0.1 * np.random.choice([-1, 1], size=[1, K], p=(.2, .8))
+#
+#     mab = MultiArmedBandit(means, stds)
+#
+#     player = Player(T=200, mab=mab)
+#
+#     frames_list = []
+#     offset_before = 12
+#     offset_after = 5
+#     total_offset = offset_before + offset_after
+#
+#     for t in range(30):  # timepoints
+#
+#         if t != timepoints - 1:
+#             # each draw will update the mean and std to the next row of the input matrix
+#             k = np.random.choice(range(K))
+#             player.select_arm(k)
+#
+#         fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(9, 4))
+#
+#         ax[0], im = player.get_evolving_grid_plot(
+#             ax[0],
+#             show_data_at_tp=player.mab.tp,
+#             offset_before=np.min([offset_before, player.mab.tp]),
+#             offset_after=np.max([offset_after, total_offset - player.mab.tp]),
+#             last_tp_off_grid=True
+#         )
+#
+#         ax[1] = player.mab.get_violin_plot_distributions(ax[1], y_axis_limit=(-20, 20), vertical=True)
+#         plt.ioff()
+#
+#         fig.subplots_adjust(bottom=0.15, wspace=0.05)
+#         plt.show()
+#
+#         pfi_frame = os.path.abspath(os.path.join(output_folder, 'step_{}.jpg'.format(t)))
+#         plt.savefig(pfi_frame)
+#         frames_list.append("file '" + pfi_frame + "'")
+#
+#
+#     pfi_frames_list = os.path.abspath(os.path.join(output_folder, 'frames_list.txt'))
+#
+#     with open(pfi_frames_list, "w+") as outfile:
+#         outfile.write("\n".join(frames_list))
+#
+#     pfi_output_gif = os.path.abspath(os.path.join(output_folder, 'sequence.gif'))
+#     os.system(f"ffmpeg -r 3 -f concat -safe 0 -i {pfi_frames_list} -y {pfi_output_gif}")
+#     print(f"gif created and stored in {pfi_output_gif}")
 
 
 if __name__ == "__main__":

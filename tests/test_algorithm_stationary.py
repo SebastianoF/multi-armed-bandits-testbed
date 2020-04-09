@@ -4,20 +4,13 @@ from mab.game import Game
 
 K = 10
 K_BEST = 7
-K_BEST_ALTERNATIVE = 4
-T = 500
-T_INTERVAL = 50
 
 
 def get_game_one_winning_arm():
-    means, stds = -2 * np.ones([T, K]), np.ones([T, K])
-    for row in range(T):
-        if 0 <= row % (T_INTERVAL) < int(T_INTERVAL):
-            means[row, K_BEST] = 2
-        else:
-            means[row, K_BEST_ALTERNATIVE] = 1
-    mab = Game(T, means, stds)
-    return mab
+    means, stds = -2 * np.ones(K), np.ones(K)
+    means[K_BEST] = 2
+    game = Game(1000, means, stds)
+    return game
 
 
 def test_compute_optimal_k_stationary():
