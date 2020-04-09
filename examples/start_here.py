@@ -92,8 +92,70 @@ def play_a_thousand_dollars_non_stationary_game():
     plt.show()
 
 
+def visualize_q_graph():
+    np.random.seed(42)
+    means = np.random.uniform(-3, 3, size=10)
+    stds = np.abs(np.random.normal(3, 1, size=10))
+
+    mab = MultiArmedBandit(means, stds)
+    player = Player(T=1000, mab=mab)
+    means_hat, stds_hat, reward_per_arm, pulls_per_arm = epsilon_greedy(
+        player, initial_t_explorations=100, exploration_strategy="random"
+    )
+    player.q
+
+
 if __name__ == "__main__":
-    stationary_mab_distribution()
-    non_stationary_benchmark_slideshow()
-    play_a_thousand_dollars_stationary_game()
-    play_a_thousand_dollars_non_stationary_game()
+    # stationary_mab_distribution()
+    # non_stationary_benchmark_slideshow()
+    # play_a_thousand_dollars_stationary_game()
+    # play_a_thousand_dollars_non_stationary_game()
+
+    import matplotlib
+
+    np.random.seed(42)
+    means = np.random.uniform(-3, 3, size=10)
+    stds = np.abs(np.random.normal(3, 1, size=10))
+
+    mab = MultiArmedBandit(means, stds)
+    player = Player(T=400, mab=mab)
+    means_hat, stds_hat, reward_per_arm, pulls_per_arm = epsilon_greedy(
+        player, initial_t_explorations=100, exploration_strategy="random"
+    )
+
+    data = player.q
+    show_data_at_tp = 50
+    offset_before = 12
+    offset_after = 5
+    show_plus_one = True
+
+    if show_plus_one:
+        delta = 1
+    else:
+        delta = 0
+
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(9, 4))
+    cmap = matplotlib.cm.inferno
+    cmap.set_bad(color='#DDDDDD')
+
+    num_arms = data.shape[0]
+
+    window_data = np.nan * np.ones([num_arms, offset_before + offset_after])
+    window_data[:, :offset_before+delta] = data[:, show_data_at_tp-offset_before:show_data_at_tp+delta]
+
+    im = ax.imshow(
+        window_data, interpolation='nearest', cmap=cmap, aspect='equal', vmin=-4, vmax=4, origin='upper'
+    )
+
+    ax.set_xticks(np.arange(0, offset_before, 1))
+    ax.set_xticklabels(np.arange(show_data_at_tp - offset_before + 1, show_data_at_tp + 1, 1))
+
+    ax.set_yticks(np.arange(0, num_arms, 1))
+
+    # Minor ticks
+    ax.set_xticks(np.arange(-.5, offset_before, 1), minor=True)
+    ax.set_yticks(np.arange(-.5, num_arms, 1), minor=True)
+
+    ax.grid(which='minor', color='w', linestyle='-', linewidth=2)
+
+    plt.show()

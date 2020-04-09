@@ -10,6 +10,7 @@ from mab.multi_armed_bandit import MultiArmedBandit
 from mab.player import Player
 from mab.strategies import epsilon_greedy
 
+
 K = 10
 num_trials_per_strategy = 100
 strategies = [
@@ -26,7 +27,7 @@ average_rewards_per_method = np.zeros(
 
 
 for strat_n, strat in enumerate(strategies):
-    print(strat)
+    print(f"Strategy employed: {strat}")
     cumulative_reward_per_arm_per_strategy = np.zeros([K], dtype=np.float)
 
     for i in tqdm(range(num_trials_per_strategy)):
