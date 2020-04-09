@@ -1,8 +1,9 @@
 import numpy as np
 
 
+
 def epsilon_greedy(
-        player, initial_t_explorations: int, initial_k: int = None, epsilon: float =0.1, alpha_override=None,
+        game, initial_t_explorations: int, initial_k: int = None, epsilon: float =0.1, alpha_override=None,
         exploration_strategy="random"
 ):
     """
@@ -16,18 +17,18 @@ def epsilon_greedy(
             return np.zeros_like(v) + 1 / len(v)
 
     def get_another_k_random():
-        return np.random.choice(list(set(range(player.mab.K)) - {k}))
+        return np.random.choice(list(set(range(game.K)) - {k}))
 
     def get_another_k_best_reward():
         # also Scrooge greedy
         weights = np.copy(rewards_per_arm)
         weights[k] = 0
-        return np.random.choice(np.arange(player.mab.K), p=normalize(weights))
+        return np.random.choice(np.arange(game.K), p=normalize(weights))
 
     def get_another_k_least_explored():
         weights = np.max(pulls_per_arm) - pulls_per_arm
         weights[k] = 0
-        return np.random.choice(np.arange(player.mab.K), p=normalize(weights))
+        return np.random.choice(np.arange(game.K), p=normalize(weights))
 
     def get_another_k_upper_confidence_bound():
         return np.argmax(means_hat + [0.3 * np.log(t + 0.000001) / (n + 1) for n in pulls_per_arm])
@@ -38,7 +39,7 @@ def epsilon_greedy(
         avg_reward_per_arm = np.array([r / p if p else 0 for r, p in zip(rewards_per_arm, pulls_per_arm)])
         H[t + 1, :] = H[t, :] - 0.3 * (rewards_per_arm - avg_reward_per_arm) * weights
         H[t + 1, k] = H[t, k] + 0.3 * (rewards_per_arm[k] - avg_reward_per_arm[k]) * (1 - weights[k])
-        return np.random.choice(np.arange(player.mab.K), p=normalize(weights))
+        return np.random.choice(np.arange(game.K), p=normalize(weights))
 
     get_another_k_map = {
         "random": get_another_k_random,
@@ -56,32 +57,32 @@ def epsilon_greedy(
             f"Got {exploration_strategy}."
         )
 
-    player.reset_parameters()
+    game.reset()
 
     if not initial_k:
-        k = np.random.choice(player.mab.K)
+        k = np.random.choice(game.K)
     else:
         k = initial_k
 
-    means_hat = np.zeros(player.mab.K, dtype=np.float)
-    stds_hat = np.zeros(player.mab.K, dtype=np.float)
-    pulls_per_arm = np.zeros(player.mab.K, dtype=np.int)  # N
-    rewards_per_arm = np.zeros(player.mab.K, dtype=np.float)  # R
+    means_hat = np.zeros(game.K, dtype=np.float)
+    stds_hat = np.zeros(game.K, dtype=np.float)
+    pulls_per_arm = np.zeros(game.K, dtype=np.int)  # N
+    rewards_per_arm = np.zeros(game.K, dtype=np.float)  # R
 
     if exploration_strategy == "gradient":
-        H = np.zeros([player.T + 1, player.mab.K], dtype=np.float)
+        H = np.zeros([game.T + 1, game.K], dtype=np.float)
 
     # initial step:
-    q = player.select_arm(k)
+    q = game.select_arm(k)
 
     rewards_per_arm[k] += np.max([0, q])
     pulls_per_arm[k] += 1
 
-    for t in range(1, player.T):
+    for t in range(1, game.T):
         # chose the next arm:
         if t < initial_t_explorations:
             # pure explorative initial phase
-            k = np.random.choice(player.mab.K)
+            k = np.random.choice(game.K)
         else:
             if np.random.rand() < epsilon:
                 # explore a new arm
@@ -91,7 +92,7 @@ def epsilon_greedy(
                 k = np.argmax(rewards_per_arm)
 
         # pull it (we do not lose money in this model, if the arm gives negative reward.)
-        q = player.select_arm(k)
+        q = game.select_arm(k)
 
         # update values
         rewards_per_arm[k] += np.max([0, q])
@@ -105,7 +106,5 @@ def epsilon_greedy(
 
         means_hat[k] = means_hat[k] + alpha * (q - means_hat[k])
         stds_hat[k] = stds_hat[k] + alpha * ((q - means_hat[k]) ** 2 - stds_hat[k])
-
-    player.total_reward = np.sum(rewards_per_arm)
 
     return means_hat, stds_hat, rewards_per_arm, pulls_per_arm

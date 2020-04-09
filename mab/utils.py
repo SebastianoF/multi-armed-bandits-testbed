@@ -75,11 +75,11 @@ def evolutionary_grid(
         show_data_at_tp=50,
         offset_before=12,
         offset_after=5,
-        show_plus_one=False
+        last_tp_off_grid=False
     ):
 
-    if show_plus_one:
-        delta = 1
+    if last_tp_off_grid:
+        delta = -1
     else:
         delta = 0
 
@@ -89,7 +89,7 @@ def evolutionary_grid(
     num_arms = data.shape[0]
 
     window_data = np.nan * np.ones([num_arms, offset_before + offset_after])
-    window_data[:, :offset_before+delta] = data[:, show_data_at_tp-offset_before:show_data_at_tp+delta]
+    window_data[:, :offset_before] = data[:, show_data_at_tp-offset_before:show_data_at_tp]
 
     im = ax.imshow(
         window_data,
@@ -106,7 +106,7 @@ def evolutionary_grid(
 
     ax.set_yticks(np.arange(0, num_arms, 1))
 
-    ax.set_xticks(np.arange(-.5, offset_before, 1), minor=True)
+    ax.set_xticks(np.arange(-.5, offset_before + delta, 1), minor=True)
     ax.set_yticks(np.arange(-.5, num_arms, 1), minor=True)
 
     ax.grid(which='minor', color='w', linestyle='-', linewidth=2)

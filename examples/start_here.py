@@ -102,7 +102,37 @@ def play_a_thousand_dollars_non_stationary_game():
     plt.show()
 
 
-def visualize_q_matrix_slideshow(K=8, timepoints=100, output_folder="tmp_data_2"):
+def visualize_q_matrix(K=10):
+    # to generate a non-stationary bandit, add a dimension to the means and standard deviation
+    np.random.seed(42)
+
+    means = np.random.uniform(-3, 3, size=K)
+    stds = np.random.uniform(1, 3, size=K)
+
+    mab = MultiArmedBandit(means, stds)
+    player = Player(T=200, mab=mab)
+
+    for t in range(200):
+        k = np.random.choice(range(K))
+        player.select_arm(k)
+
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(9, 4))
+
+    player.get_evolving_grid_plot(
+        ax,
+        show_data_at_tp=54,
+        offset_before=12,
+        offset_after=5,
+        last_tp_off_grid=True
+    )
+
+    fig.subplots_adjust(bottom=0.15, wspace=0.05)
+    plt.show()
+
+
+
+
+def visualize_q_matrix_slideshow(K=10, timepoints=100, output_folder="tmp_data_2"):
     if os.path.exists(output_folder):
         shutil.rmtree(output_folder, ignore_errors=True)
     os.mkdir(output_folder)
@@ -130,14 +160,20 @@ def visualize_q_matrix_slideshow(K=8, timepoints=100, output_folder="tmp_data_2"
     total_offset = offset_before + offset_after
 
     for t in range(30):  # timepoints
+
+        if t != timepoints - 1:
+            # each draw will update the mean and std to the next row of the input matrix
+            k = np.random.choice(range(K))
+            player.select_arm(k)
+
         fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(9, 4))
 
         ax[0], im = player.get_evolving_grid_plot(
             ax[0],
-            show_data_at_tp=t,
-            offset_before=np.min([offset_before, t]),
-            offset_after=np.min([offset_after, total_offset - t]),
-            show_plus_one=False
+            show_data_at_tp=player.mab.tp,
+            offset_before=np.min([offset_before, player.mab.tp]),
+            offset_after=np.max([offset_after, total_offset - player.mab.tp]),
+            last_tp_off_grid=True
         )
 
         ax[1] = player.mab.get_violin_plot_distributions(ax[1], y_axis_limit=(-20, 20), vertical=True)
@@ -149,9 +185,7 @@ def visualize_q_matrix_slideshow(K=8, timepoints=100, output_folder="tmp_data_2"
         pfi_frame = os.path.abspath(os.path.join(output_folder, 'step_{}.jpg'.format(t)))
         plt.savefig(pfi_frame)
         frames_list.append("file '" + pfi_frame + "'")
-        if t != timepoints - 1:
-            # each draw will update the mean and std to the next row of the input matrix
-            mab.draw_from_arm(np.random.choice(range(K)))
+
 
     pfi_frames_list = os.path.abspath(os.path.join(output_folder, 'frames_list.txt'))
 
@@ -168,4 +202,5 @@ if __name__ == "__main__":
     # non_stationary_benchmark_slideshow()
     # play_a_thousand_dollars_stationary_game()
     # play_a_thousand_dollars_non_stationary_game()
-    visualize_q_matrix_slideshow()
+    visualize_q_matrix()
+    # visualize_q_matrix_slideshow()
