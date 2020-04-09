@@ -6,7 +6,7 @@ import numpy as np
 
 from tqdm import tqdm
 
-from mab.multi_armed_bandits import MultiArmedBandit
+from mab.multi_armed_bandit import MultiArmedBandit
 from mab.player import Player
 from mab.strategies import epsilon_greedy
 

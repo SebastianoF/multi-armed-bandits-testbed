@@ -1,6 +1,6 @@
 import numpy as np
 
-from mab.multi_armed_bandits import MultiArmedBandit
+from mab.multi_armed_bandit import MultiArmedBandit
 
 
 class Player:

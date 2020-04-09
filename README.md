@@ -20,17 +20,15 @@ source venv/bin/activate
 pip install -e .
 ```
 
-### Usage
+### Where to start
 
-Check out the example [/examples/start_here.py](https://github.com/SebastianoF/multi-armed-bandits-testbed/blob/master/examples/start_here.py).
+Check out the examples in the folder [/examples/start_here.py](https://github.com/SebastianoF/multi-armed-bandits-testbed/blob/master/examples/start_here.py).
 
 ### Resources
 
 * R. Sutton, A. Barto, "Reinforcement Learning, an introduction", Chapter 1. 
-No more theory is needed to accompany the code.
 
-* A step by step presentation and a comparison between Bourbaki/pragmatic pedagogical approaches
-can be found under [`/docs/`](https://github.com/SebastianoF/multi-armed-bandits-testbed/blob/master/docs/bourbaki_pragmatist_MAB.pdf)
+* Further introduction can be found in the folder [`/docs/`](https://github.com/SebastianoF/multi-armed-bandits-testbed/blob/master/docs/bourbaki_pragmatist_MAB.pdf)
 
 ### Licence
 

@@ -1,6 +1,6 @@
 import numpy as np
 
-from mab.multi_armed_bandits import MultiArmedBandit, NonStationaryMultiArmedBandit
+from mab.multi_armed_bandit import MultiArmedBandit
 from mab.player import Player
 from mab.strategies import epsilon_greedy
 
@@ -8,7 +8,7 @@ from mab.strategies import epsilon_greedy
 def get_mab_one_winning_arm(winning_arm, K=10):
     means, stds = -2 * np.ones(K), np.ones(K)
     means[winning_arm] = 2
-    mab = MultiArmedBandit(K=K, means=means, stds=stds)
+    mab = MultiArmedBandit(means, stds)
     return mab
 
 

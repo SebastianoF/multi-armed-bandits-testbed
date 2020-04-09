@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def violin_plot(ax, data, y_axis_limit=None, timepoint=None, arms_annotations=None):
+def violin_plot(ax, data, time_point=0, y_axis_limit=None, time_point_annotation=False, arms_annotations=None):
 
     def adjacent_values(vals, q1, q3):
         upper_adjacent_value = q3 + (q3 - q1) * 1.5
@@ -24,8 +24,8 @@ def violin_plot(ax, data, y_axis_limit=None, timepoint=None, arms_annotations=No
         ax.set_axisbelow(True)
         ax.grid(True, lw=0.5)
 
-    if timepoint is not None:
-        ax.set_title(f'Probability distribution per arm, timepoint {timepoint}')
+    if time_point_annotation is True:
+        ax.set_title(f'Probability distribution per arm, time-point {time_point}')
     else:
         ax.set_title('Probability distribution per arm')
 
