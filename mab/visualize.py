@@ -198,7 +198,7 @@ def get_evolving_grid(
 
     evolutionary_grid_ax(
         ax,
-        game.q.T,
+        game.q.T,  # TODO avoid this T : swap x-y inside
         show_data_at_tp=show_data_at_tp,
         offset_before=offset_before,
         offset_after=offset_after,
@@ -209,3 +209,7 @@ def get_evolving_grid(
         plt.savefig(save_path)
     if show:
         plt.show()
+
+
+def get_system_evolution():
+    pass

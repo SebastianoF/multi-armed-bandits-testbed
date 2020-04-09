@@ -93,6 +93,7 @@ def visualize_q_matrix(K=10):
     )
 
 
+# TODO
 # def visualize_q_matrix_slideshow(K=10, timepoints=100, output_folder="tmp_data_2"):
 #     if os.path.exists(output_folder):
 #         shutil.rmtree(output_folder, ignore_errors=True)

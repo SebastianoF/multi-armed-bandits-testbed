@@ -6,9 +6,7 @@ import numpy as np
 
 from tqdm import tqdm
 
-from mab.multi_armed_bandit import MultiArmedBandit
-from mab.player import Player
-from mab.strategies import epsilon_greedy
+from mab.game import Game
 
 
 K = 10
@@ -32,11 +30,10 @@ for strat_n, strat in enumerate(strategies):
 
     for i in tqdm(range(num_trials_per_strategy)):
         np.random.seed(i)
-        mab = MultiArmedBandit()
-        player = Player(T=1000, mab=mab)
+        game = Game(1000)
 
-        _, _, reward_per_arm, _ = epsilon_greedy(
-            player, initial_t_explorations=100, exploration_strategy=strat
+        _, _, reward_per_arm, _ = game.play(
+            initial_t_explorations=100, exploration_strategy=strat
         )
         cumulative_reward_per_arm_per_strategy += reward_per_arm
 
