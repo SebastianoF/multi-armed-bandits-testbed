@@ -40,7 +40,6 @@ def non_stationary_benchmark_slideshow(K=8, timepoints=15, output_folder="tmp_da
     stds[0, :] = np.random.uniform(1, 3, size=K)
 
     for row in range(1, timepoints):
-
         means[row, :] = means[row - 1, :] + 0.1 * np.random.choice([-1, 1], size=[1, K])
         stds[row, :] = stds[row - 1, :] + 0.1 * np.random.choice([-1, 1], size=[1, K], p=(.2, .8))
 
