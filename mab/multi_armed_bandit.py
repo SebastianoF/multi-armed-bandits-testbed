@@ -70,21 +70,20 @@ class MultiArmedBandit:
         return [sorted(np.random.normal(m, s, num_samples))
                 for m, s in zip(self.means[time_point, :], self.stds[time_point, :])]
 
-    def get_plot_distributions(
-            self, num_samples_per_violin=1000, y_axis_limit=None, time_point_annotation=False, arms_annotations=None
+    def get_violin_plot_distributions(
+            self, ax, num_samples_per_violin=1000, y_axis_limit=None, time_point_annotation=False, arms_annotations=None, vertical=True
     ):
         """Returns the fig (matplotlib instance) of a representation of the arms"""
-        fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(9, 4))
-        violin_plot(
+        ax = violin_plot(
             ax,
             self.sample_all_arms(num_samples=num_samples_per_violin, time_point=self.tp),
             self.tp,
             y_axis_limit,
             time_point_annotation,
-            arms_annotations
+            arms_annotations,
+            vertical
         )
-        fig.subplots_adjust(bottom=0.15, wspace=0.05)
-        return fig
+        return ax
 
     def compute_optimal_k(self, time_point=None):
         """Get the arm with the best reward - based on empirical sampling"""

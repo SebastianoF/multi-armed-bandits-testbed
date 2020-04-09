@@ -10,7 +10,7 @@ venv
 env
 
 # Temporary data
-tmp_data
+tmp_data_*
 
 # Jupyter notebooks
 .ipynb_checkpoints

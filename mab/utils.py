@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib
 
 
-def violin_plot(ax, data, time_point=0, y_axis_limit=None, time_point_annotation=False, arms_annotations=None):
+def violin_plot(ax, data, time_point=0, y_axis_limit=None, time_point_annotation=False, arms_annotations=None, vertical=True):
 
     def adjacent_values(vals, q1, q3):
         upper_adjacent_value = q3 + (q3 - q1) * 1.5
@@ -34,7 +34,8 @@ def violin_plot(ax, data, time_point=0, y_axis_limit=None, time_point_annotation
         data,
         showmeans=False,
         showmedians=False,
-        showextrema=False
+        showextrema=False,
+        vert=vertical
     )
 
     for pc in parts['bodies']:
@@ -68,5 +69,46 @@ def violin_plot(ax, data, time_point=0, y_axis_limit=None, time_point_annotation
     return ax
 
 
-def evolving_grid(ax, data, ):
-    pass
+def evolutionary_grid(
+        ax,
+        data,
+        show_data_at_tp=50,
+        offset_before=12,
+        offset_after=5,
+        show_plus_one=False
+    ):
+
+    if show_plus_one:
+        delta = 1
+    else:
+        delta = 0
+
+    cmap = matplotlib.cm.inferno
+    cmap.set_bad(color='#DDDDDD')
+
+    num_arms = data.shape[0]
+
+    window_data = np.nan * np.ones([num_arms, offset_before + offset_after])
+    window_data[:, :offset_before+delta] = data[:, show_data_at_tp-offset_before:show_data_at_tp+delta]
+
+    im = ax.imshow(
+        window_data,
+        interpolation='nearest',
+        cmap=cmap,
+        aspect='equal',
+        vmin=-4,
+        vmax=4,
+        origin='upper'
+    )
+
+    ax.set_xticks(np.arange(0, offset_before, 1))
+    ax.set_xticklabels(np.arange(show_data_at_tp - offset_before + 1, show_data_at_tp + 1, 1))
+
+    ax.set_yticks(np.arange(0, num_arms, 1))
+
+    ax.set_xticks(np.arange(-.5, offset_before, 1), minor=True)
+    ax.set_yticks(np.arange(-.5, num_arms, 1), minor=True)
+
+    ax.grid(which='minor', color='w', linestyle='-', linewidth=2)
+
+    return ax, im
