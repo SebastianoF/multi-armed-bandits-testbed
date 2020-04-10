@@ -1,10 +1,5 @@
-import os
-import shutil
-
 import numpy as np
-from matplotlib import pyplot as plt
 
-from mab.algorithms import epsilon_greedy
 from mab.game import Game
 from mab import visualize
 
@@ -22,14 +17,13 @@ def stationary_mab_distribution(save_plot=False):
     if save_plot:
         visualize.violin_plot(game, save_path="initial_distributions.pdf")
     else:
-        visualize.violin_plot(game, show=True)
+        visualize.violin_plot(game, show=True, vertical=True, figsize=(8, 4))
 
 
-def non_stationary_benchmark_slideshow(K=8, timepoints=15, output_folder="tmp_data_1"):
-
-    if os.path.exists(output_folder):
-        shutil.rmtree(output_folder, ignore_errors=True)
-    os.mkdir(output_folder)
+def non_stationary_benchmark_slideshow():
+    K = 8
+    timepoints = 15
+    output_folder = "tmp_data_1"
 
     np.random.seed(42)
 
@@ -45,7 +39,9 @@ def non_stationary_benchmark_slideshow(K=8, timepoints=15, output_folder="tmp_da
 
     game = Game(timepoints, means, stds)
 
-    visualize.slideshow_violin_distributions(game, output_folder="tmp_data_1", y_axis_limit=(-15, 15), time_point_annotation=True)
+    visualize.slideshow_violin_distributions(
+        game, output_folder=output_folder, violin_axis_limit=(-15, 15), time_point_annotation=True
+    )
 
 
 def play_a_thousand_dollars_stationary_game():
@@ -59,7 +55,7 @@ def play_a_thousand_dollars_stationary_game():
     means_hat, stds_hat, reward_per_arm, pulls_per_arm = game.play(
         initial_t_explorations=100, exploration_strategy="random"
     )
-    visualize.violin_plot(game, arms_annotations=pulls_per_arm,  y_axis_limit=(-20, 20), show=True)
+    visualize.violin_plot(game, arms_annotations=pulls_per_arm,  violin_axis_limit=(-20, 20), show=True)
 
 
 def play_a_thousand_dollars_non_stationary_game():
@@ -68,10 +64,12 @@ def play_a_thousand_dollars_non_stationary_game():
     means_hat, stds_hat, reward_per_arm, pulls_per_arm = game.play(
         initial_t_explorations=100, exploration_strategy="random"
     )
-    visualize.violin_plot(game, arms_annotations=pulls_per_arm, y_axis_limit=(-20, 20), show=True)
+    visualize.violin_plot(game, arms_annotations=pulls_per_arm, violin_axis_limit=(-20, 20), show=True)
 
 
-def visualize_q_matrix(K=10):
+def visualize_q_matrix():
+    K = 10
+
     np.random.seed(42)
 
     means = np.random.uniform(-3, 3, size=K)
@@ -93,76 +91,38 @@ def visualize_q_matrix(K=10):
     )
 
 
-# TODO
-# def visualize_q_matrix_slideshow(K=10, timepoints=100, output_folder="tmp_data_2"):
-#     if os.path.exists(output_folder):
-#         shutil.rmtree(output_folder, ignore_errors=True)
-#     os.mkdir(output_folder)
-#
-#     # to generate a non-stationary bandit, add a dimension to the means and standard deviation
-#     np.random.seed(42)
-#
-#     means = np.zeros([timepoints, K], dtype=np.float)
-#     stds = np.zeros([timepoints, K], dtype=np.float)
-#
-#     means[0, :] = np.random.uniform(-3, 3, size=K)
-#     stds[0, :] = np.random.uniform(1, 3, size=K)
-#
-#     for row in range(1, timepoints):
-#         means[row, :] = means[row - 1, :] + 0.1 * np.random.choice([-1, 1], size=[1, K])
-#         stds[row, :] = stds[row - 1, :] + 0.1 * np.random.choice([-1, 1], size=[1, K], p=(.2, .8))
-#
-#     mab = MultiArmedBandit(means, stds)
-#
-#     player = Player(T=200, mab=mab)
-#
-#     frames_list = []
-#     offset_before = 12
-#     offset_after = 5
-#     total_offset = offset_before + offset_after
-#
-#     for t in range(30):  # timepoints
-#
-#         if t != timepoints - 1:
-#             # each draw will update the mean and std to the next row of the input matrix
-#             k = np.random.choice(range(K))
-#             player.select_arm(k)
-#
-#         fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(9, 4))
-#
-#         ax[0], im = player.get_evolving_grid_plot(
-#             ax[0],
-#             show_data_at_tp=player.mab.tp,
-#             offset_before=np.min([offset_before, player.mab.tp]),
-#             offset_after=np.max([offset_after, total_offset - player.mab.tp]),
-#             last_tp_off_grid=True
-#         )
-#
-#         ax[1] = player.mab.get_violin_plot_distributions(ax[1], y_axis_limit=(-20, 20), vertical=True)
-#         plt.ioff()
-#
-#         fig.subplots_adjust(bottom=0.15, wspace=0.05)
-#         plt.show()
-#
-#         pfi_frame = os.path.abspath(os.path.join(output_folder, 'step_{}.jpg'.format(t)))
-#         plt.savefig(pfi_frame)
-#         frames_list.append("file '" + pfi_frame + "'")
-#
-#
-#     pfi_frames_list = os.path.abspath(os.path.join(output_folder, 'frames_list.txt'))
-#
-#     with open(pfi_frames_list, "w+") as outfile:
-#         outfile.write("\n".join(frames_list))
-#
-#     pfi_output_gif = os.path.abspath(os.path.join(output_folder, 'sequence.gif'))
-#     os.system(f"ffmpeg -r 3 -f concat -safe 0 -i {pfi_frames_list} -y {pfi_output_gif}")
-#     print(f"gif created and stored in {pfi_output_gif}")
+def visualize_q_matrix_slideshow():
+    timepoints =10
+    K = 10
+    initial_t_explorations = 5
+    output_folder = "tmp_data_2"
+
+    # to generate a non-stationary bandit, add a dimension to the means and standard deviation
+    np.random.seed(42)
+
+    means = np.zeros([timepoints, K], dtype=np.float)
+    stds = np.zeros([timepoints, K], dtype=np.float)
+
+    means[0, :] = np.random.uniform(-3, 3, size=K)
+    stds[0, :] = np.random.uniform(1, 3, size=K)
+
+    for row in range(1, timepoints):
+        means[row, :] = means[row - 1, :] + 0.1 * np.random.choice([-1, 1], size=[1, K])
+        stds[row, :] = stds[row - 1, :] + 0.1 * np.random.choice([-1, 1], size=[1, K], p=(.2, .8))
+
+    game = Game(timepoints, means, stds)
+
+    game.play(initial_t_explorations=initial_t_explorations)
+
+    visualize.get_grid_and_violins_dynamic(game, output_folder=output_folder)
 
 
 if __name__ == "__main__":
-    # stationary_mab_distribution()
+    # Uncomment the one you want to run:
+
+    stationary_mab_distribution()
     # non_stationary_benchmark_slideshow()
     # play_a_thousand_dollars_stationary_game()
     # play_a_thousand_dollars_non_stationary_game()
-    visualize_q_matrix()
+    # visualize_q_matrix()
     # visualize_q_matrix_slideshow()
