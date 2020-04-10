@@ -3,7 +3,7 @@ import numpy as np
 
 def epsilon_greedy(
         game, initial_t_explorations: int, initial_k: int = None, epsilon: float =0.1, adjust_alpha=False,
-        exploration_strategy="random"
+        exploration_strategy="naive"
 ):
     """
     Epsilon greedy algorithm and variant with multiple strategies. Prototype not optimized for speed.
@@ -15,7 +15,7 @@ def epsilon_greedy(
         else:
             return np.zeros_like(v) + 1 / len(v)
 
-    def get_another_k_random():
+    def get_another_k_naive():
         return np.random.choice(list(set(range(game.K)) - {k}))
 
     def get_another_k_best_reward():
@@ -41,7 +41,7 @@ def epsilon_greedy(
         return np.random.choice(np.arange(game.K), p=normalize(weights))
 
     get_another_k_map = {
-        "random": get_another_k_random,
+        "naive": get_another_k_naive,
         "best reward": get_another_k_best_reward,
         "least explored": get_another_k_least_explored,
         "upper confidence": get_another_k_upper_confidence_bound,

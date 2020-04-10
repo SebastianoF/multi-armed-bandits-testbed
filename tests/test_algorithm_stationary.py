@@ -37,7 +37,7 @@ def test_one_winning_arm_random_strategy():
 
     # Check random strategy works:
     means_hat, _, rewards_per_arm, pulls_per_arm = game.play(
-        initial_t_explorations=100, exploration_strategy="random"
+        initial_t_explorations=100, exploration_strategy="naive"
     )
 
     np.testing.assert_equal(np.argmax(np.clip(means_hat, 0, np.inf)), K_BEST)

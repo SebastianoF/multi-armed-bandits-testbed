@@ -10,7 +10,7 @@ timepoints = 500
 num_trials_per_strategy = 100
 initial_t_explorations = 20
 strategies = [
-    "random",
+    "naive",
     "best reward",
     "least explored",
     "upper confidence",

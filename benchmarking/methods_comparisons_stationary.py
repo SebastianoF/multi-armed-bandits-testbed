@@ -12,7 +12,7 @@ from mab.game import Game
 K = 10
 num_trials_per_strategy = 100
 strategies = [
-    "random",
+    "naive",
     "best reward",
     "least explored",
     "upper confidence",

@@ -4,7 +4,7 @@ from mab.game import Game
 from mab import visualize
 
 
-def stationary_mab_distribution(save_plot=False):
+def stationary_mab_distribution(save_plot=True):
     # Sampling mean and standard deviation for a stationary MAB with 10 arms
     np.random.seed(42)
     means = np.random.uniform(-3, 3, size=10)
@@ -15,7 +15,7 @@ def stationary_mab_distribution(save_plot=False):
     game.play(5)
 
     if save_plot:
-        visualize.violin_plot(game, save_path="initial_distributions.pdf")
+        visualize.violin_plot(game, save_path="../docs/figures/initial_distributions.pdf")
     else:
         visualize.violin_plot(game, show=True, vertical=True, figsize=(8, 4))
 
@@ -53,7 +53,7 @@ def play_a_thousand_dollars_stationary_game():
     game = Game(1000, means, stds)
 
     means_hat, stds_hat, reward_per_arm, pulls_per_arm = game.play(
-        initial_t_explorations=100, exploration_strategy="random"
+        initial_t_explorations=100, exploration_strategy="naive"
     )
     visualize.violin_plot(game, arms_annotations=pulls_per_arm,  violin_axis_limit=(-20, 20), show=True)
 
@@ -62,7 +62,7 @@ def play_a_thousand_dollars_non_stationary_game():
     game = Game(1000)
 
     means_hat, stds_hat, reward_per_arm, pulls_per_arm = game.play(
-        initial_t_explorations=100, exploration_strategy="random"
+        initial_t_explorations=100, exploration_strategy="naive"
     )
     visualize.violin_plot(game, arms_annotations=pulls_per_arm, violin_axis_limit=(-20, 20), show=True)
 
@@ -144,10 +144,10 @@ def visualize_q_matrix_slideshow_second_case():
 if __name__ == "__main__":
     # -- Uncomment the one you want to run --
 
-    # stationary_mab_distribution()
+    stationary_mab_distribution()
     # non_stationary_benchmark_slideshow()
     # play_a_thousand_dollars_stationary_game()
     # play_a_thousand_dollars_non_stationary_game()
     # visualize_q_matrix()
-    visualize_q_matrix_slideshow()
+    # visualize_q_matrix_slideshow()
     # visualize_q_matrix_slideshow_second_case()

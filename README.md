@@ -1,3 +1,6 @@
+![Output sample](https://github.com/SebastianoF/calie/blob/master/docs/figures/deformations.gif)
+
+
 # Multi armed bandit
 
 An implementation of a range of epsilon-greedy algorithms to solve the multi-armed bandits problem.
