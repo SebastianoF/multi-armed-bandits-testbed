@@ -92,9 +92,9 @@ def visualize_q_matrix():
 
 
 def visualize_q_matrix_slideshow():
-    timepoints =100
+    timepoints =40
     K = 10
-    initial_t_explorations = 20
+    initial_t_explorations = 15
     output_folder = "tmp_data_2"
 
     np.random.seed(42)
@@ -106,8 +106,8 @@ def visualize_q_matrix_slideshow():
     stds[0, :] = np.random.uniform(1, 3, size=K)
 
     for row in range(1, timepoints):
-        means[row, :] = means[row - 1, :] + 0.1 * np.random.choice([-1, 1], size=[1, K])
-        stds[row, :] = stds[row - 1, :] + 0.1 * np.random.choice([-1, 1], size=[1, K], p=(.2, .8))
+        means[row, :] = means[row - 1, :]  #  + 0.1 * np.random.choice([-1, 1], size=[1, K])
+        stds[row, :] = stds[row - 1, :]  # + 0.1 * np.random.choice([-1, 1], size=[1, K], p=(.2, .8))
 
     game = Game(timepoints, means, stds)
 
@@ -149,5 +149,5 @@ if __name__ == "__main__":
     # play_a_thousand_dollars_stationary_game()
     # play_a_thousand_dollars_non_stationary_game()
     # visualize_q_matrix()
-    # visualize_q_matrix_slideshow()
-    visualize_q_matrix_slideshow_second_case()
+    visualize_q_matrix_slideshow()
+    # visualize_q_matrix_slideshow_second_case()

@@ -6,7 +6,7 @@ from mab.game import Game
 
 
 K = 10
-timepoints = 1000
+timepoints = 500
 num_trials_per_strategy = 100
 initial_t_explorations = 20
 strategies = [
@@ -41,10 +41,10 @@ for strat_n, strat in enumerate(strategies):
 
     for i in tqdm(range(num_trials_per_strategy)):
         np.random.seed(i)
-        game = Game(timepoints)
+        game = Game(timepoints, means, stds)
 
         _, _, reward_per_arm, _ = game.play(
-            initial_t_explorations=100, exploration_strategy=strat
+            initial_t_explorations=100, exploration_strategy=strat, epsilon=0.2, adjust_alpha=False
         )
         cumulative_reward_per_arm_per_strategy += reward_per_arm
 
@@ -53,12 +53,5 @@ for strat_n, strat in enumerate(strategies):
 total_rewards_per_strategy = np.sum(average_rewards_per_method, axis=1)
 best_strategy_index = np.argmax(total_rewards_per_strategy)
 print(f"The strategy that provided the highest total reward on the average of {num_trials_per_strategy} cases is:")
+print(total_rewards_per_strategy)
 print(strategies[best_strategy_index])
-
-
-
-
-game = Game(timepoints, means, stds)
-
-game.play(initial_t_explorations=initial_t_explorations, epsilon=0.2, exploration_strategy="least explored",
-          adjust_alpha=True)

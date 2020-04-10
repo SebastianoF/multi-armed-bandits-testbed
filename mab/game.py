@@ -61,7 +61,7 @@ class Game:
         self.tp += 1
         return q
 
-    def play(self, initial_t_explorations=100, exploration_strategy="random", epsilon=0.1, adjust_alpha=None):
+    def play(self, initial_t_explorations=100, exploration_strategy="random", epsilon=0.1, adjust_alpha=False):
         return epsilon_greedy(self, initial_t_explorations, exploration_strategy=exploration_strategy, epsilon=epsilon, adjust_alpha=adjust_alpha)
 
     def sample_all_arms(self, num_samples=1000, time_point=None):

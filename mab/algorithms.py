@@ -97,11 +97,11 @@ def epsilon_greedy(
         rewards_per_arm[k] += np.max([0, q])
         pulls_per_arm[k] += 1
 
-        # cumulative mean and standard deviation, non constant alpha for stationary problems:
+        # cumulative mean and standard deviation, non constant alpha for non-stationary problems:
         if adjust_alpha is False:
             alpha = 1 / pulls_per_arm[k]
         else:
-            alpha = 1 / (pulls_per_arm[k] + 5)
+            alpha = 1 / (pulls_per_arm[k] + initial_t_explorations)
 
         means_hat[k] = means_hat[k] + alpha * (q - means_hat[k])
         stds_hat[k] = stds_hat[k] + alpha * ((q - means_hat[k]) ** 2 - stds_hat[k])

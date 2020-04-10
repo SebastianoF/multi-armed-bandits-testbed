@@ -42,4 +42,5 @@ for strat_n, strat in enumerate(strategies):
 total_rewards_per_strategy = np.sum(average_rewards_per_method, axis=1)
 best_strategy_index = np.argmax(total_rewards_per_strategy)
 print(f"The strategy that provided the highest total reward on the average of {num_trials_per_strategy} cases is:")
+print(total_rewards_per_strategy)
 print(strategies[best_strategy_index])
