@@ -122,7 +122,7 @@ def visualize_q_matrix_slideshow_second_case():
     initial_t_explorations = 20
     output_folder = "tmp_data_2"
 
-    np.random.seed(42)
+    np.random.seed(40)
 
     means = np.zeros([timepoints, K], dtype=np.float)
     stds = np.zeros([timepoints, K], dtype=np.float)
@@ -131,12 +131,12 @@ def visualize_q_matrix_slideshow_second_case():
     stds[0, :] = np.random.uniform(1, 3, size=K)
 
     for row in range(1, timepoints):
-        means[row, :] = np.array([3 * np.sin((np.pi / 4) * x + 0.01 * row) for x in range(K)])
-        stds[row, :] = stds[row - 1, :]  # + 0.1 * np.random.choice([-1, 1], size=[1, K], p=(.2, .8))
+        means[row, :] = np.array([3 * np.sin((np.pi / 4) * x + 0.05 * row + 3) for x in range(K)])
+        stds[row, :] = stds[row - 1, :]
 
     game = Game(timepoints, means, stds)
 
-    game.play(initial_t_explorations=initial_t_explorations, epsilon=0.4, exploration_strategy="least explored", adjust_alpha=True)
+    game.play(initial_t_explorations=initial_t_explorations, epsilon=0.2, exploration_strategy="upper confidence", adjust_alpha=True)
 
     visualize.get_grid_and_violins_dynamic(game, output_folder=output_folder)
 
