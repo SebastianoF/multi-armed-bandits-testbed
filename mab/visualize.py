@@ -8,7 +8,8 @@ from matplotlib import pyplot as plt
 
 
 def violin_plot_ax(
-        ax, data, time_point=0, violin_axis_limit=None, time_point_annotation=False, arms_annotations=None, vertical=True
+        ax, data, time_point=0, violin_axis_limit=None, time_point_annotation=False, arms_annotations=None, vertical=True,
+        annotate_total_reward=False
 ):
 
     def adjacent_values(vals, q1, q3):
@@ -86,14 +87,17 @@ def violin_plot_ax(
     set_axis_style(vertical)
 
     if arms_annotations is not None:
-        y_lims = ax.get_ylim()
-        y_level_annotations = y_lims[1] - 0.1 * (y_lims[1] - y_lims[0])  # 10% below line
-        for aa_index, aa in enumerate(arms_annotations):
-            ax.annotate("{}".format(aa),
-                        xy=(aa_index + 1, y_level_annotations),
-                        xytext=(0, 0),
-                        textcoords="offset points",
-                        ha='center', va='center')
+        if vertical:
+            y_lims = ax.get_ylim()
+            y_level_annotations = y_lims[1] - 0.1 * (y_lims[1] - y_lims[0])  # 10% below line
+            for aa_index, aa in enumerate(arms_annotations):
+                ax.annotate("{}".format(aa),
+                            xy=(aa_index + 1, y_level_annotations),
+                            xytext=(0, 0),
+                            textcoords="offset points",
+                            ha='center', va='center')
+        else:
+            pass
 
     return ax
 
@@ -104,7 +108,8 @@ def evolutionary_grid_ax(
         show_data_at_tp=50,
         offset_before=12,
         offset_after=5,
-        last_tp_off_grid=False
+        last_tp_off_grid=False,
+        aspect='equal'
     ):
 
     if last_tp_off_grid:
@@ -115,7 +120,7 @@ def evolutionary_grid_ax(
     cmap = matplotlib.cm.inferno
     cmap.set_bad(color='#DDDDDD')
 
-    data = data.T  # we want to visualise it horizontally
+    data = np.clip(data, 0, np.inf).T  # we want to visualise it horizontally
 
     num_arms = data.shape[0]
 
@@ -126,21 +131,24 @@ def evolutionary_grid_ax(
         window_data,
         interpolation='nearest',
         cmap=cmap,
-        aspect='equal',
-        vmin=-4,
-        vmax=4,
-        origin='upper'
+        aspect=aspect,
+        vmin=0,
+        vmax=np.max(np.nan_to_num(data)),
+        origin='lower',
     )
 
     ax.set_xticks(np.arange(0, offset_before, 1))
     ax.set_xticklabels(np.arange(show_data_at_tp - offset_before + 1, show_data_at_tp + 1, 1))
 
     ax.set_yticks(np.arange(0, num_arms, 1))
+    ax.set_yticklabels([r'$K_{%d}$' % j for j in range(num_arms)])
 
     ax.set_xticks(np.arange(-.5, offset_before + delta, 1), minor=True)
     ax.set_yticks(np.arange(-.5, num_arms, 1), minor=True)
 
     ax.grid(which='minor', color='w', linestyle='-', linewidth=2)
+
+    ax.set_title('Rewards matrix')
 
     return ax, im
 
@@ -232,7 +240,7 @@ def get_evolving_grid(
 
     evolutionary_grid_ax(
         ax,
-        game.q,  # TODO avoid this T : swap x-y inside
+        game.q,
         show_data_at_tp=show_data_at_tp,
         offset_before=offset_before,
         offset_after=offset_after,
@@ -257,29 +265,36 @@ def get_grid_and_violins_dynamic(game, output_folder, violin_axis_limit=(-20, 20
     total_offset = offset_before + offset_after
 
     for t in tqdm(range(game.T)):
-        fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(9, 4))
+        fig = plt.figure(figsize=(12, 5.7))
 
-        ax[0], im = evolutionary_grid_ax(
-            ax[0],
+        epsilon_x = 0
+        epsilon_y = 0.02
+
+        ax0 = fig.add_axes([0.05 + epsilon_x, 0.08 + epsilon_y, 0.6, 0.8])
+        ax1 = fig.add_axes([0.7 + epsilon_x, 0.05 + epsilon_y, 0.25, 0.85])
+        ax2 = fig.add_axes([0.61 + epsilon_x, 0.652 + epsilon_y, 0.01, 0.2])
+
+        ax0, im = evolutionary_grid_ax(
+            ax0,
             game.q,
             show_data_at_tp=t,
             offset_before=np.min([offset_before, t]),
             offset_after=np.max([offset_after, total_offset - t]),
-            last_tp_off_grid=True
+            last_tp_off_grid=True,
+            aspect='auto'
         )
 
-        ax[1] = violin_plot_ax(
-            ax[1],
+        ax1 = violin_plot_ax(
+            ax1,
             game.sample_all_arms(time_point=t),
             time_point=t,
             violin_axis_limit=violin_axis_limit,
-            vertical=True
+            vertical=False
         )
 
-        plt.ioff()
+        fig.colorbar(im, cax=ax2)
 
-        fig.subplots_adjust(bottom=0.15, wspace=0.05)
-        # plt.show()
+        plt.ioff()
 
         pfi_frame = os.path.abspath(os.path.join(output_folder, 'step_{}.jpg'.format(t)))
         plt.savefig(pfi_frame)

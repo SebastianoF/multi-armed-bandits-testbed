@@ -92,12 +92,11 @@ def visualize_q_matrix():
 
 
 def visualize_q_matrix_slideshow():
-    timepoints =10
+    timepoints =100
     K = 10
-    initial_t_explorations = 5
+    initial_t_explorations = 20
     output_folder = "tmp_data_2"
 
-    # to generate a non-stationary bandit, add a dimension to the means and standard deviation
     np.random.seed(42)
 
     means = np.zeros([timepoints, K], dtype=np.float)
@@ -117,12 +116,38 @@ def visualize_q_matrix_slideshow():
     visualize.get_grid_and_violins_dynamic(game, output_folder=output_folder)
 
 
-if __name__ == "__main__":
-    # Uncomment the one you want to run:
+def visualize_q_matrix_slideshow_second_case():
+    timepoints =120
+    K = 10
+    initial_t_explorations = 20
+    output_folder = "tmp_data_2"
 
-    stationary_mab_distribution()
+    np.random.seed(42)
+
+    means = np.zeros([timepoints, K], dtype=np.float)
+    stds = np.zeros([timepoints, K], dtype=np.float)
+
+    means[0, :] = np.array([3 * np.sin((np.pi / 4) * x) for x in range(K)])
+    stds[0, :] = np.random.uniform(1, 3, size=K)
+
+    for row in range(1, timepoints):
+        means[row, :] = np.array([3 * np.sin((np.pi / 4) * x + 0.01 * row) for x in range(K)])
+        stds[row, :] = stds[row - 1, :]  # + 0.1 * np.random.choice([-1, 1], size=[1, K], p=(.2, .8))
+
+    game = Game(timepoints, means, stds)
+
+    game.play(initial_t_explorations=initial_t_explorations, epsilon=0.4, exploration_strategy="least explored", adjust_alpha=True)
+
+    visualize.get_grid_and_violins_dynamic(game, output_folder=output_folder)
+
+
+if __name__ == "__main__":
+    # -- Uncomment the one you want to run --
+
+    # stationary_mab_distribution()
     # non_stationary_benchmark_slideshow()
     # play_a_thousand_dollars_stationary_game()
     # play_a_thousand_dollars_non_stationary_game()
     # visualize_q_matrix()
     # visualize_q_matrix_slideshow()
+    visualize_q_matrix_slideshow_second_case()

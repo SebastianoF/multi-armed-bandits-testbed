@@ -1,5 +1,5 @@
 import numpy as np
-
+from scipy.stats import norm
 from mab.algorithms import epsilon_greedy
 
 
@@ -61,15 +61,16 @@ class Game:
         self.tp += 1
         return q
 
-    def play(self, initial_t_explorations=100, exploration_strategy="random"):
-        return epsilon_greedy(self, initial_t_explorations, exploration_strategy=exploration_strategy)
+    def play(self, initial_t_explorations=100, exploration_strategy="random", epsilon=0.1, adjust_alpha=None):
+        return epsilon_greedy(self, initial_t_explorations, exploration_strategy=exploration_strategy, epsilon=epsilon, adjust_alpha=adjust_alpha)
 
     def sample_all_arms(self, num_samples=1000, time_point=None):
         """Return num_samples for each arm in a list of lists."""
         if time_point is None:
             time_point = self.tp
-        row = self.tp % self.means.shape[0]
-        return [sorted(np.random.normal(m, s, num_samples))
+        row = time_point % self.means.shape[0]
+        rng = np.random.RandomState(42)
+        return [sorted(rng.normal(m, s, num_samples))
                 for m, s in zip(self.means[row, :], self.stds[row, :])]
 
     def compute_optimal_k(self, time_point=None):

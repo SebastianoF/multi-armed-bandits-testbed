@@ -1,9 +1,8 @@
 import numpy as np
 
 
-
 def epsilon_greedy(
-        game, initial_t_explorations: int, initial_k: int = None, epsilon: float =0.1, alpha_override=None,
+        game, initial_t_explorations: int, initial_k: int = None, epsilon: float =0.1, adjust_alpha=False,
         exploration_strategy="random"
 ):
     """
@@ -99,10 +98,10 @@ def epsilon_greedy(
         pulls_per_arm[k] += 1
 
         # cumulative mean and standard deviation, non constant alpha for stationary problems:
-        if alpha_override is None:
-            alpha = (1 / pulls_per_arm[k])
+        if adjust_alpha is False:
+            alpha = 1 / pulls_per_arm[k]
         else:
-            alpha = alpha_override
+            alpha = 1 / (pulls_per_arm[k] + 5)
 
         means_hat[k] = means_hat[k] + alpha * (q - means_hat[k])
         stds_hat[k] = stds_hat[k] + alpha * ((q - means_hat[k]) ** 2 - stds_hat[k])
