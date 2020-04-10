@@ -1,4 +1,4 @@
-![Output sample](https://github.com/SebastianoF/calie/blob/master/docs/figures/deformations.gif)
+![Output sample](https://github.com/SebastianoF/multi-armed-bandits-testbed/blob/master/docs/figures/sequence.gif)
 
 
 # Multi armed bandit
