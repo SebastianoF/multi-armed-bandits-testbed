@@ -6,17 +6,18 @@ jobs:
         - image: circleci/python:3.6
       steps: &steps
         - checkout
-        - run: sudo pip install -r requirements.txt
+        - run: sudo pip install -r requirements/requirements.txt
+        - run: sudo pip install -r requirements/requirements-dev.txt
         - run: python --version ; pip --version ; pwd ; ls
         - run: pytest
   Python_3.7:
       docker:
         - image: circleci/python:3.7
-      steps: *steps 
+      steps: *steps
   Python_3.8:
       docker:
         - image: circleci/python:3.8
-      steps: *steps 
+      steps: *steps
 
 workflows:
   version: 2
