@@ -1,3 +1,7 @@
+# Template:
+[![CircleCI](https://circleci.com/gh/SebastianoF/multi-armed-bandit-testbed.svg?style=svg)](https://app.circleci.com/pipelines/github/SebastianoF/multi-armed-bandits-testbed)
+[![Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 ![Output sample](https://github.com/SebastianoF/multi-armed-bandits-testbed/blob/master/docs/figures/sequence.gif)
 
 
@@ -26,6 +30,12 @@ pip install -e .
 ### Where to start
 
 Check out the examples in the folder [/examples/start_here.py](https://github.com/SebastianoF/multi-armed-bandits-testbed/blob/master/examples/start_here.py).
+
+### Development
+
++ Dependent libraries are managed with pip-compile-multi
++ Continuous integration is integrated with CircleCI
++ Text formatting happens via pre-commit
 
 ### Resources
 
