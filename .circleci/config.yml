@@ -8,6 +8,7 @@ jobs:
         - checkout
         - run: sudo pip install -r requirements/requirements.txt
         - run: sudo pip install -r requirements/requirements-dev.txt
+        - run: sudo pip install -e .
         - run: python --version ; pip --version ; pwd ; ls
         - run: pytest
   Python_3.7:

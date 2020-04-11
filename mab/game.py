@@ -1,11 +1,12 @@
 import numpy as np
-from scipy.stats import norm
+
 from mab.algorithms import epsilon_greedy
 
 
 class Game:
-
-    def __init__(self, num_draws, means=None, stds=None, params_generators=(10, 500, 50)):
+    def __init__(
+        self, num_draws, means=None, stds=None, params_generators=(10, 500, 50)
+    ):
         if means is None or stds is None:
             means, stds = self._generate_parameters(params_generators)
 
@@ -38,8 +39,12 @@ class Game:
 
         for row in range(1, total_tp):
             if row % change_intervals == 0:
-                means[row, :] = means[row - 1, :] + 0.1 * np.random.choice([-1, 1], size=[1, number_of_arms])
-                stds[row, :] = stds[row - 1, :] + 0.1 * np.random.choice([-1, 1], size=[1, number_of_arms], p=(.4, .6))
+                means[row, :] = means[row - 1, :] + 0.1 * np.random.choice(
+                    [-1, 1], size=[1, number_of_arms]
+                )
+                stds[row, :] = stds[row - 1, :] + 0.1 * np.random.choice(
+                    [-1, 1], size=[1, number_of_arms], p=(0.4, 0.6)
+                )
             else:
                 means[row, :] = means[row - 1, :]
                 stds[row, :] = stds[row - 1, :]
@@ -61,8 +66,20 @@ class Game:
         self.tp += 1
         return q
 
-    def play(self, initial_t_explorations=100, exploration_strategy="naive", epsilon=0.1, adjust_alpha=False):
-        return epsilon_greedy(self, initial_t_explorations, exploration_strategy=exploration_strategy, epsilon=epsilon, adjust_alpha=adjust_alpha)
+    def play(
+        self,
+        initial_t_explorations=100,
+        exploration_strategy="naive",
+        epsilon=0.1,
+        adjust_alpha=False,
+    ):
+        return epsilon_greedy(
+            self,
+            initial_t_explorations,
+            exploration_strategy=exploration_strategy,
+            epsilon=epsilon,
+            adjust_alpha=adjust_alpha,
+        )
 
     def sample_all_arms(self, num_samples=1000, time_point=None):
         """Return num_samples for each arm in a list of lists."""
@@ -70,12 +87,16 @@ class Game:
             time_point = self.tp
         row = time_point % self.means.shape[0]
         rng = np.random.RandomState(42)
-        return [sorted(rng.normal(m, s, num_samples))
-                for m, s in zip(self.means[row, :], self.stds[row, :])]
+        return [
+            sorted(rng.normal(m, s, num_samples))
+            for m, s in zip(self.means[row, :], self.stds[row, :])
+        ]
 
     def compute_optimal_k(self, time_point=None):
         if time_point is None:
             time_point = self.tp
-        sampled_reward_per_arm = [np.sum(np.where(np.array(arm_sampling) < 0, 0, arm_sampling))
-                                  for arm_sampling in self.sample_all_arms(time_point=time_point)]
+        sampled_reward_per_arm = [
+            np.sum(np.where(np.array(arm_sampling) < 0, 0, arm_sampling))
+            for arm_sampling in self.sample_all_arms(time_point=time_point)
+        ]
         return np.argmax(sampled_reward_per_arm)
