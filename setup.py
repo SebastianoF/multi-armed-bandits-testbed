@@ -39,7 +39,7 @@ setup(
     author_email="sebastiano.ferraris@gmail.com",
     url="https://github.com/SebastianoF/multi-armed-bandits-testbed",
     packages=find_packages(include=["mab"], exclude=["docs", "laboratory", "examples"]),
-    python_requires=">=3.7",
+    python_requires=">=3.6",
     install_requires=requirements,
     extras_require={"dev": requirements_dev},
     keywords="multi armed bandit",
