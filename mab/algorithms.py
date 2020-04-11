@@ -2,13 +2,18 @@ import numpy as np
 
 
 def epsilon_greedy(
-        game, initial_t_explorations: int, initial_k: int = None, epsilon: float =0.1, adjust_alpha=False,
-        exploration_strategy="naive"
+    game,
+    initial_t_explorations: int,
+    initial_k: int = None,
+    epsilon: float = 0.1,
+    adjust_alpha=False,
+    exploration_strategy="naive",
 ):
     """
     Epsilon greedy algorithm and variant with multiple strategies. Prototype not optimized for speed.
     Source: Reinforcement Learning, an introduction. Sutton 2018
     """
+
     def normalize(v):
         if np.sum(v) > 0:
             return v / np.sum(v)
@@ -30,14 +35,20 @@ def epsilon_greedy(
         return np.random.choice(np.arange(game.K), p=normalize(weights))
 
     def get_another_k_upper_confidence_bound():
-        return np.argmax(means_hat + [0.3 * np.log(t + 0.000001) / (n + 1) for n in pulls_per_arm])
+        return np.argmax(
+            means_hat + [0.3 * np.log(t + 0.000001) / (n + 1) for n in pulls_per_arm]
+        )
 
     def get_another_k_gradient():
         weights = np.exp(H[t, :]) / np.sum(np.exp(H[t, :]))
         # update matrix H for the next step.
-        avg_reward_per_arm = np.array([r / p if p else 0 for r, p in zip(rewards_per_arm, pulls_per_arm)])
+        avg_reward_per_arm = np.array(
+            [r / p if p else 0 for r, p in zip(rewards_per_arm, pulls_per_arm)]
+        )
         H[t + 1, :] = H[t, :] - 0.3 * (rewards_per_arm - avg_reward_per_arm) * weights
-        H[t + 1, k] = H[t, k] + 0.3 * (rewards_per_arm[k] - avg_reward_per_arm[k]) * (1 - weights[k])
+        H[t + 1, k] = H[t, k] + 0.3 * (rewards_per_arm[k] - avg_reward_per_arm[k]) * (
+            1 - weights[k]
+        )
         return np.random.choice(np.arange(game.K), p=normalize(weights))
 
     get_another_k_map = {
@@ -45,7 +56,7 @@ def epsilon_greedy(
         "best reward": get_another_k_best_reward,
         "least explored": get_another_k_least_explored,
         "upper confidence": get_another_k_upper_confidence_bound,
-        "gradient": get_another_k_gradient
+        "gradient": get_another_k_gradient,
     }
 
     try:

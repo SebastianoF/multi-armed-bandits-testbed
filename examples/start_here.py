@@ -1,7 +1,7 @@
 import numpy as np
 
-from mab.game import Game
 from mab import visualize
+from mab.game import Game
 
 
 def stationary_mab_distribution(save_plot=True):
@@ -15,7 +15,9 @@ def stationary_mab_distribution(save_plot=True):
     game.play(5)
 
     if save_plot:
-        visualize.violin_plot(game, save_path="../docs/figures/initial_distributions.pdf")
+        visualize.violin_plot(
+            game, save_path="../docs/figures/initial_distributions.pdf"
+        )
     else:
         visualize.violin_plot(game, show=True, vertical=True, figsize=(8, 4))
 
@@ -35,12 +37,17 @@ def non_stationary_benchmark_slideshow():
 
     for row in range(1, timepoints):
         means[row, :] = means[row - 1, :] + 0.1 * np.random.choice([-1, 1], size=[1, K])
-        stds[row, :] = stds[row - 1, :] + 0.1 * np.random.choice([-1, 1], size=[1, K], p=(.2, .8))
+        stds[row, :] = stds[row - 1, :] + 0.1 * np.random.choice(
+            [-1, 1], size=[1, K], p=(0.2, 0.8)
+        )
 
     game = Game(timepoints, means, stds)
 
     visualize.slideshow_violin_distributions(
-        game, output_folder=output_folder, violin_axis_limit=(-15, 15), time_point_annotation=True
+        game,
+        output_folder=output_folder,
+        violin_axis_limit=(-15, 15),
+        time_point_annotation=True,
     )
 
 
@@ -55,7 +62,9 @@ def play_a_thousand_dollars_stationary_game():
     means_hat, stds_hat, reward_per_arm, pulls_per_arm = game.play(
         initial_t_explorations=100, exploration_strategy="naive"
     )
-    visualize.violin_plot(game, arms_annotations=pulls_per_arm,  violin_axis_limit=(-20, 20), show=True)
+    visualize.violin_plot(
+        game, arms_annotations=pulls_per_arm, violin_axis_limit=(-20, 20), show=True
+    )
 
 
 def play_a_thousand_dollars_non_stationary_game():
@@ -64,7 +73,9 @@ def play_a_thousand_dollars_non_stationary_game():
     means_hat, stds_hat, reward_per_arm, pulls_per_arm = game.play(
         initial_t_explorations=100, exploration_strategy="naive"
     )
-    visualize.violin_plot(game, arms_annotations=pulls_per_arm, violin_axis_limit=(-20, 20), show=True)
+    visualize.violin_plot(
+        game, arms_annotations=pulls_per_arm, violin_axis_limit=(-20, 20), show=True
+    )
 
 
 def visualize_q_matrix():
@@ -87,12 +98,12 @@ def visualize_q_matrix():
         offset_before=12,
         offset_after=5,
         last_tp_off_grid=False,
-        show=True
+        show=True,
     )
 
 
 def visualize_q_matrix_slideshow():
-    timepoints =40
+    timepoints = 40
     K = 10
     initial_t_explorations = 15
     output_folder = "tmp_data_2"
@@ -106,8 +117,8 @@ def visualize_q_matrix_slideshow():
     stds[0, :] = np.random.uniform(1, 3, size=K)
 
     for row in range(1, timepoints):
-        means[row, :] = means[row - 1, :]  #  + 0.1 * np.random.choice([-1, 1], size=[1, K])
-        stds[row, :] = stds[row - 1, :]  # + 0.1 * np.random.choice([-1, 1], size=[1, K], p=(.2, .8))
+        means[row, :] = means[row - 1, :]
+        stds[row, :] = stds[row - 1, :]
 
     game = Game(timepoints, means, stds)
 
@@ -117,7 +128,7 @@ def visualize_q_matrix_slideshow():
 
 
 def visualize_q_matrix_slideshow_second_case():
-    timepoints =120
+    timepoints = 120
     K = 10
     initial_t_explorations = 20
     output_folder = "tmp_data_2"
@@ -131,12 +142,19 @@ def visualize_q_matrix_slideshow_second_case():
     stds[0, :] = np.random.uniform(1, 3, size=K)
 
     for row in range(1, timepoints):
-        means[row, :] = np.array([3 * np.sin((np.pi / 4) * x + 0.05 * row + 3) for x in range(K)])
+        means[row, :] = np.array(
+            [3 * np.sin((np.pi / 4) * x + 0.05 * row + 3) for x in range(K)]
+        )
         stds[row, :] = stds[row - 1, :]
 
     game = Game(timepoints, means, stds)
 
-    game.play(initial_t_explorations=initial_t_explorations, epsilon=0.2, exploration_strategy="upper confidence", adjust_alpha=True)
+    game.play(
+        initial_t_explorations=initial_t_explorations,
+        epsilon=0.2,
+        exploration_strategy="upper confidence",
+        adjust_alpha=True,
+    )
 
     visualize.get_grid_and_violins_dynamic(game, output_folder=output_folder)
 
