@@ -66,7 +66,7 @@ DRAFT}
 
 % ------------------------------------------------- %
 \begin{abstract}
-In these pages are aimed to introducing the well known multi-armed bandits problem. It moves towards a solution via two different pedagogical approaches, here titled \emph{Bourbachist} and \emph{pragmatic}. The Bourbakist way is concerned with the mathematical foundation upon which a formal solution is shaped into an axiomatic structure. In contrast, the pragmatic approach provides an algorithmic solution, and exposes it with the bare minimum mathematical formalism.
+These pages are aimed to introducing the well known multi-armed bandits problem. It moves towards a solution via two different pedagogical approaches, here titled \emph{Bourbachist} and \emph{pragmatic}. The Bourbakist way is concerned with the mathematical foundation upon which a formal solution is shaped into an axiomatic structure. In contrast, the pragmatic approach provides an algorithmic solution, and exposes it with the bare minimum mathematical formalism.
 The manuscript ends with a critical note underlying the advantages and disadvantages of each exposition. \\
 
 \noindent
@@ -83,19 +83,20 @@ The problem of finding a strategy to maximise the reward in this setting is call
     Thompson~\cite{thompson1933likelihood} provides an early approach where the two arms are two medical treatments, Bellman~\cite{bellman1956problem} where the problem is formulated in a Bayesian perspective for two arms, and the more recent Sutton~\cite{sutton2018reinforcement}, Chapter~1, where the problem introduces reinforcement learning.
 }.
 
-The MAB problem arises in contexts that are more interesting than gambling, for which we do not advocate. These contexts can be clinical or pre-clinical trials, control engineering, mechanical and software testing, stock market investments, behavioural modelling, dynamic pricing, and many more\footnote{
+The MAB problem arises in contexts that are in general more interesting than gambling, for which we tend to not advocate. These contexts are for example clinical or pre-clinical trials, control engineering, mechanical and software testing, stock market investments, behavioural modelling, dynamic pricing, and many more\footnote{
     A survey with a list of applications of the main algorithms solving the MAB problem is proposed by Bouneffouf~\cite{bf2019survey}.
 }.
 
-The goal of these pages is to introduce the problem and to provide a solution with two different methodologies:
+The goal of these pages is to introduce the problem and to provide a solution with two different approaches:
 \begin{itemize}
-    \item[$\circ$] \emph{Bourbakist.} This approach is named after the collective pseudonym of the group of French mathematicians who have developed it in 1934. Historically, the goal of Bourbaki was to re-write one of the most widely used analysis textbook of the time, the Goursat’s \emph{Cours d'analyse mathématique}, that was considered inadequate as some counterexamples had been overlooked\footnote{A brief history of the Bourbaki and its impact in France and the rest of the world was proposed by Marmier~\cite{marmier2014idea}.}. To reach this goal and to aim at extending the possible generalisations of the problem, while keeping at the same time possible counterexamples under control also in other branches of mathematics, Bourbaki favours an axiomatic foundation based on set theory. One of the main feature characterizing this pedagogical style is that exercises, examples and the history motivating the given problem are omitted, to leave space only to the axiomatic structure.
-    \item[$\circ$] \emph{Pragmatic.} In contrast to the Bourbachist approach, the pragmatic approach reduces the formalisation to its bare minimum, orienting the readers' efforts into finding a solution of a problem, rather than the creation of a generalisable formal theory.
+    \item[$\circ$] \emph{Bourbakist approach.} Named after the collective pseudonym of the group of French mathematicians who have developed it in 1934, has as goal a strict formalisation of the problem form a set theoretical perspective. Historically, the goal of Bourbaki was to re-write one of the most widely used analysis textbook of the time, the Goursat’s \emph{Cours d'analyse mathématique}, that was considered inadequate as some counterexamples had been overlooked\footnote{A brief history of the Bourbaki and its impact in France and the rest of the world was proposed by Marmier~\cite{marmier2014idea}.}. To reach this initial goal, the group of mathematicians extended the formalised to a range of generalisations, while keeping possible counterexamples a bay with a strong attention to the foundations of mathematics. The same approach had been extended by Bourbaki from analysis to other branches of mathematics, keeping the same axiomatic style. One of the main feature characterizing this pedagogical style is the following: exercises, examples and the history motivating the given problem are entirely omitted, to leave space only to the axiomatic structure, as it had been created out of thin air and for no clear reason.
+    \item[$\circ$] \emph{Pragmatic approach.} In contrast to the Bourbachist approach, the pragmatic one reduces the formalisation to its bare minimum. It orientates the readers' efforts into finding a solution of a problem, rather than creating of a generalisable and detached formal theory.
 \end{itemize}
-The MAB jsut presented in this section, is formalised \emph{à la Bourbaki} in the next one, and subsequently in the pragmatic way in section~\ref{se:pragmatic_perspective}.
+The MAB just presented in this section, is formalised \emph{à la Bourbaki} in the next one, and subsequently in the pragmatic way in section~\ref{se:pragmatic_perspective}.
 
 % ------------------------------------------------- %
 
+\newpage
 \section{A Bourbakist introduction}
 \label{se:bourbaki_perspective}
 
@@ -157,7 +158,7 @@ the \emph{estimated reward of the action $\omega$ up to time $t$}, for $\omega =
 } as:
 
 \begin{align}\label{def:mathcalQt}
-\mathcal{Q}_t(\omega) = \mathbb{E} \left[ R_{\tau}(k)\mid k = A_{\tau}(\omega), \forall \tau \in \mathcal{I}_t \right]
+\mathcal{Q}_t(\omega) = \mathbb{E} \left[ R_{\tau}(k)\mid k = A_{\tau}(\omega)~~ \forall \tau \in \mathcal{I}_t \right]
 \qquad
 \omega \in \mathcal{A}
 \qquad
@@ -165,7 +166,7 @@ t \in \mathcal{I}_T
 \end{align}
 and therefore
 \begin{align}\label{def:Qt}
-Q_t(k) = \mathbb{E} \left[ \mathcal{R}_{\tau}(\omega)\mid \omega = A_{\tau}^{-1}(k), \forall \tau \in \mathcal{I}_t \right]
+Q_t(k) = \mathbb{E} \left[ \mathcal{R}_{\tau}(\omega)\mid \omega = A_{\tau}^{-1}(k)~~ \forall \tau \in \mathcal{I}_t \right]
 \qquad
 t \in \mathcal{I}_T
 \qquad
@@ -182,7 +183,7 @@ where the mean value is for all the time indexes up to $t$ and where the domain 
 \begin{definition}
     Let the \emph{total reward} $Q_{\infty}: \mathcal{I}_K \rightarrow \mathbb{R}$ be the function
     \begin{align}\label{def:mathcalQinf}
-    Q_{\infty}(k) = \mathbb{E} \left[ \mathcal{Q}_{t}(\omega) \mid \omega = A^{-1}_{t}(k), \forall t \in \mathcal{I}_T \right]
+    Q_{\infty}(k) = \mathbb{E} \left[ \mathcal{Q}_{t}(\omega) \mid \omega = A^{-1}_{t}(k)~~ \forall t \in \mathcal{I}_T \right]
     \qquad
     k \in \mathcal{I}_K
     \end{align}
@@ -197,11 +198,11 @@ So far we have been considering the reward and the total reward for a fixed choi
 \mathcal{I}_K^T = \underbrace{\mathcal{I}_K\times \mathcal{I}_K \times \dots \times \mathcal{I}_K}_{T\text{-times}}
 \end{align*}
 or equivalently a function from $\mathcal{I}_T$ to $\mathcal{I}_K$.
-Definitions \ref{def:mathcalQt} and \ref{def:mathcalQt_simple} are so generalised to $Q_t:\mathcal{I}_K^T \rightarrow \mathbb{R}$ for $t\in\mathcal{I}_{\leq T}$, having defined $\mathcal{I}_{\leq T}$ any interval of positive integers between $1$ and $T$, and
+Definitions \ref{def:mathcalQt} and \ref{def:mathcalQt_simple} are so generalised to $Q_t:\mathcal{I}_K^T \rightarrow \mathbb{R}$ for $t\in\mathcal{I}_{\leq T}$, having defined $\mathcal{I}_{\leq T}$ any interval of positive integers between~$1$ and $T$, and
 \begin{align*}
 Q_t(\mathbf{k}) = \mathbb{E} \left[ \mathcal{R}_{\tau}(\omega)
 \mid
-\omega = A^{-1}_{\tau}(\mathbf{k}_{\tau}), \forall \tau \in \mathcal{I}_t \right]
+\omega = A^{-1}_{\tau}(\mathbf{k}_{\tau})~~ \forall \tau \in \mathcal{I}_t \right]
 \qquad
 \mathbf{k} \in \mathcal{I}_K^T
 \qquad
@@ -211,12 +212,11 @@ and therefore
 \begin{align*}
 Q_{\infty}(\mathbf{k}) = \mathbb{E} \left[ \mathcal{R}_{t}(\omega)
 \mid
-\omega = A^{-1}_{t}(\mathbf{k}_{t}),  \forall t \in \mathcal{I}_T \right]
+\omega = A^{-1}_{t}(\mathbf{k}_{t})~~ \forall t \in \mathcal{I}_T \right]
 \qquad
 \mathbf{k} \in \mathcal{I}_K^T
 \end{align*}
-The mean value computed with a Lebesgue measure, over the Borel space generated as the sets of images
-\footnote{
+The mean value computed with a Lebesgue measure, over the Borel space generated as the sets of images\footnote{
     We consider the definition under the accordance with the axiom of choice as in the ZFC axiomatic set theory, in order to avoid \emph{virages dangereux}. See also Bourbaki~\cite{bourbaki2004theory} and \cite{takeuti1982classes}.
 } $\mathcal{R}_t(\omega)$ for all $\omega \in \mathcal{A}$ can be reformulated as:
 \begin{align*}
