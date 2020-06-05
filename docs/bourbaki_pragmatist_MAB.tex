@@ -66,24 +66,28 @@ DRAFT}
 
 % ------------------------------------------------- %
 \begin{abstract}
-In these pages we introduce the well known multi-armed bandits problem and we propose a solution with two different pedagogical approaches that we titled Bourbachist and pragmatic. The Bourbakist way is concerned with the mathematical foundation upon which a formal solution is derived in the shape of an axiomatic structure. In contrast, the pragmatic approach aims at finding the best algorithmic solution, and to expose it with the bare minimum mathematical formalism.
-After the proposed solutions, the article ends with a critical note underlying the advantages and disadvantages of each exposition. \\
+In these pages are aimed to introducing the well known multi-armed bandits problem. It moves towards a solution via two different pedagogical approaches, here titled \emph{Bourbachist} and \emph{pragmatic}. The Bourbakist way is concerned with the mathematical foundation upon which a formal solution is shaped into an axiomatic structure. In contrast, the pragmatic approach provides an algorithmic solution, and exposes it with the bare minimum mathematical formalism.
+The manuscript ends with a critical note underlying the advantages and disadvantages of each exposition. \\
 
 \noindent
-If you came across this article while searching for an introduction to the multi-armed bandit problem, and not a methodological comparison, you may still find the introduction of section~\ref{se:pragmatic_perspective} useful. The code to create the figures and run a range of solutions can be found at \href{https://github.com/SebastianoF/multi-armed-bandits-testbed}{https://github.com/SebastianoF/multi-armed-bandits-testbed}.
+If you came across this article while searching for an introduction to the multi-armed bandit problem, and not interested into the methodological comparison, please consider only section~\ref{se:pragmatic_perspective}. The code to create the figures and run a range of solutions can be found at \href{https://github.com/SebastianoF/multi-armed-bandits-testbed}{https://github.com/SebastianoF/multi-armed-bandits-testbed}.
 \end{abstract}
 
 
 % ------------------------------------------------- %
 \section{Multi-armed bandits problem}
 \label{se:intro}
-Imagine you have to repeatedly choose between $K$ different possibilities. All choices have the same cost, though each may or may not provide you with a cash reward. The reward is drawn from a probability distribution, \emph{unknown} to you and different for every choice.
+Imagine you have to repeatedly choose between $K$ different options. All options have the same cost, though each may or may not provide you with a reward. The probability of having a reward fgiven the option chosen has an \emph{unknown} distribution, and it may be different for every choice.
 
-The problem of finding a strategy to maximise the reward in this setting is called multi-armed bandits (MAB) after the situation of playing repeatedly at a row of $K$ slot machines (or single-armed bandit, as they have been called). If you have an initial amount of money of $\$1000$ and a costs of $\$1$ for each draw, than you have $1000$ attempts to balance an exploration phase when estimating the unknown distributions of each arm, with an exploitation phase, when the acquired knowledge is used for a gain the highest reward\footnote{Thompson~\cite{thompson1933likelihood} provides an early approach where the two arms are two medical treatments, Bellman~\cite{bellman1956problem} where the problem is formulated in a Bayesian perspective for two arms, and the more recent Sutton~\cite{sutton2018reinforcement}, Chapter~1, where the problem introduces reinforcement learning.}.
+The problem of finding a strategy to maximise the reward in this setting is called multi-armed bandits (MAB). This name is coined after the situation of playing repeatedly at a row of $K$ slot machines, that are sometimes called single-armed bandit. If you have an initial amount of money to invest in the game, let's say $\$1000$, and each draw costs $\$1$, this gives you $1000$ attempts to balance an \emph{exploration} phase with an \emph{exploitation} phase. In the exploration phase the goal is to find an estimate for the unknown distributions of each arm. The exploitation phase aims at using the acquired knowledge to gain the highest possible reward in the face of uncertainty\footnote{
+    Thompson~\cite{thompson1933likelihood} provides an early approach where the two arms are two medical treatments, Bellman~\cite{bellman1956problem} where the problem is formulated in a Bayesian perspective for two arms, and the more recent Sutton~\cite{sutton2018reinforcement}, Chapter~1, where the problem introduces reinforcement learning.
+}.
 
-The MAB problem can arise from wider contexts, such as clinical or pre-clinical trials, control engineering, mechanical and software testing, stock market investments, behavioural modelling, dynamic pricing, and many more\footnote{A survey with a list of applications of the main algorithms solving the MAB problem is proposed by Bouneffouf~\cite{bf2019survey}.}.
+The MAB problem arises in contexts that are more interesting than gambling, for which we do not advocate. These contexts can be clinical or pre-clinical trials, control engineering, mechanical and software testing, stock market investments, behavioural modelling, dynamic pricing, and many more\footnote{
+    A survey with a list of applications of the main algorithms solving the MAB problem is proposed by Bouneffouf~\cite{bf2019survey}.
+}.
 
-Goal of these pages is to introduce the problem and to provide a solution with two different methodologies:
+The goal of these pages is to introduce the problem and to provide a solution with two different methodologies:
 \begin{itemize}
     \item[$\circ$] \emph{Bourbakist.} This approach is named after the collective pseudonym of the group of French mathematicians who have developed it in 1934. Historically, the goal of Bourbaki was to re-write one of the most widely used analysis textbook of the time, the Goursat’s \emph{Cours d'analyse mathématique}, that was considered inadequate as some counterexamples had been overlooked\footnote{A brief history of the Bourbaki and its impact in France and the rest of the world was proposed by Marmier~\cite{marmier2014idea}.}. To reach this goal and to aim at extending the possible generalisations of the problem, while keeping at the same time possible counterexamples under control also in other branches of mathematics, Bourbaki favours an axiomatic foundation based on set theory. One of the main feature characterizing this pedagogical style is that exercises, examples and the history motivating the given problem are omitted, to leave space only to the axiomatic structure.
     \item[$\circ$] \emph{Pragmatic.} In contrast to the Bourbachist approach, the pragmatic approach reduces the formalisation to its bare minimum, orienting the readers' efforts into finding a solution of a problem, rather than the creation of a generalisable formal theory.
