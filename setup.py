@@ -5,7 +5,6 @@ import os
 from setuptools import Command, find_packages, setup
 
 
-
 def clean_requirements_list(input_list):
     reqs = [v.split("#")[0].strip() for v in input_list]
     return [v for v in reqs if len(v) > 0 and not v.startswith("-")]
@@ -28,7 +27,6 @@ with open("requirements/requirements-dev.txt") as f:
 
 requirements = clean_requirements_list(requirements)
 requirements_dev = clean_requirements_list(requirements_dev)
-
 
 
 setup(
