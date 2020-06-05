@@ -2,9 +2,13 @@
 # -*- coding: utf-8 -*-
 import os
 
-from pip._internal.network.session import PipSession
-from pip._internal.req import parse_requirements
 from setuptools import Command, find_packages, setup
+
+
+
+def clean_requirements_list(input_list):
+    reqs = [v.split("#")[0].strip() for v in input_list]
+    return [v for v in reqs if len(v) > 0 and not v.startswith("-")]
 
 
 class Cleaner(Command):
@@ -15,19 +19,16 @@ class Cleaner(Command):
 with open("README.md") as f:
     readme = f.read()
 
-requirements = [
-    str(requirement).split()[0]
-    for requirement in parse_requirements(
-        "requirements/requirements.txt", session=PipSession()
-    )
-]
+with open("requirements/requirements.txt") as f:
+    requirements = f.readlines()
 
-requirements_dev = [
-    str(requirement).split()[0]
-    for requirement in parse_requirements(
-        "requirements/requirements.txt", session=PipSession()
-    )
-]
+with open("requirements/requirements-dev.txt") as f:
+    requirements_dev = f.readlines()
+
+
+requirements = clean_requirements_list(requirements)
+requirements_dev = clean_requirements_list(requirements_dev)
+
 
 
 setup(
