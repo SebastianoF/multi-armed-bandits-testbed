@@ -56,8 +56,10 @@ linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
 \newtheorem{definition}{Definition}[section]
 
 %opening
-\title{Bourbaki vs Pragmatism \\ A methodological comparison through the multi-armed bandits problem \\
-DRAFT}
+\title{Bourbaki vs Pragmatism \\ A methodological comparison through the multi-armed bandits problem 
+% \\
+% DRAFT
+}
 \author{Sebastiano Ferraris\footnote{sebastiano.ferraris@gmail.com}}
 
 \begin{document}
@@ -66,7 +68,7 @@ DRAFT}
 
 % ------------------------------------------------- %
 \begin{abstract}
-These pages are aimed to introducing the well known multi-armed bandits problem. It moves towards a solution via two different pedagogical approaches, here titled \emph{Bourbachist} and \emph{pragmatic}. The Bourbakist way is concerned with the mathematical foundation upon which a formal solution is shaped into an axiomatic structure. In contrast, the pragmatic approach provides an algorithmic solution, and exposes it with the bare minimum mathematical formalism.
+These pages are aimed to introducing the multi-armed bandits problem with two different pedagogical approaches, here called \emph{Bourbachist} and \emph{pragmatic}. The Bourbakist way is concerned with the mathematical foundation upon which a formal solution to the problem is shaped into an axiomatic structure. In contrast, the pragmatic approach provides an algorithmic solution underpinned by the bare minimum mathematical formalism.
 The manuscript ends with a critical note underlying the advantages and disadvantages of each exposition. \\
 
 \noindent
@@ -77,26 +79,25 @@ If you came across this article while searching for an introduction to the multi
 % ------------------------------------------------- %
 \section{Multi-armed bandits problem}
 \label{se:intro}
-Imagine you have to repeatedly choose between $K$ different options. All options have the same cost, though each may or may not provide you with a reward. The probability of having a reward fgiven the option chosen has an \emph{unknown} distribution, and it may be different for every choice.
+Imagine you have to repeatedly choose between $K$ different options. All options have the same cost, though each may or may not provide you with a reward. The probability of having a reward has an \emph{unknown} distribution, that may be different for every choice and that can vary over time.
 
-The problem of finding a strategy to maximise the reward in this setting is called multi-armed bandits (MAB). This name is coined after the situation of playing repeatedly at a row of $K$ slot machines, that are sometimes called single-armed bandit. If you have an initial amount of money to invest in the game, let's say $\$1000$, and each draw costs $\$1$, this gives you $1000$ attempts to balance an \emph{exploration} phase with an \emph{exploitation} phase. In the exploration phase the goal is to find an estimate for the unknown distributions of each arm. The exploitation phase aims at using the acquired knowledge to gain the highest possible reward in the face of uncertainty\footnote{
+This setting is called multi-armed bandits (MAB) after the situation of playing repeatedly at a row of $K$ slot machines, sometimes called single-armed bandit. If you have an initial amount of money to invest in the game, let's say $\$1000$, and each draw costs $\$1$, this gives you $1000$ attempts to play and to balance an \emph{exploration} phase with an \emph{exploitation} phase. In the exploration phase the goal is to find an estimate for the unknown distributions of each arm. On the other hand exploitation phase aims at using the acquired knowledge to gain the highest possible reward in the face of uncertainty\footnote{
     Thompson~\cite{thompson1933likelihood} provides an early approach where the two arms are two medical treatments, Bellman~\cite{bellman1956problem} where the problem is formulated in a Bayesian perspective for two arms, and the more recent Sutton~\cite{sutton2018reinforcement}, Chapter~1, where the problem introduces reinforcement learning.
 }.
 
-The MAB problem arises in contexts that are in general more interesting than gambling, for which we tend to not advocate. These contexts are for example clinical or pre-clinical trials, control engineering, mechanical and software testing, stock market investments, behavioural modelling, dynamic pricing, and many more\footnote{
+The MAB problem arises in contexts that are in general more interesting than gambling, such as clinical or pre-clinical trials, control engineering, mechanical and software testing, stock market investments, behavioural modelling, dynamic pricing, and more\footnote{
     A survey with a list of applications of the main algorithms solving the MAB problem is proposed by Bouneffouf~\cite{bf2019survey}.
 }.
 
-The goal of these pages is to introduce the problem and to provide a solution with two different approaches:
+The goal of these pages is to provide a solution to the MAB problem with two different approaches:
 \begin{itemize}
-    \item[$\circ$] \emph{Bourbakist approach.} Named after the collective pseudonym of the group of French mathematicians who have developed it in 1934, has as goal a strict formalisation of the problem form a set theoretical perspective. Historically, the goal of Bourbaki was to re-write one of the most widely used analysis textbook of the time, the Goursat’s \emph{Cours d'analyse mathématique}, that was considered inadequate as some counterexamples had been overlooked\footnote{A brief history of the Bourbaki and its impact in France and the rest of the world was proposed by Marmier~\cite{marmier2014idea}.}. To reach this initial goal, the group of mathematicians extended the formalised to a range of generalisations, while keeping possible counterexamples a bay with a strong attention to the foundations of mathematics. The same approach had been extended by Bourbaki from analysis to other branches of mathematics, keeping the same axiomatic style. One of the main feature characterizing this pedagogical style is the following: exercises, examples and the history motivating the given problem are entirely omitted, to leave space only to the axiomatic structure, as it had been created out of thin air and for no clear reason.
-    \item[$\circ$] \emph{Pragmatic approach.} In contrast to the Bourbachist approach, the pragmatic one reduces the formalisation to its bare minimum. It orientates the readers' efforts into finding a solution of a problem, rather than creating of a generalisable and detached formal theory.
+    \item[$\circ$] \emph{Bourbakist approach.} Named after the collective pseudonym of the group of French mathematicians who have developed it in 1934, this approach has as goal a strict formalisation of a mathematics form a set theoretical perspective. Historically, the goal of Bourbaki was to re-write one of the most widely used analysis textbook of the time, the Goursat’s \emph{Cours d'analyse mathématique}, that was considered inadequate as some of the counterexamples had been overlooked\footnote{A brief history of the Bourbaki and its impact in France and the rest of the world was proposed by Marmier~\cite{marmier2014idea}.}. To reach this initial goal, the group of mathematicians rewrote the mathematical analysis theory from a more formal point of view, which allowed for a wider range of generalisations, while keeping possible counterexamples a bay. The same approach had been extended by Bourbaki from analysis to other branches of mathematics, keeping the same axiomatic style. One of the main of Bourbakis feature is the following: exercises, examples and the history motivating the given problem are entirely omitted, to leave space only to the axiomatic structure.
+    \item[$\circ$] \emph{Pragmatic approach.} In contrast to the Bourbachist approach, the pragmatic one reduces the formalisation to its bare minimum. It orientates the readers' efforts into finding a solution of a problem, rather than creating of a generalisable and foundational formal theory.
 \end{itemize}
 The MAB just presented in this section, is formalised \emph{à la Bourbaki} in the next one, and subsequently in the pragmatic way in section~\ref{se:pragmatic_perspective}.
 
 % ------------------------------------------------- %
 
-\newpage
 \section{A Bourbakist introduction}
 \label{se:bourbaki_perspective}
 
@@ -261,11 +262,11 @@ Under the light of theorem~\ref{th:bourbaki}, and with the given definitions, we
 
 \subsection*{Creating a Benchmark}
 
-To have a ground truth of the multi-armed bandit problem where to test a range of algorithms and parameters, we consider a benchmark dataset where the distribution of each arm is known.
-In the particular case we are dealing with, we assume each arm normally distributed, with mean sampled from a uniform distributions in the interval $[-3, 3]$ and the standard deviation sampled again from a uniform distribution on the interval $[2, 3]$. A representation of these distribution is plotted in
+The first problem to solve is to have a playground where a ground truth of the multi-armed bandit problem is known. With this tool, where to test a range of algorithms and parameters, we consider a benchmark dataset and we can test a range of algorithms.
+We introduce the tool in a particular case, assuming each arm normally distributed, with mean sampled from a uniform distributions in the interval $[-3, 3]$ and the standard deviation sampled from a uniform distribution on the interval $[2, 3]$. A representation of these distribution is plotted in
 figure~\ref{fig:volin_plot}.
 
-If the studied case is modelled with a different distribution, what is said in this section is still applicable simply adapting this benchmark to the intended distribution.
+If the studied case is modelled with a different distribution, what is said in this section is still applicable simply adapting this benchmark to the intended target.
 
 \begin{figure}[h]
     \hspace{-1.5cm}
@@ -275,9 +276,10 @@ If the studied case is modelled with a different distribution, what is said in t
 \end{figure}
 
 \subsection*{Encoding the problem}
-For the player, the MAB is a reward for a given arm index $k$, pulled at time $t$. We encode the rewards in a $T\times K$ \emph{reward matrix} $q$. In our example $T=1000$ is the time we will be pulling an arm and $K=10$ is the number of arms. The element $q_{t, k}$ represents the reward collected for having pulled the arm $k$ at the time-point $t$. As we can pull only one arm at a time, there is only one known value for each column of the matrix. All the other values are initialised to nan.
+The player gains a reward for after pulling an arm index $k$, for each time point $t$. We encode the rewards in a $T\times K$ \emph{reward matrix} $q$. In our example $T=1000$ is the time we will be pulling an arm and $K=10$ is the number of arms. The element $q_{t, k}$ represents the reward collected for having pulled the arm $k$ at the time-point $t$. As we can pull only one arm at a time, there is only one known value for each column of the matrix. All the other values are initialised to nan.
 
-We also consider the non-stationary case, where the means and the standard deviations of the arms distributions represented in figure~\ref{fig:volin_plot} are not constant over time. We encode  the MAB with the matrices $\mu$ and $\sigma$ having shape $T_{\text{arm}} \times K$ and providing the mean and standard deviation of the distribution of the arm $k$ at time $t$.
+The multi-armed bandit is defined by two vectors $\mu$ and $\sigma$, where $\mu_k$ is the mean and $\sigma_k$ is the standard deviation of the distribution of the arm $k$.
+To consider the non-stationary case, where the means and the standard deviations of the arms distributions represented in figure~\ref{fig:volin_plot} are not constant over time, we turns the vectors $\mu$ and $\sigma$ into matrices of size $T_{\text{arm}} \times K$, providing the mean and standard deviation of the distribution of the arm $k$ at time $t$.
 
 The rewards can be accumulated for more or less numerous time points than $T_{\text{arm}}$, as the distributions of the arms can repeat. If $T_{\text{arm}}=1$ then the problem is stationary, and if $T=30$ and $T_{\text{arm}}=15$ then each arm $k$ will be looping over its parameters $\mu_{:, k}$ and $\sigma_{:, k}$ twice, according to:
 \begin{align*}
@@ -289,15 +291,16 @@ where $\text{norm}(\mu, \sigma)$ is the normal distribution of location $\mu$ an
 
 \subsection*{$\epsilon$-greedy algorithms}
 
-The family of $\epsilon$-greedy algorithms to solve the MAB problem is based on the idea that if your bad luck is consistent, probably it is not just bad luck. The multi armed bandit is approached alternating between a phase of exploration (proportional to $\epsilon$ times), and a phase of exploitation (proportional to $1 - \epsilon$ times). In the first phase, the player acquires informations about the structure of the problem regardless the immediate gain. In the second phase the informations gained are used to maximize the reward\footnote{
+After encoding the MAB problem, we introduce a family of algorithms to solve it.
+The $\epsilon$-greedy algorithms are based on the idea that if your bad luck is consistent, probably it is not just bad luck. The player plays alternating between a phase of exploration (proportional to $\epsilon$ times), and a phase of exploitation (proportional to $1 - \epsilon$ times). In the first phase, the player acquires information about the structure of the problem regardless the immediate gain. In the second phase the information gained are exploited to maximize the reward\footnote{
     An accurate historical introduction of this family of algorithms can be found at the end of chapter~1 of~\cite{sutton2018reinforcement}.
 }.
 
 The basic version of the $\epsilon$-greedy algorithm (or \emph{naive $\epsilon$-greedy}), selects a random arm when exploring and the arm that had obtained the best reward so far when exploiting. This can happen after an initial phase of pure exploration, where only random arms are pulled. An example of the application of this algorithm is shown in figure~\ref{fig:step_32}.
 
-A more sophisticated version that the naive $\epsilon$-greedy is the \emph{best reward $\epsilon$-greedy}. In this case, instead of selecting any random arm in the exploration phase, we weight the random selection using the rewards obtained so far, and excluding the arm with the highest reward. With this strategy we will be more likely to explore the arms that have provided good rewards in the past, and to refrain from spending money over an arm that have never provided a reward.
+A more sophisticated version that the naive $\epsilon$-greedy is the \emph{best reward $\epsilon$-greedy}. In this case, instead of selecting any random arm in the exploration phase, we weight the random selection using the rewards obtained so far, excluding the arm with the highest reward. With this strategy we will be more likely to explore the arms that have provided good rewards in the past, and to refrain from spending money over an arm that have never provided any gain at all.
 
-A third algorithm is the \emph{least explored $\epsilon$-greedy}. In the exploratory phase of this algorithm we increase the probability of falling over the least explored arms, instead of the one providing the highest reward. This method and the previous one are both aimed at preventing from getting stuck in a local minima, or an arm that is good enough to have a gain, but that is not the optimal one.
+A third algorithm is the \emph{least explored $\epsilon$-greedy}. In the exploratory phase of this algorithm we increase the probability of falling over the least explored arms, instead of the one providing the highest reward. This method and the previous one are both aimed at preventing from getting stuck in a local minima, i.e. believing that the arm we are hitting is the best one, as it happens to provide a gain, though it is not the one with the optimal gain.
 
 \begin{figure}[h]
     \hspace{-1cm}
@@ -306,30 +309,30 @@ A third algorithm is the \emph{least explored $\epsilon$-greedy}. In the explora
     \label{fig:step_32}
 \end{figure}
 
-The fourth algorithm here presented is the \emph{upper confidence bound $\epsilon$-greedy algorithm} \cite{sutton2018reinforcement}, where the estimated optimal arm at time $t$, is given by
+The fourth algorithm here presented is the \emph{upper confidence bound $\epsilon$-greedy algorithm} \cite{sutton2018reinforcement}. In this algorithm the estimated optimal arm at time $t$, is given by
 \begin{align}\label{eq:upper_confidence_formula}
 \hat{k}_t = \argmax_{k} \left[ \hat{\mu}(k) + \lambda \sqrt{ \frac{\ln(t)}{ N_{t}(k) }  } ~\right]
 \end{align}
 where $N_{t}(k)$ is the number of times the armed $k$ had been pulled up to the time $t$, which can be easily computed from $q$. The regularisation term weights the uncertainty in the estimate, correcting for underestimation of the estimated mean.
 
-Note the player will receive $0$ when the sampled reward is below $0$. This means that the estimated mean does not correspond to the one of the original distribution, though the result will be conservative in having an observed average close to zero for distribution whose mean is below the zero. The reader should resist the temptation of estimating the arm using the mode instead of the average in equation~\ref{eq:upper_confidence_formula}. In fact if the standard deviations are very different across arms, a very inconvenient arm may be identified as the optimal one.
+Note that in this version of the game, the player will receive $0$ when the sampled reward is below $0$. This means that the estimated mean does not correspond to the one of the original distribution, though the result will be conservative in having an observed average close to zero for distribution whose mean is below the zero. The reader should resist the temptation of estimating the arm using the mode instead of the average in equation~\ref{eq:upper_confidence_formula}. In fact if the standard deviations are very different across arms, a very inconvenient arm, with the average below the zero, may be identified as the optimal one.
 
-The performance of these algorithms are all depending upon problem distribution, and the optimal one should be found empirically via simulation. Providing a benchmarking for a general case would not be useful here. What provides the constraints to make the case less general, is based on the instance of the problem to which the algorithms are applied. A platform where to make further experiments is open-sourced at~\href{https://github.com/SebastianoF/multi-armed-bandits-testbed}{https://github.com/SebastianoF/multi-armed-bandits-testbed}.
+The performance of these algorithms are all depending upon the problem's distributions, and the optimal one should be found empirically via simulation. Providing a benchmarking for a general case would not be useful here. What provides the constraints to make the case less general, is based on the instance of the problem to which the algorithms are applied. A platform where to make further experiments is open-sourced and can be found at~\href{https://github.com/SebastianoF/multi-armed-bandits-testbed}{https://github.com/SebastianoF/multi-armed-bandits-testbed}.
 
 
 % ------------------------------------------------- %
 \section{Comparing the two methodological approaches}
 \label{se:outro}
 
-In this article, we considered the example of the multi-armed bandit problem to show two different methodological approaches towards its solution.
+In these pages, we considered the example of the multi-armed bandit problem to show two different methodological approaches towards its solution.
 
 The Bourbaki presentation in section~\ref{se:bourbaki_perspective} is based on an axiomatisation of the problem and it evolves from a functional and set-theoretical perspective. It focuses on the symbolism, and according to the Bourbachist tradition, it provides no examples or algorithms, as the only connecting point between the theory and the given problem is the axsiomatic setting.
 
 Assuming that this approach is correct (excluding typos) and coherent (excluding Goedel\footnote{
-    To this regard, in the article \emph{the ignorance of Bourbaki}~\cite{mathias1992ignorance}, Mathias noticed that the Bourbaki attempt of grounding the whole corpus of mathematics in an axiomatic sense have happened after, and with a conscious effort to ignore the Goedel incompleteness theorems.
+    In the article \emph{The ignorance of Bourbaki}~\cite{mathias1992ignorance} Mathias noticed that the Bourbaki attempt of grounding the whole corpus of mathematics in an axiomatic sense have happened after, and with a conscious effort to ignore the Goedel incompleteness theorems.
 }), it is easy to see that it had the effect of turning a relatively simple problem into a complicated maze of interrelated concepts, having mainly the consequence of pushing the reader away from the practical solution.
 
-On the contrary, the pragmatic approach of section~\ref{se:pragmatic_perspective} shows that there is no need of taking a functional perspective and to connect it to several mechánemas to prevent counterexamples (Borel spaces, Lebsgue Measures...) developed in entirely different contexts, and no need to extend the bibliography beyond one ot two resources. Borel spaces and any element of measure theory are not just irrelevant in aiming at a solution, they are also reducing any possible creativity when facing a slightly different problem, as the variation of the unknown distributions over time. If in doubt on this point the reader is invited to continue the formalisation in this direction, to see how many pages and new definitions and diagrams are needed. We also challenge the reader to implement the code to solve the problem having only the functional and algebraic definitions at hand rather than relying on the matrix point of view.
+On the contrary, the pragmatic approach of section~\ref{se:pragmatic_perspective} shows that there is no need of taking a functional perspective and to connect it to several devices to prevent counterexamples (Borel spaces, Lebsgue Measures...) developed in entirely different contexts, and no need to extend the bibliography beyond one ot two resources. Borel spaces and any element of measure theory are not just irrelevant in aiming at a solution, they are also hindering creativity when facing a slightly different problem, as for example one with different types of distributions over time, or one where not all the arms are available at any time points. If in doubt the hindrance of creativity, the reader is invited to continue the formalisation in this direction, to see how many pages and new definitions and diagrams are needed, if following the Bourbachist approach. We also challenge the reader to implement the code to solve the problem having only the functional and algebraic definitions at hand rather than relying on the matrix point of view.
 
 %None of the given definitions in the Bourbaki approach had provided any hints on how to really solve the problem, in a numerical sense, as, in conformity with the Bourbaki style, no examples had been provided.
 
@@ -337,14 +340,14 @@ On the contrary, the pragmatic approach of section~\ref{se:pragmatic_perspective
 
 Certainly the example provided is biased by the fact that they are the best approximation of a Bourbaki approach and of a pragmatic approach that the author could attain.
 
-To repair the damage, we wish to point at the numerous cases of practical problems, whose pragmatic approach had been overformalised in a similar fashion\footnote{
+To repair the damage, we wish to point at the numerous cases of practical problems, whose pragmatic approach had been overly formalised in a similar fashion\footnote{
     Or \emph{assiomattisation}, as Bruno de Finetti~\cite{de2008bruno} would have said playing on the Italian word \emph{matti}, meaning crazy.
-}. These are all useful case-studies, in particular for anyone who may believe that the author had been overzealous in writing section~\ref{se:bourbaki_perspective} to give on purpose a negative light upon the Bourbaki style.
+}. These may constitute a collection of useful case-studies, in particular for anyone who may believe that the author had been overzealous in writing section~\ref{se:bourbaki_perspective} to give on purpose a negative light upon the Bourbaki style.
 
-The most notable example belongs to the domain of optimal transport theory. From being a pragmatic tool of solve a class of optimisation problems, it had become a $500$ pages book underpinned by a great amount of measure theory and Lebesgue spaces, perfectly irrelevant to solve any instance of an optimal transport problem, when the reader will have to face one. Comparing one of the original optimal transport theory introduction, for example the one by Hitchcock~\cite{hitchcock1941distribution}, with the formalised version by Villani~\cite{villani2003topics} it is possible to see the Bourbachisation impact. The first one is easy to read, understand, implement and possibly extend in several directions by anyone having an high school mathematical education. The second one is a seemingly uncreated maze of unassailable interlinked concepts, requiring few years of academic studies only to grasp the first few pages, with no advantages in finding a numerical solution to the problem. %It is almost impossible to be extended in any direction that a slightly different initial problem arising from practical need may pose, and it leaves no clarification whatsoever about why this perspective should be preferred upon the one proposed 60 years before. %Not surprisingly, a recent evolution of the OT by Patel~\cite{patelalternate} is rooted in the pragmatic approach, and does not even cite the Villani formalisation.
+The most notable example belongs to the domain of optimal transport theory. From being a pragmatic tool of solve a class of optimisation problems, it had become a $500$ pages book underpinned by a great amount of measure theory and Lebesgue spaces, perfectly irrelevant to solve any instance of an optimal transport problem, when the reader will have to face one. Comparing one of the original optimal transport theory introduction, for example the one by Hitchcock~\cite{hitchcock1941distribution}, with the formalised version by Villani~\cite{villani2003topics} it is possible to see the Bourbachisation's impact. The first one is easy to read, understand, implement and possibly extend in several directions by anyone having an high school mathematical education. The second one is a seemingly uncreated maze of unassailable interlinked concepts, requiring few years of academic studies only to grasp the first few pages, with no advantages in finding a numerical solution to the problem. %It is almost impossible to be extended in any direction that a slightly different initial problem arising from practical need may pose, and it leaves no clarification whatsoever about why this perspective should be preferred upon the one proposed 60 years before. %Not surprisingly, a recent evolution of the OT by Patel~\cite{patelalternate} is rooted in the pragmatic approach, and does not even cite the Villani formalisation.
 
-A second notable example of the Bourbachisation is in the domain of medical image registration. Here the aim is to solve the problem of finding the non-rigid deformation or metamorphosis between anatomies. The problem originates from the anatomical studies of shapes growth by D'Arcy Thompson~\cite{d1942growth} and pragmatically extended amongst others in Modersitzki~\cite{modersitzki2004numerical}. The Bourbaki over-formalized branch can be found in works like~\cite{younes2010shapes}, where we have to wait for 12 chapters before seeing what had motivated the formal mathematical theory developed until there.
-In this case too, there is no explanation of what are the advantages of the axiomatic approach respect to the pragmatic one, appeared half a century earlier.
+A second notable example of the Bourbachisation is in the domain of medical image registration. In medical image registration the aim is to solve the problem of finding the non-rigid deformation or metamorphosis between anatomies. The problem originates from the anatomical studies of shapes growth by D'Arcy Thompson~\cite{d1942growth} and pragmatically extended amongst others in Modersitzki~\cite{modersitzki2004numerical}. The Bourbaki over-formalized branch can be found in works like~\cite{younes2010shapes}, where we have to wait for 12 chapters before seeing what had motivated the formal mathematical theory developed until there.
+In this case too, there is no explanation of what are the advantages of the axiomatic approach respect to the pragmatic one, which appeared half a century earlier.
 
 The reader may say, for this specific case, that the pragmatic approach \cite{modersitzki2004numerical} does not use neither diffeomorphisms nor reproducing Kernel Hilbert spaces. And this is true, although it is not proved that these two mathematical devices can provide more accurate results than their pragmatic counterparts when implemented in practice. Instead it is true that they are computationally slower.
 
@@ -353,7 +356,7 @@ The reader may say, for this specific case, that the pragmatic approach \cite{mo
 
 There are other examples in the literature where we can find a comparison between the Bourbaki / pragmatic approach, such as algebraic topology, fuzzy logic and topological data analysis. Their detachment from the practical set of problems that had them originated, had turned them into convoluted axiomatic buildings, where it is not possible to find any breakthrough result, or even practical help, in the perspective of solving the initially given problem.
 
-It is at this point evident the existence of a pattern in the process of Bourbachisation: a problem solved by more than 50 years, and often in a very elegant and practical way, was taken under the wing of the academic axiomatisers and transformed into a list of definitions and theorems where no echo of the original problem motivating the theory can be found.
+It is at this point evident the existence of a pattern in the process of Bourbachisation: a problem solved by more than 50 years, and often in a very elegant and straightforward way, was taken under the wing of the academic axiomatisers and transformed into a list of definitions and theorems where no echo of the original problem motivating the theory can be found.
 
 %Remarkably, also Einstein had noted that \emph{Since the mathematicians have invaded the theory of relativity, I do not understand it myself any more} \cite{schilpp1951albert}. And it is difficult to find what are the new results that the Bourbaki formalisation have added to the theory of relativity.
 
@@ -376,13 +379,12 @@ It is true that, despite many have express their negative view about the Bourbac
     To this regard, the active reader is welcome to copy-paste section~\ref{se:bourbaki_perspective} and to extend it, in the Bourbachist style, into an article whose title could be something like \emph{The multi-armed bandits for the working mathematician}, to see how this would be received by the mathematical community.
 }.
 
-Very often, the over-axiomatization of a theory developed outside academia by scientists chasing practical problems, had received more recognitions than the original work, as in particular the Fields Medal.
+Very often, the over-axiomatization of a theory developed outside academia by scientists chasing practical problems, had received more recognitions than the original work.
 Highly valued and cited uber-bourbachists works are for example Grotedniek~\cite{grothendieck2011some} and the already mentioned four volumes of Mochizuki~\cite{mochizuki2012inter}\footnote{
     It is also interesting to notice at this point the similarity between this work and the outcome of the randomized generator of maths paper at \href{https://thatsmathematics.com/mathgen/}{thatsmathematics.com/mathgen/}.
 }.
 
-
-Is it then really true that the Bourbachisation has no practical use? Below are itemized all the reasons that the author could find to justify the success of the Bourbaki school.
+For this reason, it is not true to claim that the Bourbachisation has no practical use. Below are itemized some points in favour of this approach, to justify the success of the Bourbaki school of thought.
 
 \begin{itemize}
     \item[$\circ$] \emph{The outcome of the Bourbaki approach is inaccessible to neophytes}\footnote{
@@ -391,10 +393,10 @@ Is it then really true that the Bourbachisation has no practical use? Below are 
 
     \item[$\circ$] \emph{The Bourbaki approach is good for the ego}. The pleasure of owning an elegant notebook filled with mathematical formulae written with a well thought after handwriting is a most sublime one. Unfortunately, after empirical evidence we can assure that this very same pleasure is a great obstacle in acquiring knowledge. The notebook owner, when facing a problem, will inevitably tend to abandon any scientific method and will bend the problem to the behold solution. To this regard, it would be interesting to measure scientifically the dopamine level of group of mathematician trying to solve a difficult problem respect to a group tweaking axioms to make the theory more abstract.
 
-    \item[$\circ$] \emph{Bourbachism detaches completely mathematics from reality}, so it makes impossible to have any objective measurement of the quality or value of the work produced, besides the readers' opinion. This is a very unscientfic feature, and again a very useful one for whoever must defeat  more skilled competitors within the academic environment.
+    \item[$\circ$] \emph{Bourbachism detaches mathematics from reality}, so it makes impossible to have any objective measurement of the quality or value of the work produced, besides the readers' opinion. This is a very unscientfic feature, and again a very useful one for whoever must defeat  more skilled competitors within the academic environment.
 
-    The advocates of the superiority of pure mathematics\footnote{
-        It is worth noticing that the academic dichotomy pure/applied maths is something that can not be found in mathematics before Bourbaki. The reader is invited to classify any of the work of Archimedes, Gauss, Euler or any other great names in the history of pre-modern mathematics as pure or applied mathematics with no ambiguities.
+    The advocates of the superiority of \emph{pure mathematics}\footnote{
+        It is worth noticing that the academic dichotomy pure/applied maths is something that can not be found in mathematics before Bourbaki. The reader is invited to classify any of the work of Archimedes, Gauss, Euler or any other great names in the history of pre-modern mathematics as \emph{pure} or \emph{applied} with no ambiguities.
     } have even arrived at accusing the mathematics that have anything to do with reality of being more prone of making mistakes\footnote{
         Gros~\cite{gros2019masters} had found how even professional mathematicians can be mislead by reality. And they had leveraged on this most surprising fact, for advocating to increase the detachment. After concluding that \lq\lq [...] we can't reason in a totally abstract manner\rq\rq, instead of suggesting to take into account the reality in the mathematical practice they suggested a move towards the opposite direction: \lq\lq We have to detach ourselves from our non-mathematical intuition\rq\rq~\cite{gros2019sciencedaily}.
     }. We can be reassured by the fact that under every circumstance, the reality is adamant to persist in being what it is, and it is at this point an interesting exercise to imagine someone advocating for having medicine and engineering detached from reality.
@@ -422,15 +424,15 @@ If we wanted to divide the mathematical approaches into two, we would consider t
     An example of this approach is the proof of the formula for the parabolic segment's area by Archimede~\cite{boyer2011history} and \cite{strogatz2019infinite}.
 }. To neither the Pythagorean nor the Archimedean belongs the dichotomy between pure and applied mathematics, as there is no concept of \emph{pure} in the sense of detached from the reality, being the reality always the centre of the investigation.
 
-Neither the Bourbachist vision does belong to these two mathematical schools: it is neither oriented towards finding hidden connections between apparently separated phenomenon, nor towards solving practical problems. The manipulation of abstract structure arising from the need of finding a proof that is general enough, in the Bourbachisation had shifted its aim: from searching for a solution, it had started wandering around the creation of abstract buildings where anything that is coherent with the initial axioms can be added, even if it does not solve problems or shows hidden connections. The unavoidable contraindication si that the abstract building are destined at becoming labyrinths without a centre, where the reader will get inevitably lost.
+The Bourbachist vision does belong to any of these two mathematical schools: it is neither oriented towards finding hidden connections between apparently separated phenomenon, nor towards solving practical problems. The manipulation of abstract structures arising from the need of finding a proof that is general enough had shifted its aim: from searching for a solution, it had started wandering around the creation of abstract bazar where anything that is coherent with the initial axioms can be added, even if it does not solve problems or shows hidden connections. The unavoidable contraindication is that the abstract building are destined at becoming labyrinths without a centre, where the readers will inevitably be waisting their time.
 
-Only from this point onwards, the subdivision between pure and applied mathematics had been required, as a line draw between mathematical practice (either of Pythagorean or Archimedean school) and the practice of axiomatisation.
+Only from this point onwards, the subdivision between pure and applied mathematics had been required, as a line drawn between mathematical practice (either of Pythagorean or Archimedean school) and the axiomatisation.
 
-The comparison proposed in this paper, through the multi-armed bandit problem, aims at providing an example between the pure and applied approach towards the same problem in a very specific case. It also collects a list of similar cases in the literature, showing the axiomatisation pattern and investigating the reasons for the success of Bourbakchism.
+The comparison proposed in this paper, through the multi-armed bandit problem, aims at providing an example between the pure and applied approach towards the same problem in a very specific case. It also collects a list of analogous cases in the literature, showing the axiomatisation pattern and investigating the reasons for the success of Bourbakchism.
 
-Where the Bourbachism had shifted the focus from the problem to the axioms, and where the reader can only find an over-formalised list of definitions and theorems of no use outside academic discussions.
+% Where the Bourbachism had shifted the focus from the problem to the axioms, and where the reader can only find an over-formalised list of definitions and theorems of no use outside academic discussions.
 
-When the pragmatic perspective is applied to the same problem, an algorithmic solution can be quickly explained, and the explanation is enough to provide the guideline to implement and test a range of algorithms. All this without calling into play Borel or Lebesgue, as done in the counterpart.
+% When the pragmatic perspective is applied to the same problem, an algorithmic solution can be quickly explained, and the explanation is enough to provide the guideline to implement and test a range of algorithms. All this without calling into play Borel or Lebesgue, as done in the counterpart.
 
 %
 %
