@@ -35,7 +35,7 @@ pluggy==0.13.1
     # via pytest
 pre-commit==2.2.0
     # via -r requirements-dev.in
-py==1.8.1
+py==1.10.0
     # via pytest
 pyparsing==2.4.7
     # via packaging
