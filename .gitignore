@@ -3,6 +3,10 @@
 .idea
 .vscode
 
+# --- MAC ---
+
+.DS_Store
+
 # ---- PYTHON ----
 
 # Virtualenvs
@@ -11,6 +15,7 @@ env
 
 # Temporary data
 tmp_data_*
+__latexindent_temp.tex
 
 # Jupyter notebooks
 .ipynb_checkpoints
