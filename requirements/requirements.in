@@ -1,4 +1,4 @@
 matplotlib==3.2.0
 numpy==1.18.1
-pillow==8.1.1  # to allow to save images in jpg via matplotlib
+pillow>=8.1.2  # to allow to save images in jpg via matplotlib
 tqdm==4.46.1

@@ -342,3 +342,7 @@ TSWLatexianTemp*
 
 # Makeindex log files
 *.lpz
+
+
+# User commented files
+z_*
