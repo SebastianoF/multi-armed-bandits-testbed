@@ -68,12 +68,12 @@ linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
 
 % ------------------------------------------------- %
 \begin{abstract}
-    In these pages, through the example of the the multi-armed bandits problem, you will find a comparison between two methodological approaches to mathematics.
-    The two methods are here named the \emph{Bourbachist} and \emph{pragmatic}: the Bourbakist way is concerned with the mathematical foundation upon which a formal solution emerges from a set-theoretical axiomatic structure. The other way, the pragmatic one, is focused on the algorithmic solution, and the underpinning mathematical formalisation appears only when needed.
-    In this article you can also find a short literature review about the history and origin of Bourbachism,  and a short list of other notable examples where the same problem had been approached in the bourbachists and in the pragmatic way. I conclude the article with a final discussion about the advantages and disadvantages of each exposition, after diving into the reasons why the Bourbachist approach is still so successful. \\
+    In these pages, through the example of the the multi-armed bandit problem, you will find a comparison between two methodological approaches to mathematics.
+    The two methods are here named the \emph{Bourbachist} and \emph{pragmatic}: the Bourbachist way is concerned with the mathematical foundation upon which a formal solution emerges from a set-theoretical axiomatic structure. The other way, the pragmatic one, is focused on the algorithmic solution, and the underpinning mathematical formalisation appears only when needed.
+    In this article you can also find a brief literature review about the history and origin of Bourbachism,  and a shortlist of other notable examples where the same problem has been addressed in the bourbachists and in the pragmatic way. The article concludes with a final discussion about the advantages and disadvantages of each approach, after exploring the reasons why the Bourbachist formalisation is still so widespread. \\
 
 \noindent
-If you came across this article while searching only for an introduction to the multi-armed bandit problem, please look directly into Section~\ref{se:pragmatic_perspective}. The code to create the figures, to run and compare a range of solutions to the multi-armed bandit problem is versioned controlled and open to contributions at the link \href{https://github.com/SebastianoF/multi-armed-bandits-testbed}{https://github.com/SebastianoF/multi-armed-bandits-testbed}.
+If you discovered this article while searching for an introduction to the multi-armed bandit problem, please look directly at section~\ref{se:pragmatic_perspective}. The code to create the figures, to run and compare a range of solutions to the multi-armed bandit problem is versioned controlled and open to contributions at the link \href{https://github.com/SebastianoF/multi-armed-bandits-testbed}{https://github.com/SebastianoF/multi-armed-bandits-testbed}.
 \end{abstract}
 
 
@@ -94,12 +94,12 @@ So, following the tradition, imagine to be on a trip to Las Vegas with an initia
 
 The goal here is to provide a solution to the MAB problem, following two different mathematical approaches:
 \begin{itemize}
-    \item[$\circ$] \emph{Bourbakist approach.} Named after the collective pseudonym of the group of French mathematicians who have developed this viewpoint in 1934, it is driven by the need of providing a strict formalisation of the theory from a set theoretical perspective, whose conclusions are a consequence of a list of   axioms, and where the physical intuition is completely excluded. \footnote{
+    \item[$\circ$] \emph{Bourbachist approach.} Named after the collective pseudonym of the group of French mathematicians who have developed this viewpoint in 1934, it is driven by the need of providing a strict formalisation of the theory from a set theoretical perspective, whose conclusions are a consequence of a list of   axioms, and where the physical intuition is completely excluded. \footnote{
         Historically, the Bourbaki group had the initial goal of re-writing one of the most widely used analysis textbook of the time, the Goursat’s \emph{Cours d'analyse mathématique}. The reason for this endeavour was that the group had considered the book inadequate, since few counterexamples contradicting some of the claims were found (Marmier~\cite{marmier2014idea}). To this end the group decided to turn mathematics into the manipulation of axiomatic systems independent from physics, rewriting the whole corpus of mathematical analysis into a theory originating from set theory and axioms, as generalisable as possible and free from counterexamples. Subsequently the same approach had been then extended from analysis to other branches of mathematics, lead by the taste and desire for axiomatising and unifying all mathematics under the language of set theory. The feature that can be found in all books produced by Bourbaki any connection with the physical reality as well as the history motivating the given theorems are entirely omitted from the texts.
     }. 
     \item[$\circ$] \emph{Pragmatic approach.} In contrast to the Bourbachist approach, the pragmatic one reduces the formalisation to its bare minimum, and it orientates your efforts into finding a solution of a problem usable in practice, rather than creating a formal axiomatic theory.
 \end{itemize}
-The MAB introduced in this section, is formalised \emph{à la Bourbaki} in the next one, and subsequently in the pragmatic way in Section~\ref{se:pragmatic_perspective}.
+The MAB introduced in this section, is formalised \emph{à la Bourbaki} in the next one, and subsequently in the pragmatic way in section~\ref{se:pragmatic_perspective}.
 
 % ------------------------------------------------- %
 
@@ -332,15 +332,15 @@ The performance of these algorithms are all depending upon the problem's distrib
 \section{Comparing the two ways}
 \label{se:outro}
 
-The Bourbaki way presented in section~\ref{se:bourbaki_perspective} is based on an axiomatisation of the problem and it evolves from a functional and set-theoretical perspective. It focuses on the symbolism, and according to the Bourbachist tradition, it provides no examples or algorithms, as the only connecting point between the theory and the given problem is the axsiomatic setting.
+The Bourbaki way presented in section~\ref{se:bourbaki_perspective} is based on an axiomatisation of the problem and it evolves from a functional and set-theoretical perspective. It focuses on the symbolism, and according to the Bourbachist tradition, it provides no examples or algorithms, as the only connecting point between the theory and the given problem is the axiomatic setting.
 
-Assuming that this approach is correct (excluding typos) and coherent (excluding Goedel\footnote{
+Assuming that section~\ref{se:bourbaki_perspective} is correct (excluding typos) and coherent (excluding Goedel\footnote{
     In the article \emph{The ignorance of Bourbaki}~\cite{mathias1992ignorance} Mathias noticed that the Bourbaki attempt of grounding the whole corpus of mathematics in an axiomatic sense have happened after, and with a conscious effort to ignore the Goedel incompleteness theorems.
-}), it is easy to see that it had the side effect of turning a relatively simple problem into a complicated maze of interrelated concepts, having mainly the consequence of pushing you away from the practical solution, when not entirely from mathematics.
+}), it is easy to see that it had the side effect of turning a relatively simple problem into a complicated maze of interrelated concepts, whilst also pushing you away from the practical solution, and perhaps even entirely from mathematics.
 
-On the contrary, the pragmatic approach of section~\ref{se:pragmatic_perspective} shows that there is no need of taking a functional perspective, when a single matrix is enough. It shows that there is no need for taking several mathematical tools from other branches (Borel spaces, Lebsgue Measures...) developed in entirely different contexts to prevent counterexamples, and there is no need to extend the bibliography beyond one ot two resources. Borel spaces and any element of measure theory are not just useless when aiming at a solution, they are also hindering creativity when facing a slightly different problem, as for example one with different types of distributions over time, or one where not all the arms are available at any time points. 
+On the contrary, the pragmatic approach of section~\ref{se:pragmatic_perspective} shows that there is no need to take a functional perspective, when a single matrix is enough. It shows that Borel spaces and Lebsgue Measures are not an important requirement. These tools have been developed in entirely different contexts to prevent counterexamples. There is also no need to extend the bibliography beyond one or two resources. Borel spaces and any element of measure theory are not just useless when aiming at a solution, they are also hindering creativity when facing a slightly different problem, as for example one with different types of distributions over time, or one where not all the arms are available at any point in time. 
 
-If in doubt about the creativity hindrance, you are invited to continue the formalisation started in section~\ref{se:bourbaki_perspective}, to see how many pages and new definitions and diagrams are needed to formalise the case of arms whose distribution varies over time. You are also invited to implement the algorithm solving the problem having only the functional and algebraic definitions at hand rather than relying on the matrix point of view.
+If you are in any doubt about this hindrance, you are invited to continue the formalisation started in section~\ref{se:bourbaki_perspective}, to see how many pages and new definitions and diagrams are needed to formalise the case of arms whose distribution varies over time. You are also invited to implement the algorithm solving the problem having only the functional and algebraic definitions at hand rather than relying on the matrix point of view.
 
 %None of the given definitions in the Bourbaki approach had provided any hints on how to really solve the problem, in a numerical sense, as, in conformity with the Bourbaki style, no examples had been provided.
 
