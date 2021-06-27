@@ -375,7 +375,7 @@ The performance of these algorithms are all depending upon the problem's distrib
 
 
 % ------------------------------------------------- %
-\section{Comparing the two ways}
+\section{Comparison}
 \label{se:outro}
 
 The Bourbaki way presented in section~\ref{se:bourbaki_perspective} is based on an axiomatisation of the problem and it evolves from a functional and set-theoretical perspective. It focuses on the symbolism, and according to the Bourbachist tradition, it provides no examples or algorithms, as the only connecting point between the theory and the given problem is the axiomatic setting.
@@ -384,16 +384,34 @@ Assuming that section~\ref{se:bourbaki_perspective} is correct (excluding typos)
     In the critical article \emph{The ignorance of Bourbaki}~\cite{mathias1992ignorance} Mathias noticed that the Bourbaki attempt of grounding the whole corpus of mathematics in an axiomatic sense have happened after, and with a conscious effort to ignore the Goedel incompleteness theorems.
 }), it is easy to see that the Bourbaki approach, while describing a rigorous and formal setting, wraps a relatively simple problem into several layers of complexity.
 
-On the contrary, the pragmatic approach of section~\ref{se:pragmatic_perspective} shows that there is no need to take a functional perspective, when a single matrix is enough. Borel spaces and Lebsgue Measures are never mentioned, as these tools have been developed in entirely different contexts. Also the pragmatic approach reduces the bibliography to one or two resources.
+On the other hand, the pragmatic approach of section~\ref{se:pragmatic_perspective} shows that there is no need to take a functional perspective, when a single matrix is enough. Borel spaces and Lebsgue Measures are never mentioned, as these tools have been developed in entirely different contexts. Also the pragmatic approach reduces the bibliography to one or two resources.
 
 
 \subsection*{Other examples}
 
-Certainly the example provided is biased by the fact that it consists of the best approximation of a Bourbaki approach and of a pragmatic approach that I could attain. Also you may say, the MAB problem is not the ideal one to embed into the Bourbaki formalisation, as \emph{per se} too empirical.
+If the MAB problem, is considered too empirical to be a good case study for the proposed comparison, it is good to remind that the Bourbaki group intended to formalise the whole corpus of mathematics. There are in fact numerous examples in the literature other than the proposed one. 
 
-To answer these valid points, I wish to point out that the Bourbaki group intended to formalise the whole corpus of mathematics and that there are numerous cases of practical problems, whose pragmatic approach has been overly formalised\footnote{
-    Or \emph{assiomattisation}, as Bruno de Finetti~\cite{de2008bruno} would have said playing on the Italian words \emph{assiomi} and \emph{matti}, crazy.
-} as the one proposed here. These examples may also constitute a collection of case-studies for anyone who may believe that I  had been over zealous in writing section~\ref{se:bourbaki_perspective} to cast a negative light upon the Bourbaki methodology.
+To answer these valid points, I wish to point out that the Bourbaki group intended to formalise the whole corpus of mathematics and that there are numerous cases of practical problems, whose pragmatic approach has been overly formalised
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+as the one proposed here. These examples may also constitute a collection of case-studies for anyone who may believe that I  had been over zealous in writing section~\ref{se:bourbaki_perspective} to cast a negative light upon the Bourbaki methodology.
 
 The first most notable example belongs to the domain of optimal transport theory. From being a pragmatic tool of solve a class of optimisation problems, it had become, in the hand of Bourbachists, a $500$ page book underpinned by a large amount of measure theory and Lebesgue spaces, perfectly irrelevant to solve any instance of an optimal transport problem. Comparing for example Hitchcock~\cite{hitchcock1941distribution} introduction to the formalised counterpart, written by Villani~\cite{villani2003topics} it is possible to see the Bourbachisations effects. The first work is easy to read, understand, implement and possibly extend in several directions by anyone having a high school mathematical education. The second one is a seemingly uncreated maze of unassailable interlinked concepts, requiring many years of academic studies only to grasp the first few pages, with no advantages in finding a numerical solution to the problem. %It is almost impossible to be extended in any direction that a slightly different initial problem arising from practical need may pose, and it leaves no clarification whatsoever about why this perspective should be preferred upon the one proposed 60 years before. %Not surprisingly, a recent evolution of the OT by Patel~\cite{patelalternate} is rooted in the pragmatic approach, and does not even cite the Villani formalisation.
 
@@ -416,14 +434,10 @@ What is also a feature of the Bourbaki pattern is that the formalised version of
 
 There is only one notable exception to this rule. The work by Mochizuki~\cite{mochizuki2012inter} is claimed to have solved the \emph{abc conjecture}. Although, worthy of pantomime, according to the mathematicians who had tried to read this work, \lq\lq the proof is too impenetrable to be understood\rq\rq\footnote{A statement published in Nature, Castelvecchi~\cite{castelvecchi2015biggest}.}.
 
-\section*{Pros and cons}
+\section{Pros and cons}
 
-%What the examples proposed in these pages intended to show, from a qualitative and empirical evaluation, is that the over-axiomatic version of a theory has several negative aspects respect to its pragmatic counterpart.
-
-%These are: Bourbaki formalisation has an exhaustive cognitive load,increases the difficulties that a generalisation of a simple change in the initial problem setting may require. It is by no mean close to the formalisation that is required to be implemented in modern programming language. Bourbaki does not provide any additional insight and intuition over the problem that originated the theory. You get used to work on useless details and pedantic discussions about notations, rather than solving the problem.
-
-
-I am not here to criticize Bourbaki. The evil that men do lives after them. I am writing these pages to try to analyse and understand the phenomenon beyond its name and its influence.
+The aim of these 
+am writing these pages to try to analyse and understand the phenomenon beyond its name and its influence.
 It is true that, despite many have express their negative view about the Bourbachist's mathematics, the Bourbaki approach is still widespread if not predominant across the academic community and also greatly valued and honoured\footnote{
     To this regard, anyone is welcome to copy-paste section~\ref{se:bourbaki_perspective} and to extend it, in the Bourbachist style, into an article whose title could be something like \emph{The multi-armed bandits for the working mathematician}, to see how this would be received by the community.
 }.
@@ -472,6 +486,10 @@ Not many mathematicians have openly criticised the Bourbaki approach. The most n
 
 Amongst the many: Arnold~\cite{arnol1998teaching}, De Finetti~\cite{de2008bruno}, Lockhart~\cite{lockhart2009mathematician}, the already cited Mathias and its follow up~\cite{mathias1998further}, Velupillai~\cite{velupillai2012bourbaki}. And even the article by Marmier~\cite{marmier2014idea}, that sees the Bourbaki movement with enthusiasm and appreciation for their work and impact in the society, begs some questions when it says
 \lq\lq Living mathematics is being done elsewhere in the world, in connection with new problems arising from other disciplines or other human activities\rq\rq.
+
+
+Or \emph{assiomattisation}, as Bruno de Finetti~\cite{de2008bruno} would have said playing on the Italian words \emph{assiomi} and \emph{matti}, crazy.
+
 
 
 % B- CONS: Creativity hindrance.
