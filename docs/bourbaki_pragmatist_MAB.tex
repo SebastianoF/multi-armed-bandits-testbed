@@ -82,7 +82,7 @@ If you discovered this article while searching for an introduction to the multi-
 \label{se:intro}
 Imagine you have to repeatedly choose between $K$ different options. All options have the same cost, though each may or may not provide you with a reward. The probability of having a reward is modelled by an \emph{unknown} distribution, that may be different for every choice and that can vary over time.
 
-This general setting is of concern for a wide range of problems, such as choosing a medical treatment or a drug, randomising quality control of produced parts, exploring new cafes, trying a range of cars before buying one, choosing a job, and for the most daring ones, selecting a partner. In the algorithmic literature the setting is referred to as the \emph{multi-armed bandits} (MAB), as it can be seen as the situation of playing repeatedly at a row of $K$ slot machines, and after the nickname \emph{armed bandit} for slot machines.
+This general setting is of concern for a wide range of problems, such as choosing a medical treatment or a drug, randomising quality control of produced parts, exploring new cafes, trying a range of cars before buying one, choosing a job, selecting the optimal price for goods or commodities given the market fluctuations, building a portfolio, and for the most daring ones, selecting a partner. In the algorithmic literature the setting is referred to as the \emph{multi-armed bandits} (MAB), as it can be seen as the situation of playing repeatedly at a row of $K$ slot machines, and after the nickname \emph{armed bandit} for slot machines.
 
 The reason why the algorithm takes its name form the gambling example and not from one of the others, more interesting and available in literature\footnote{
     For example Bouneffouf~\cite{bf2019survey}.
@@ -310,12 +310,12 @@ As an exercise, the reader can reformulate the theorem~\ref{th:bourbaki} startin
 
 
 % ------------------------------------------------- %
-\section{The Pragmatic way}
+\section{The pragmatic way}
 \label{se:pragmatic_perspective}
 
 The first step to approach the problem pragmatically is to implement a playground where the ground truth of an instance of a multi-armed bandit problem is known. 
 
-\subsection*{Creating a Benchmark}
+\subsection*{Creating a benchmark}
 
 We first implement a particular case, modelling each arm with normal distributions, with mean sampled from a uniform distribution in the interval $[-3, 3]$ and the standard deviation sampled from a uniform distribution on the interval $[2, 3]$. A representation of these distribution is plotted in
 figure~\ref{fig:volin_plot}.
@@ -387,9 +387,9 @@ The pragmatic approach of section~\ref{se:pragmatic_perspective} shows instead t
 
 \subsection*{Other examples}
 
-If the MAB problem is considered too empirical to be a good case study for the proposed comparison, it is good to remind that the Bourbaki group intended to formalise the whole corpus of mathematics. In fact there are in the literature numerous examples where the described Bourbachisation took place. 
+If the MAB problem is considered too empirical to be a good case study for the proposed comparison, it is good to remind that the Bourbaki group intended to formalise the whole corpus of mathematics. There are in fact numerous numerous examples in the literature where the described Bourbachisation took place to address very empirical problems. 
 
-The first and most notable one belongs to the domain of optimal transport theory. Started as a pragmatic tool of solve a class of optimisation problems, it had been turned, after the Bourbachists formalisation, into a $500$ page book underpinned by a large amount of measure theory and Lebesgue spaces, whose relevance to solve any instance of an optimal transport problem is debatable. It is possible to compare Hitchcock's~\cite{hitchcock1941distribution} introduction to its formalised counterpart, written by Villani~\cite{villani2003topics}: the first work is can be read in one sitting, and the material provided is enough to start implementing and possibly extending a solution to the optimal transport problem. The second one, whose aim is the rigorous formalisation of what is needed to solve the problem, requires many years of academic studies only to grasp the first few pages. Here again the advantages in finding a numerical solution to the problem is debatable.
+The first one here presented belongs to the domain of optimal transport theory. Started as a pragmatic tool of solve a class of optimisation problems, it had been turned, after the Bourbachists formalisation, into a more than $500$ pages book underpinned by a large amount of measure theory and Lebesgue spaces, whose relevance to solve any instance of an optimal transport problem is debatable. It is possible to compare Hitchcock's~\cite{hitchcock1941distribution} introduction to its formalised counterpart, written by Villani~\cite{villani2003topics}: the first work is can be read in one sitting, and the material provided is enough to start implementing and possibly extending a solution to the optimal transport problem. The second one, whose aim is the rigorous formalisation of what is needed to solve the problem, requires many years of academic studies only to grasp the first few pages. Here again the advantages in finding a numerical solution to the problem is debatable.
 
 The second Bourbachisation example is in the domain of medical image registration. The aim of this field is to solve the problem of finding the non-rigid deformation, or metamorphosis, between anatomies. The problem originates from the study of the growth and change of anatomical shapes by D'Arcy Thompson~\cite{d1942growth} and pragmatically extended, amongst others, by Modersitzki~\cite{modersitzki2004numerical}. The Bourbaki rigorous version can be found in works such as Younes~\cite{younes2010shapes}, where the reason motivating the work can be found only after 11 chapters.
 In this case too, the advantages of the axiomatic approach in respect to the pragmatic one, which appeared half a century earlier, are debatable.
@@ -399,12 +399,12 @@ For this specific case, the reader may say that the pragmatic approach \cite{mod
 
 \subsection*{The Bourbaki pattern}
 
-There are many other examples in the literature where it is possible to find a comparison between the Bourbachist / pragmatic way, such as with algebraic topology, fuzzy logic and topological data analysis. 
-These branches of mathematics have been drawn out by Bourbachists from the practical set of solutions they were, into rigorous axiomatic constructions. As for the MAB problem, approaching the problem starting from these resource makes it very difficult to find any practical help in solving a given problem.
+There are many other examples in the literature where it is possible to find the dual approach Bourbaki / pragmatic, such as with algebraic topology, fuzzy logic and topological data analysis. 
+These branches of mathematics have been drawn out by Bourbachists from the practical set of solutions they were, into rigorous axiomatic constructions. As for the MAB problem proposed in this paper, approaching the problem starting from these resource makes it very difficult to find any practical help in solving a given problem.
 
 It is at this point evident the existence of a pattern in the process of Bourbachisation: a problem solved by more than 50 years, and often in a very elegant and straightforward way, is taken under the wing of the academic axiomatisers and transformed into a list of definitions, lemmas, theorems and corollaries, where no trace of the original problem motivating the theory is to be found.
 
-The pragmatic solution is reverse-engineered into a formal structure and the formalised result is then called \emph{pure}, as opposed to \emph{applied}. This leaves to intend the existence of a Platonic world of perfect and immutable ideas, whose applications are just sporadic instances. To allow to forget the fact that the applied mathematics was the source and origin of the axiomatic theory, the work of Bourbaki makes no reference to the history of the problem and the practical need that motivates each definition.
+The pragmatic solution is reverse-engineered into a formal structure and the formalised result is then called \emph{pure}, as opposed to \emph{applied}. This leaves to intend the existence of a Platonic world of perfect and immutable ideas, whose applications are just sporadic instances, though not the \emph{real} mathematics. To invite the reader to forget the fact that the applied mathematics was the source and origin of the axiomatic theory, the work of Bourbaki makes no reference to the history of the problem and the practical need that motivates each definition.
 
 % The intriguing fact is that in the domain of philosophy, a similar pattern was deplored by Friedrich Nietzsche. Several decades before the advent of Bourbakism, in \emph{The Twilight of the Idols} the philosopher wrote: 
 
@@ -418,13 +418,13 @@ In the next section we dive into the pros and cons of the Bourbakist and the pra
 
 % -------------------------
 % -------------------------
-\section{Benefits and Drawbacks}
+\section{Benefits and drawbacks analysis}
+
+Despite the criticisms, the Bourbaki's work, the Bourbachist's mathematics is still widespread if not predominant across the academic community, as well as widespreadly taught.
+Also very often, the over-axiomatisation of a solution to a practical problem developed outside academia, receives more recognition than the original work.
 
 
-Despite many have express their negative view about the Bourbaki's work, the Bourbachist's mathematics is still widespread if not predominant across the academic community, as well as widespreadly taught.
-Also very often, the over-axiomatisation of a solution to a practical problem developed outside academia, had received more recognition than the original work.
-
-This section investigates the benefits and drawback of the two approaches, starting ffrom the pros of the Bourbaki methodology.
+In this section we investigate the positive sides of the Bourbaki approach, as well as the negative sides. Subsequently, we then compare the pros and cons of the pragmatic approach.
 
 % -------------------------
 \subsection*{Bourbaki benefits}
@@ -435,7 +435,7 @@ This section investigates the benefits and drawback of the two approaches, start
      
     \item[$\circ$] \emph{Exercise of rigour:} the Bourbaki approach is a valuable exercise of rigour and a way to master the mathematical formalisms. 
     
-    \item[$\circ$] \emph{Uniformed language:} few mathematicians had a stronger impact in standardising and unifying notations across mathematical communities.
+    \item[$\circ$] \emph{Uniformed language:} few mathematicians had a stronger impact in standardising and unifying notations across mathematical communities worldwide.
 
     \item[$\circ$] \emph{More publications:} the pressure of publishing is increasing as much as the difficulty in discovering new theorems and models. Formalising known theories is a way of producing papers\footnote{
         Same goes for publishing a comparisons between a range of mathematical approaches. This topic will be developed in another paper.
@@ -443,11 +443,11 @@ This section investigates the benefits and drawback of the two approaches, start
     
     \item[$\circ$] \emph{Detachment from reality:} the advantage of this point is twofold. Firstly, the Bourbaki approach entails no costs in running experiments or collecting data. Secondly, there is no objective measurement to score the quality or value of the Bourbaki work. Needless to say, this second point is an advantage only in the academic domain.
     
-    \item[$\circ$] \emph{Good for the ego:} as all virtuosic expressions, also writing axiomatic structure is an exercise that, once mastered can lead to personal satisfactions, regardless of any practical value.
+    \item[$\circ$] \emph{Good for the ego:} as all virtuosic expressions, also writing axiomatic structure is an exercise that, once mastered, can lead to personal satisfactions, regardless of any practical value.
     
-    \item[$\circ$] \emph{Inaccessible to novices:} also this point favours the Bourbaki way only in the academic domain. The jargon and the formalism that leaves everyone how is part of the Bourbaki club as an outsider is a possible strategy to maintain academic hierarchies intact.
+    \item[$\circ$] \emph{Inaccessible to novices:} also this point favours the Bourbaki way only in the academic domain. The difficult formalism set a barrier to enter the Bourbaki club and it is a possible strategy to maintain academic hierarchies intact.
     
-    \item[$\circ$] \emph{Immune to failure or obsolescence:} addressing no practical problem, a theory developed following an axiomatic structure, or the axiomatisation of an existing solution, can not provide inherently \emph{wrong} results, and the axiomatisation can not become obsolete by emerging technologies, as it happens for the mathematics that solves practical problems.
+    \item[$\circ$] \emph{Immune to failure or obsolescence:} addressing no practical problem, a theory developed following an axiomatic structure, or the axiomatisation of an existing solution, can not provide inherently \emph{wrong} results, so as long as the proofs are solid. The axiomatisation can not become obsolete by emerging technologies, as in some cases it can happen for the mathematics that solves practical problems.
     
     \item[$\circ$] \emph{(Almost) unconstrained research:} when the goal is to find all the possible results starting from a set of axioms, then the only constraints are the direction the mathematician chose to take, and the acceptance of the results from the other mathematicians in the same field.
      
@@ -456,48 +456,47 @@ This section investigates the benefits and drawback of the two approaches, start
 % -------------------------
 \subsection*{Bourbaki drawbacks}
 
-Many mathematicians have express their negative view about the Bourbachist's mathematics, despite it being widespread if not predominant across the academic community. The most notable ones, other than the already cited Mathias \cite{mathias1992ignorance}, are Arnold~\cite{arnol1998teaching}, De Finetti~\cite{de2008bruno}, Lockhart~\cite{lockhart2009mathematician}, Velupillai~\cite{velupillai2012bourbaki}. Even a publication in favour of the Bourbaki style such as Marmier~\cite{marmier2014idea}, casts some shadow with its conclusions: \lq\lq Living mathematics is being done elsewhere in the world, in connection with new problems arising from other disciplines or other human activities\rq\rq.
-
+Other than the already cited Mathias \cite{mathias1992ignorance}, there are several other mathematicians that have publicly expressed their critical view about Bourbaki. The few cited in this paper are Arnold~\cite{arnol1998teaching}, De Finetti~\cite{de2008bruno}, Lockhart~\cite{lockhart2009mathematician} and Velupillai~\cite{velupillai2012bourbaki}. Even a publication in favour of the Bourbaki style such as Marmier~\cite{marmier2014idea}, casts some shadow with its conclusions: \lq\lq Living mathematics is being done elsewhere in the world, in connection with new problems arising from other disciplines or other human activities\rq\rq.
 
 \begin{itemize}
 
     \item[$\circ$] \emph{No new results:} unless considering the axiomatisation of a theory as a result \emph{per se}, it was very difficult to find breakthroughs or new results from the Bourbaki approach. The only notable exception to this point seems to be the work by Mochizuki~\cite{mochizuki2012inter}. This resource is claimed to have solved the \emph{abc conjecture}. Although, as reported by Castelvecchi~\cite{castelvecchi2015biggest} \emph{the proof is too impenetrable to be understood}.
      
-    \item[$\circ$] \emph{Pedagogical failure:} a barbed letter by Vladimir Arnold~\cite{arnol1998teaching} denounce the failure of the Bourbaki methodology, in particular in its intention of separating physics from mathematics. He wrote: \lq\lq Mentally challenged zealots of \emph{abstract mathematics} threw all the geometry (through which connection with physics and reality most often takes place in mathematics) out of teaching.\rq\rq
+    \item[$\circ$] \emph{Pedagogical failure:} a barbed letter by Vladimir Arnold~\cite{arnol1998teaching} denounces the failure of the Bourbaki pedagogy, in particular in its intention of separating physics from mathematics. He wrote: \lq\lq Mentally challenged zealots of \emph{abstract mathematics} threw all the geometry (through which connection with physics and reality most often takes place in mathematics) out of teaching.\rq\rq
     
-    \item[$\circ$] \emph{More noise:} once formalised into axioms and theorems, it is a very arduous task to deduct the solution to the problem that motivated the axioms. A reader with no abstract mathematics background looking for a practical way to approach the multi armed bandit problem, would be drawn away from the problem by section~\ref{se:bourbaki_perspective}, if not entirely from mathematics. 
+    \item[$\circ$] \emph{More noise:} once formalised into axioms and theorems, it is a very arduous task to deduct the solution to the problem that motivated the axioms. A reader with no abstract mathematics background looking for a practical way to approach the multi-armed bandit problem, would be drawn away from the problem by reading only section~\ref{se:bourbaki_perspective} (if not entirely from mathematics).
      
-    \item[$\circ$] \emph{Less generalizable:} while this may seems not true at first glance, the reader is invited to continue the formalisation started in section~\ref{se:bourbaki_perspective}, to see how many pages and new definitions and diagrams are needed to formalise the case of arms whose distribution varies over time. Any small change in the original problem, that is of immediate intuition when the physical problem is at hand, requires days of work to keep the axiomatic system standing. Borrowing an example from \cite{arnol1998teaching}, proving the commutativity of the product is obvious when arranging soldiers in rows, long and tedious when axiomatising multiplication by the column method.
+    \item[$\circ$] \emph{Less generalizable:} while this may seems not true at first glance, the reader is invited to continue the formalisation started in section~\ref{se:bourbaki_perspective}, to see how many pages and new definitions and diagrams are needed to formalise the case of arms whose distribution varies over time, and subsequently when the gambler has the opportunity of drawing more tha one arm at the same time, as for example proposed in ZZZ. It will be clear that any small change in the original problem, that is of immediate intuition when the physical contexts is at hand, requires days of work to keep the axiomatic system standing. Borrowing an example from \cite{arnol1998teaching}, proving the commutativity of the product is obvious when arranging soldiers in rows, long and tedious when the multiplication is axiomatised by the column method.
     
     \item[$\circ$] \emph{Hindrance of creativity:} Bruno de Finetti, playing on the Italian words \emph{assiomi} and \emph{matti} (crazy) coined the therm \emph{assiomatti}, to describe the mathematicians concerned with axiomatisation rather than solving problems or finding algorithms. The fact that formal structures comes into the way of the imagination and creativity was one of his thesis in criticising the Bourbaki method~\cite{de2008bruno}.
 
-    \item[$\circ$] \emph{No layman way:} the only known attempt of turning a Bourbachist work into something accessible for the layman, can be found in Villani~\cite{villani2003livingtheorem}. The result admittedly makes the theory even less accessible than the original work.
+    \item[$\circ$] \emph{No layman way:} the only known attempt of turning a Bourbachist work into something accessible for the layman, can be found in Villani~\cite{villani2003livingtheorem}. The result, as admitted by the author himself, makes the theory even less accessible than the original work.
     
     \item[$\circ$] \emph{Excessive rigour can be misleading:} besides the information overload cause by there Bourbaki approach, the detachment from practical problems can lead to blunders. An example of this can be found in the medical imaging paper by Lorenzi~\cite{lorenzi2013geodesics} where a counterexample found in Milnor~\cite{milnor1984remarks}, involving the tangent space of the circle, is used to justify the claims that there is no bijective correspondence between the space of the tangent vector fields and the one of their integral curves in $\mathbb{R}^3$, even if in plain contradiction with the theorem of existence and uniqueness of ODEs solutions.
 
-    \item[$\circ$] \emph{Pure vs. Applied dichotomy:} the academic dichotomy pure/applied maths is something that can not be found in mathematics before Bourbaki. 
+    \item[$\circ$] \emph{Pure vs. Applied dichotomy:} the academic dichotomy pure/applied maths is something that can not be found in the mathematical landscape before Bourbaki. 
     Classifying any of the work by Archimedes, Gauss, Euler, Lambert, Poincare or any other great name of pre-modern mathematics as \emph{pure} or \emph{applied} with no ambiguities is an impossible task.
      
 \end{itemize}
 
 About this last point, several French mathematicians contemporary of Bourbaki, such as Jean Leray, René Thom, Paul Dubreil, and Szolem Mandelbrojt, have been labelled as \emph{applied} or \emph{not-pure}, for having left the Bourbaki group very early or for not having entered its ranks at all \cite{barcellos1984interview, atiyah2007bourbaki}.
 
-It is possible to have the sensation that the pragmatics or applied mathematicians have found themselves with less and less space within the university walls after the emergence of the \emph{pure ones}. Having turned mathematics into something that is not practiced as a science, the members of the Bourbakist club endured and flourished in the academic positions, influencing how mathematics is taught, learned and conceived.
+% It is possible to have the sensation that the pragmatics or applied mathematicians have found themselves with less and less space within the university walls after the emergence of the \emph{purists}. Having turned mathematics into something that is not practiced as a science, the members of the Bourbakist club endured and flourished in the academic positions, influencing how mathematics is taught, learned and conceived.
 
-Of a similar idea were De Finetti~\cite{de2008bruno} and Arnold. The latter wrote:
+% Of a similar idea were De Finetti~\cite{de2008bruno} and Arnold. The latter wrote:
 
-\begin{quotation}
-    \emph{Genuine mathematicians do not gang up, but the weak need gangs in order to survive. They can unite on various grounds (it could be super-abstractness, anti-Semitism or \lq\lq applied and industrial\rq\rq~problems), but the essence is always a solution of the social problem - survival in conditions of more literate surroundings.}~\cite{arnol1998teaching}
-\end{quotation}
+% \begin{quotation}
+%     \emph{Genuine mathematicians do not gang up, but the weak need gangs in order to survive. They can unite on various grounds (it could be super-abstractness, anti-Semitism or \lq\lq applied and industrial\rq\rq~problems), but the essence is always a solution of the social problem - survival in conditions of more literate surroundings.}~\cite{arnol1998teaching}
+% \end{quotation}
 
 \subsection*{Pragmatic benefits}
 
 \begin{itemize}
     \item[$\circ$] \emph{Practical value:} sometimes scientists browse mathematical papers to find an algorithm or a solution to one of the problems they are facing. The solution or algorithm is never to be found in the Bourbaki orientated publications.
     
-    \item[$\circ$] \emph{Unbiased assessment:} it is possible to assess the quality of a mathematical theory with an objective measurement only if it solves a class or practical problem.
+    \item[$\circ$] \emph{Unbiased assessment:} it is possible to assess the quality of a mathematical theory with an objective measurement only if the precision of the proposed solution is measurable.
      
-    \item[$\circ$] \emph{Constraints in doing research:} this is a consequence of the pragmatic mathematics being part of the scientific landscape. Research in the pragmatic mathematics is done through seeking solutions to problems, with constraints coming from its reality. This helps in not getting lost in a maze without a center, as it happens when only building mathematical structures upon set of axioms, as in the \emph{pure} counterpart.
+    \item[$\circ$] \emph{Constraints in doing research:} this is a consequence of the pragmatic mathematics being part of the scientific landscape. Research in the pragmatic mathematics is done through seeking solutions to problems, with constraints coming from the physical reality. This helps in not getting lost in a maze without a center, as it happens when only building mathematical structures upon set of axioms, as in the \emph{pure} counterpart.
       
 \end{itemize}
 
@@ -514,13 +513,11 @@ Of a similar idea were De Finetti~\cite{de2008bruno} and Arnold. The latter wrot
 
 \end{itemize}
 
-About this last point, it was again Arnold who observed the concomitance of Bourbakism and inferiority complexes:
+About this last point, it was again Arnold who observed the concomitance of Bourbakism and problems with ego, or inferiority complexes:
 
 \begin{quotation}
     \emph{The ugly building, built by undereducated mathematicians who were exhausted by their inferiority complex and who were unable to make themselves familiar with physics, reminds one of the rigorous axiomatic theory of odd numbers. Obviously, it is possible to create such a theory and make pupils admire the perfection and internal consistency of the resulting structure.}~\cite{arnol1998teaching}
 \end{quotation}
-
-
 
 
 % ------------------------------------------------- %
@@ -528,9 +525,9 @@ About this last point, it was again Arnold who observed the concomitance of Bour
 
 In this paper we took the case study of the multi-armed bandit problem to compare the pragmatic and the Bourbakist approach to mathematics. From this starting point we provided a list of examples where the two methods have been used to tackle the same problem, and we provided a consequent list of strengths and limitations of each approach. 
 
-Compared to the history of mathematics, the Bourbachism is a relatively new trend, whose emergence required to separate between \emph{pure} and \emph{applied} mathematics. The Bourbaki group satisfied the need for unifying the language and the notation of mathematics in a more connected world, to detach mathematics as much as possible from physical reality, to provide a place where to exercise ones ability in manipulating abstract concepts and in encapsulating intuitions into a rigorous formal language.
+Compared to the history of mathematics, the Bourbachism is a relatively new trend, whose emergence required to create a boundary between \emph{pure} and \emph{applied} mathematics. The Bourbaki group satisfied the need for unifying the language and the notation of mathematics in a more connected world, to detach mathematics as much as possible from physical reality, to provide a place where to exercise ones ability in manipulating abstract concepts and in encapsulating intuitions into a rigorous formal language.
 
-Although the overformalisation of ideas, and the shift of mathematics from being a tool to solve practical problems into the endeavour of building axiomatic structures, reshaped mathematics to be a mere intellectual exercise. This methodological shift, once named \emph{pure} mathematics, left to intend the existence of a Platonic world of perfect axiomatic structures, unfortunately useless to anyone expecting help in solving practical problems. 
+\emph{Bourbaki amicus sed}. Although the overformalisation of ideas, and the shift of mathematics from being a tool to solve practical problems into the endeavour of building axiomatic structures, reshaped mathematics to be a mere intellectual exercise. This methodological shift, once named \emph{pure} mathematics, left to intend the existence of a Platonic world of perfect axiomatic structures, unfortunately useless to anyone expecting help in solving practical problems. 
 
 The preference between the two approaches is up to the reader, according to their needs, style and mathematical background. Nonetheless we reiterate the observation that the Bourbakist approach exists only within the walls of academia. Outside of it, mathematics is not a profession, as it is medicine or engineering, unless practiced in the pragmatic way.
 
