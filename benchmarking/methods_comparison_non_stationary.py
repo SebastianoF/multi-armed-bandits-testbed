@@ -9,13 +9,13 @@ num_trials_per_strategy = 100
 initial_t_explorations = 20
 strategies = ["naive", "best reward", "least explored", "upper confidence", "gradient"]
 
-average_rewards_per_method = np.zeros([len(strategies), K], dtype=np.float)
+average_rewards_per_method = np.zeros([len(strategies), K], dtype=np.float64)
 
 
 np.random.seed(40)
 
-means = np.zeros([timepoints, K], dtype=np.float)
-stds = np.zeros([timepoints, K], dtype=np.float)
+means = np.zeros([timepoints, K], dtype=np.float64)
+stds = np.zeros([timepoints, K], dtype=np.float64)
 
 means[0, :] = np.array([3 * np.sin((np.pi / 4) * x) for x in range(K)])
 stds[0, :] = np.random.uniform(1, 3, size=K)
@@ -31,7 +31,7 @@ for row in range(1, timepoints):
 
 for strat_n, strat in enumerate(strategies):
     print(f"Strategy employed: {strat}")
-    cumulative_reward_per_arm_per_strategy = np.zeros([K], dtype=np.float)
+    cumulative_reward_per_arm_per_strategy = np.zeros([K], dtype=np.float64)
 
     for i in tqdm(range(num_trials_per_strategy)):
         np.random.seed(i)

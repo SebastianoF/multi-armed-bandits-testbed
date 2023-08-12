@@ -26,7 +26,6 @@ def violin_plot_ax(
         return lower_adjacent_value, upper_adjacent_value
 
     def set_axis_style(vertical):
-
         if vertical:
             labels = [r"$K_{%d}$" % j for j in range(len(data))]
             ax.get_xaxis().set_tick_params(direction="out")
@@ -119,7 +118,6 @@ def evolutionary_grid_ax(
     last_tp_off_grid=False,
     aspect="equal",
 ):
-
     if last_tp_off_grid:
         delta = -1
     else:
@@ -204,7 +202,6 @@ def slideshow_violin_distributions(
     arms_annotations=None,
     vertical=True,
 ):
-
     if os.path.exists(output_folder):
         shutil.rmtree(output_folder, ignore_errors=True)
     os.mkdir(output_folder)
@@ -270,7 +267,6 @@ def get_evolving_grid(
 
 
 def get_grid_and_violins_dynamic(game, output_folder, violin_axis_limit=(-20, 20)):
-
     if os.path.exists(output_folder):
         shutil.rmtree(output_folder, ignore_errors=True)
     os.mkdir(output_folder)

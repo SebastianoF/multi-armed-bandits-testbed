@@ -26,6 +26,12 @@ source venv/bin/activate
 pip install -e .
 ```
 
+* To install the development third party requirement packages along with the basic ones:
+```bash
+pip install -e .["dev"]
+```
+
+
 ### Where to start
 
 Check out the examples in the folder [/examples/start_here.py](https://github.com/SebastianoF/multi-armed-bandits-testbed/blob/master/examples/start_here.py).
@@ -34,7 +40,7 @@ Check out the examples in the folder [/examples/start_here.py](https://github.co
 
 + Dependent libraries are managed with pip-compile-multi
 + Continuous integration is integrated with CircleCI
-+ Text formatting happens via pre-commit
++ Code formatting happens via makefile command `make reformat`, after installing the dev packages.
 
 ### Resources
 

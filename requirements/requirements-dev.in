@@ -1,3 +1,7 @@
-pip-compile-multi==1.5.9
-pytest==5.4.1
-pre-commit==2.2.0
+-r requirements.in
+black==23.7.0
+flake8>=6.1.0
+pip-compile-multi>=1.5.9
+pylint==2.17.5
+pytest>=5.4.1
+seed-isort-config>=2.2.0
