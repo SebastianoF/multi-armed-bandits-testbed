@@ -1,39 +1,28 @@
 version: 2.0
 
 jobs:
-  Python_3.7:
-    docker:
-      - image: circleci/python:3.7
-    steps: &steps
-      - checkout
-      - run: sudo pip install -r requirements/requirements.txt
-      - run: sudo pip install -r requirements/requirements-dev.txt
-      - run: sudo pip install -e .
-      - run: python --version ; pip --version ; pwd ; ls
-      - run: pytest
-  Python_3.8:
-    docker:
-      - image: circleci/python:3.8
-    steps: *steps
   Python_3.9:
     docker:
-      - image: circleci/python:3.9
-    steps: *steps
+      - image: cimg/python:3.9
+    steps: &steps
+      - checkout
+      - run: python --version ; pip3 --version ; pwd ; ls
+      - run: pip3 install -e .["dev"]
+      - run: make reformat
+      - run: pytest
   Python_3.10:
     docker:
-      - image: circleci/python:3.9
+      - image: cimg/python:3.10
     steps: *steps
   Python_3.11:
     docker:
-      - image: circleci/python:3.9
+      - image: cimg/python:3.11
     steps: *steps
 
 workflows:
   version: 2
   build:
     jobs:
-      - Python_3.7
-      - Python_3.8
       - Python_3.9
       - Python_3.10
       - Python_3.11
