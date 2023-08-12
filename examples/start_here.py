@@ -29,8 +29,8 @@ def non_stationary_benchmark_slideshow():
 
     np.random.seed(42)
 
-    means = np.zeros([timepoints, K], dtype=np.float)
-    stds = np.zeros([timepoints, K], dtype=np.float)
+    means = np.zeros([timepoints, K], dtype=np.float64)
+    stds = np.zeros([timepoints, K], dtype=np.float64)
 
     means[0, :] = np.random.uniform(-3, 3, size=K)
     stds[0, :] = np.random.uniform(1, 3, size=K)
@@ -110,8 +110,8 @@ def visualize_q_matrix_slideshow():
 
     np.random.seed(42)
 
-    means = np.zeros([timepoints, K], dtype=np.float)
-    stds = np.zeros([timepoints, K], dtype=np.float)
+    means = np.zeros([timepoints, K], dtype=np.float64)
+    stds = np.zeros([timepoints, K], dtype=np.float64)
 
     means[0, :] = np.random.uniform(-3, 3, size=K)
     stds[0, :] = np.random.uniform(1, 3, size=K)
@@ -135,8 +135,8 @@ def visualize_q_matrix_slideshow_second_case():
 
     np.random.seed(40)
 
-    means = np.zeros([timepoints, K], dtype=np.float)
-    stds = np.zeros([timepoints, K], dtype=np.float)
+    means = np.zeros([timepoints, K], dtype=np.float64)
+    stds = np.zeros([timepoints, K], dtype=np.float64)
 
     means[0, :] = np.array([3 * np.sin((np.pi / 4) * x) for x in range(K)])
     stds[0, :] = np.random.uniform(1, 3, size=K)

@@ -11,12 +11,12 @@ K = 10
 num_trials_per_strategy = 100
 strategies = ["naive", "best reward", "least explored", "upper confidence", "gradient"]
 
-average_rewards_per_method = np.zeros([len(strategies), K], dtype=np.float)
+average_rewards_per_method = np.zeros([len(strategies), K], dtype=np.float64)
 
 
 for strat_n, strat in enumerate(strategies):
     print(f"Strategy employed: {strat}")
-    cumulative_reward_per_arm_per_strategy = np.zeros([K], dtype=np.float)
+    cumulative_reward_per_arm_per_strategy = np.zeros([K], dtype=np.float64)
 
     for i in tqdm(range(num_trials_per_strategy)):
         np.random.seed(i)

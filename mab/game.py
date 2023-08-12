@@ -23,7 +23,7 @@ class Game:
         self.K = self.means.shape[1]
         self.T = num_draws
         self.tp = 0
-        self.q = np.nan * np.ones([num_draws, self.K], dtype=np.float)
+        self.q = np.nan * np.ones([num_draws, self.K], dtype=np.float64)
 
     @staticmethod
     def _generate_parameters(params_generators):
@@ -31,8 +31,8 @@ class Game:
         total_tp = params_generators[1]
         change_intervals = params_generators[2]
 
-        means = np.zeros([total_tp, number_of_arms], dtype=np.float)
-        stds = np.zeros([total_tp, number_of_arms], dtype=np.float)
+        means = np.zeros([total_tp, number_of_arms], dtype=np.float64)
+        stds = np.zeros([total_tp, number_of_arms], dtype=np.float64)
 
         means[0, :] = np.random.uniform(-3, 3, size=number_of_arms)
         stds[0, :] = np.random.uniform(1, 3, size=number_of_arms)
@@ -53,7 +53,7 @@ class Game:
 
     def reset(self):
         self.tp = 0
-        self.q = np.nan * np.ones([self.T, self.K], dtype=np.float)
+        self.q = np.nan * np.ones([self.T, self.K], dtype=np.float64)
 
     def select_arm(self, k):
         """A random sample from the given arm k. t specified for non-stationary cases."""

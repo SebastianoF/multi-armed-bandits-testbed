@@ -61,11 +61,11 @@ def epsilon_greedy(
 
     try:
         get_another_k = get_another_k_map[exploration_strategy]
-    except ValueError:
+    except ValueError as exc:
         raise ValueError(
             f"input 'exploration strategy must be in {get_another_k_map.keys()}'. "
             f"Got {exploration_strategy}."
-        )
+        ) from exc
 
     game.reset()
 
@@ -74,13 +74,13 @@ def epsilon_greedy(
     else:
         k = initial_k
 
-    means_hat = np.zeros(game.K, dtype=np.float)
-    stds_hat = np.zeros(game.K, dtype=np.float)
-    pulls_per_arm = np.zeros(game.K, dtype=np.int)  # N
-    rewards_per_arm = np.zeros(game.K, dtype=np.float)  # R
+    means_hat = np.zeros(game.K, dtype=np.float64)
+    stds_hat = np.zeros(game.K, dtype=np.float64)
+    pulls_per_arm = np.zeros(game.K, dtype=np.intp)  # N
+    rewards_per_arm = np.zeros(game.K, dtype=np.float64)  # R
 
     if exploration_strategy == "gradient":
-        H = np.zeros([game.T + 1, game.K], dtype=np.float)
+        H = np.zeros([game.T + 1, game.K], dtype=np.float64)
 
     # initial step:
     q = game.select_arm(k)
