@@ -57,10 +57,12 @@ linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
 
 %opening
 \title{
-    Bourbaki vs Pragmatism: \\ A methodological comparison through the multi-armed bandits problem \\ - Pre-Print -
+    Bourbaki vs Pragmatism: \\ A methodological comparison through the multi-armed bandits problem
 
 }
 \author{Sebastiano Ferraris\footnote{sebastiano.ferraris@gmail.com}}
+
+\date{\today ~ rev.2}
 
 \begin{document}
 
@@ -68,12 +70,12 @@ linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
 
 % ------------------------------------------------- %
 \begin{abstract}
-    In these pages, through the example of the the multi-armed bandit problem, you will find a comparison between two methodological approaches to mathematics.
+    In these pages, through the example of the the multi-armed bandits problem, you will find a comparison between two methodological approaches to mathematics.
     The two methods are here named the \emph{Bourbachist} and \emph{pragmatic}: the Bourbachist way is concerned with the mathematical foundation upon which a formal solution emerges from a set-theoretical axiomatic structure. The other way, the pragmatic one, is focused on the algorithmic solution, and any underpinning mathematical formalisation appears only when it solves a problem.
     In this article you can also find a brief literature review about the history and origin of Bourbachism, and a shortlist of other notable examples where the same problem has been addressed in the Bourbachists' and in the pragmatic way. The article concludes with a final discussion about the advantages and disadvantages of each approach. \\
 
 \noindent
-If you discovered this article while searching for an introduction to the multi-armed bandit problem, please look directly at section~\ref{se:pragmatic_perspective}. The code to create the figures, and to benchmark the algorithm is version controlled and open to contributions at the link \href{https://github.com/SebastianoF/multi-armed-bandits-testbed}{https://github.com/SebastianoF/multi-armed-bandits-testbed}.
+If you discovered this article while searching for an introduction to the multi-armed bandits problem, please look directly at section~\ref{se:pragmatic_perspective}. The code to create the figures, and to benchmark the algorithm is version controlled and open to contributions at the link \href{https://github.com/SebastianoF/multi-armed-bandits-testbed}{https://github.com/SebastianoF/multi-armed-bandits-testbed}.
 \end{abstract}
 
 
@@ -190,7 +192,7 @@ As $\mathcal{R}$ and $R$ did, also $\mathcal{Q}$ and $Q$ satisfies the commutati
 \begin{align}\label{def:mathcalQt_simple}
 Q_t(k) = \mathbb{E} \left[ R_{t}(k) \mid A_{t} = k \right]
 \end{align}
-where the mean value is for all the time indexes up to $t$ and where the domain values of $A_t$ is clear from the context. We remind the reader that the $k$ is constant to be constant for each $t\in\mathcal{I}_t$. We are now writing a definition that will be of use when we will be extending $k$ to be varying over $t$.
+where the mean value is for all the time indexes up to $t$ and where the domain values of $A_t$ is clear from the context. We remind the reader that the $k$ is to be constant for each $t\in\mathcal{I}_t$. We are now writing a definition that will be of use when we will be extending $k$ to be varying over $t$.
 
 \begin{definition}
     Let the \emph{total reward} $Q_{\infty}: \mathcal{I}_K \rightarrow \mathbb{R}$ be the function
@@ -239,7 +241,7 @@ Q_t(\mathbf{k})
 {\sum_{\tau=1}^{t} \mathbf{1}_{A_\tau = \mathbf{k}_{\tau}}}
 \end{align*}
 where $\mathbf{1}_{A_\tau = \mathbf{k}_{\tau}}$ equals to $1$ for when the event $\omega$ corresponding to $\mathbf{k}_{\tau}$ is mapped exactly to $\mathbf{k}_{\tau}$ through $A_t$, and $0$ for any other event.
-Extending the time indexes up to infinity, and to justify the notations introduced above, where we used $\infty$ for the finite case, we have the following theorem:
+Extending the time indexes up to infinity, and to justify the notations introduced above, where we used $\infty$ for the limit of the finite case, we have the following theorem:
 \begin{theorem}\label{th:bourbaki}
 Given a ring of infinite cardinality to which the time index $t$ belongs, and an Hilbert module\footnote{An algebraic structure generalising Hilbert vector spaces over the now introduced ring of time indexes. See for example \cite{bourbaki1987topological}.} to which the vector $\mathbf{k}$ belongs, it follows that
 \begin{align*}
@@ -345,7 +347,7 @@ where $\text{norm}(\mu, \sigma)$ is the normal distribution of location $\mu$ an
 
 \subsection*{$\epsilon$-greedy algorithms}
 
-In the previous section we created a benchmark and encoded the multi armed bandit response/rewards into a matrix.
+In the previous section we created a benchmark and encoded the multi armed bandits response/rewards into a matrix.
 
 \begin{figure}[h]
     \hspace{-1cm}
@@ -387,7 +389,7 @@ The pragmatic approach of section~\ref{se:pragmatic_perspective} shows instead t
 
 \subsection*{Other examples}
 
-If the MAB problem is considered too empirical to be a good case study for the proposed comparison, it is good to remind that the Bourbaki group intended to formalise the whole corpus of mathematics. There are in fact numerous numerous examples in the literature where the described Bourbachisation took place to address very empirical problems. 
+If the MAB problem is considered too empirical to be a good case study for the proposed comparison, it is good to remind that the Bourbaki group intended to formalise the whole corpus of mathematics. There are in fact numerous examples in the literature where the described Bourbachisation took place to address very empirical problems. 
 
 The first one here presented belongs to the domain of optimal transport theory. Started as a pragmatic tool of solve a class of optimisation problems, it had been turned, after the Bourbachists formalisation, into a more than $500$ pages book underpinned by a large amount of measure theory and Lebesgue spaces, whose relevance to solve any instance of an optimal transport problem is debatable. It is possible to compare Hitchcock's~\cite{hitchcock1941distribution} introduction to its formalised counterpart, written by Villani~\cite{villani2003topics}: the first work is can be read in one sitting, and the material provided is enough to start implementing and possibly extending a solution to the optimal transport problem. The second one, whose aim is the rigorous formalisation of what is needed to solve the problem, requires many years of academic studies only to grasp the first few pages. Here again the advantages in finding a numerical solution to the problem is debatable.
 
@@ -420,7 +422,7 @@ In the next section we dive into the pros and cons of the Bourbakist and the pra
 % -------------------------
 \section{Benefits and drawbacks analysis}
 
-Despite the criticisms, the Bourbaki's work, the Bourbachist's mathematics is still widespread if not predominant across the academic community, as well as widespreadly taught.
+Despite the many criticisms, the Bourbachist's mathematics is still widespread if not predominant across the academic community, as well as widespreadly taught.
 Also very often, the over-axiomatisation of a solution to a practical problem developed outside academia, receives more recognition than the original work.
 
 
@@ -464,7 +466,7 @@ Other than the already cited Mathias \cite{mathias1992ignorance}, there are seve
      
     \item[$\circ$] \emph{Pedagogical failure:} a barbed letter by Vladimir Arnold~\cite{arnol1998teaching} denounces the failure of the Bourbaki pedagogy, in particular in its intention of separating physics from mathematics. He wrote: \lq\lq Mentally challenged zealots of \emph{abstract mathematics} threw all the geometry (through which connection with physics and reality most often takes place in mathematics) out of teaching.\rq\rq
     
-    \item[$\circ$] \emph{More noise:} once formalised into axioms and theorems, it is a very arduous task to deduct the solution to the problem that motivated the axioms. A reader with no abstract mathematics background looking for a practical way to approach the multi-armed bandit problem, would be drawn away from the problem by reading only section~\ref{se:bourbaki_perspective} (if not entirely from mathematics).
+    \item[$\circ$] \emph{More noise:} once formalised into axioms and theorems, it is a very arduous task to deduct the solution to the problem that motivated the axioms. A reader with no abstract mathematics background looking for a practical way to approach the multi-armed bandits problem, would be drawn away from the problem by reading only section~\ref{se:bourbaki_perspective} (if not entirely from mathematics).
      
     \item[$\circ$] \emph{Less generalizable:} while this may seems not true at first glance, the reader is invited to continue the formalisation started in section~\ref{se:bourbaki_perspective}, to see how many pages and new definitions and diagrams are needed to formalise the case of arms whose distribution varies over time, and subsequently when the gambler has the opportunity of drawing more tha one arm at the same time, as for example proposed by \cite{trovo2018improving}. It will be clear that any small change in the original problem, that is of immediate intuition when the physical contexts is at hand, requires days of work to keep the axiomatic system standing. Borrowing an example from \cite{arnol1998teaching}, proving the commutativity of the product is obvious when arranging soldiers in rows, long and tedious when the multiplication is axiomatised by the column method.
     
@@ -473,14 +475,14 @@ Other than the already cited Mathias \cite{mathias1992ignorance}, there are seve
     \item[$\circ$] \emph{No layman way:} the only known attempt of turning a Bourbachist work into something accessible for the layman, can be found in Villani~\cite{villani2003livingtheorem}. The result, as admitted by the author himself, makes the theory even less accessible than the original 
     work~\cite{moskowitz2015truth}.
     
-    \item[$\circ$] \emph{Excessive rigour can be misleading:} besides the information overload cause by there Bourbaki approach, the detachment from practical problems can lead to blunders. An example of this can be found in the medical imaging paper by Lorenzi~\cite{lorenzi2013geodesics} where a counterexample found in Milnor~\cite{milnor1984remarks}, involving the tangent space of the circle, is used to justify the claims that there is no bijective correspondence between the space of the tangent vector fields and the one of their integral curves in $\mathbb{R}^3$, even if in plain contradiction with the theorem of existence and uniqueness of ODEs solutions.
+    \item[$\circ$] \emph{Excessive rigour can be misleading:} besides the information overload cause by the Bourbaki approach, the detachment from practical problems can lead to blunders. An example of this can be found in the medical imaging paper by Lorenzi~\cite{lorenzi2013geodesics} where a counterexample found in Milnor~\cite{milnor1984remarks}, involving the tangent space of the circle, is used to justify the claims that there is no bijective correspondence between the space of the tangent vector fields and the one of their integral curves in $\mathbb{R}^3$, even if in plain contradiction with the theorem of existence and uniqueness of ODEs solutions.
 
     \item[$\circ$] \emph{Pure vs. Applied dichotomy:} the academic dichotomy pure/applied maths is something that can not be found in the mathematical landscape before Bourbaki. 
     Classifying any of the work by Archimedes, Gauss, Euler, Lambert, Poincare or any other great name of pre-modern mathematics as \emph{pure} or \emph{applied} with no ambiguities is an impossible task.
      
 \end{itemize}
 
-About this last point, several French mathematicians contemporary of Bourbaki, such as Jean Leray, René Thom, Paul Dubreil, and Szolem Mandelbrojt, have been labelled as \emph{applied} or \emph{not-pure}, for having left the Bourbaki group very early or for not having entered its ranks at all \cite{barcellos1984interview, atiyah2007bourbaki}.
+About this last point, several French mathematicians contemporary of Bourbaki, such as Jean Leray, René Thom, Paul Dubreil, and Szolem Mandelbrojt, have been labelled as \emph{applied} or \emph{not-pure}, for having left the Bourbaki group very early or for not having entered its ranks at all~\cite{barcellos1984interview, atiyah2007bourbaki}.
 
 % It is possible to have the sensation that the pragmatics or applied mathematicians have found themselves with less and less space within the university walls after the emergence of the \emph{purists}. Having turned mathematics into something that is not practiced as a science, the members of the Bourbakist club endured and flourished in the academic positions, influencing how mathematics is taught, learned and conceived.
 
@@ -524,7 +526,7 @@ About this last point, it was again Arnold who observed the concomitance of Bour
 % ------------------------------------------------- %
 \section{In conclusion}
 
-In this paper we took the case study of the multi-armed bandit problem to compare the pragmatic and the Bourbakist approach to mathematics. From this starting point we provided a list of examples where the two methods have been used to tackle the same problem, and we provided a consequent list of strengths and limitations of each approach. 
+In this paper we took the case study of the multi-armed bandits problem to compare the pragmatic and the Bourbakist approach to mathematics. From this starting point we provided a list of examples where the two methods have been used to tackle the same problem, and we provided a consequent list of strengths and limitations of each approach. 
 
 Compared to the history of mathematics, the Bourbachism is a relatively new trend, whose emergence required to create a boundary between \emph{pure} and \emph{applied} mathematics. The Bourbaki group satisfied the need for unifying the language and the notation of mathematics in a more connected world, to detach mathematics as much as possible from physical reality, to provide a place where to exercise ones ability in manipulating abstract concepts and in encapsulating intuitions into a rigorous formal language.
 
