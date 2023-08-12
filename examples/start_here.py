@@ -4,7 +4,7 @@ from mab import visualize
 from mab.game import Game
 
 
-def stationary_mab_distribution(save_plot=True):
+def stationary_mab_distribution(save_plot=False):
     # Sampling mean and standard deviation for a stationary MAB with 10 arms
     np.random.seed(42)
     means = np.random.uniform(-3, 3, size=10)

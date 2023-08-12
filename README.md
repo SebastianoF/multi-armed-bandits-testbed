@@ -15,11 +15,13 @@ An implementation of a range of epsilon-greedy algorithms to solve the multi-arm
 git clone git@github.com:SebastianoF/multi-armed-bandits-testbed.git
 cd multi-armed-bandits-testbed
 ```
-* Create and activate a [virtual environment](https://docs.python.org/3/tutorial/venv.html) (python 3.8):
+* Create and activate a [virtual environment](https://docs.python.org/3/tutorial/venv.html):
 ```bash
-virtualenv -p python3.8 venv
+virtualenv -p python3.9 venv
 source venv/bin/activate
 ```
+The library is tested with python 3.9, 3.10, 3.11. Could work with previous version downgrading manually numpy to a compatible version.
+
 
 * Install in [development mode](https://flamy.ca/blog/2017-01-02-installing-python-packages-in-development-mode.html):
 ```bash
